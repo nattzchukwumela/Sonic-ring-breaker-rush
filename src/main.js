@@ -1,5 +1,6 @@
 import { k } from "./kaplayCtx";
 
+// game sprites
 k.loadSprite("chemical-bg", "/graphics/chemical-bg.png");
 k.loadSprite("platform", "/graphics/platforms.png");
 
@@ -26,3 +27,20 @@ k.loadSprite("motobug", "graphics/motobug.png", {
     run: { from: 0, to: 4, loop: true, speed: 8 },
   },
 });
+
+// game assets
+k.loadFont("mania", "fonts/mania.ttf");
+k.loadSound("destroy", "sounds/Destroy.wav");
+k.loadSound("hurt", "sounds/Hurt.wav");
+k.loadSound("hyper-ring", "sounds/HyperRing.wav");
+k.loadSound("jump", "sounds/Jump.wav");
+k.loadSound("ring", "sounds/Ring.wav");
+k.loadSound("city", "sounds/city.mp3");
+
+// game scenes
+k.scene("disclaimer", disclaimer);
+k.scene("main-menu", mainMenu);
+k.scene("game", game);
+k.scene("gameover", gameover);
+
+k.go("disclaimer");
