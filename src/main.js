@@ -1,4 +1,5 @@
 import { k } from "./kaplayCtx";
+import MainMenu from "./scene/mainmenu";
 
 // game sprites
 k.loadSprite("chemical-bg", "/graphics/chemical-bg.png");
@@ -38,9 +39,9 @@ k.loadSound("ring", "sounds/Ring.wav");
 k.loadSound("city", "sounds/city.mp3");
 
 // game scenes
-k.scene("disclaimer", disclaimer);
-k.scene("main-menu", mainMenu);
-k.scene("game", game);
-k.scene("gameover", gameover);
+// k.scene("disclaimer", disclaimer);
+k.scene("main-menu", MainMenu);
+// k.scene("game", game);
+// k.scene("gameover", gameover);
 
-k.go("disclaimer");
+k.go("main-menu");
