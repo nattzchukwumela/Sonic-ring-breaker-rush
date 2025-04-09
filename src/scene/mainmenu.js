@@ -28,7 +28,19 @@ export default function MainMenu() {
     ]),
   ];
 
+  k.add([
+    k.text("Sonic ring run", { font: "mania", size: 80 }),
+    k.pos(k.center().x, 200),
+    k.anchor("center"),
+  ]);
+
+  k.add([
+    k.text("Press Click/Space to start", { font: "mania", size: 80 }),
+    k.pos(k.center().x, k.center().y - 200),
+    k.anchor("center"),
+  ]);
   makeSonic(k.vec2(200, 768));
+
   k.onUpdate(() => {
     if (bgPieces[1].pos.x < 0) {
       bgPieces[0].moveTo(bgPieces[1].pos.x + bgPieceWidth * 2, 0);
