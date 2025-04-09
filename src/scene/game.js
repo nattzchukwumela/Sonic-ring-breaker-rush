@@ -1,3 +1,4 @@
+import { makeSonic } from "../entities/sonic";
 import { k } from "../kaplayCtx";
 
 export function game() {
@@ -15,20 +16,32 @@ export function game() {
   ];
 
   const platformWidth = 1280;
+  const scaledPlatformWidth = platformWidth * 3.2;
   const platforms = [
-    k.add([k.sprite("platform"), k.pos(0, 520), k.scale(3.5), k.area()]),
+    k.add([k.sprite("platform"), k.pos(0, 567), k.scale(3.2)]),
     k.add([
       k.sprite("platform"),
-      k.pos(platformWidth, 520),
-      k.scale(3.5),
-      k.area(),
+      k.pos(platformWidth, 567),
+      k.scale(3.2),
+      // k.area(),
     ]),
   ];
 
+  const sonic = makeSonic(k.vec2(200, 750));
+  sonic.setControls();
+  sonic.setEvents();
   let gameSpeed = 0;
   k.loop(1, () => {
     gameSpeed += 50;
   });
+
+  k.add([
+    k.rect(1920, 200),
+    k.opacity(0),
+    k.area(),
+    k.pos(0, 880),
+    k.body({ isStatic: true }),
+  ]);
 
   k.onUpdate(() => {
     if (bgPieces[1].pos.x < 0) {
@@ -39,10 +52,10 @@ export function game() {
     bgPieces[1].moveTo(bgPieces[0].pos.x + bgPieceWidth * 2, 0);
 
     if (platforms[1].pos.x < 0) {
-      platforms[0].moveTo(platforms[1].pos.x + platforms[1].width * 2, 520);
+      platforms[0].moveTo(platforms[1].pos.x + platforms[1].width, 567);
       platforms.push(platforms.shift());
     }
     platforms[0].move(-gameSpeed, 0);
-    platforms[1].moveTo(platforms[0].pos.x + platforms[1].width * 2, 520);
+    platforms[1].moveTo(platforms[0].pos.x + scaledPlatformWidth, 567);
   });
 }
