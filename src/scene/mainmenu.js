@@ -1,3 +1,4 @@
+import { makeSonic } from "../entities/sonic";
 import { k } from "../kaplayCtx";
 
 export default function MainMenu() {
@@ -27,6 +28,7 @@ export default function MainMenu() {
     ]),
   ];
 
+  makeSonic(k.vec2(200, 768));
   k.onUpdate(() => {
     if (bgPieces[1].pos.x < 0) {
       bgPieces[0].moveTo(bgPieces[1].pos.x + bgPieceWidth * 2, 0);
