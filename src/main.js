@@ -1,4 +1,5 @@
 import { k } from "./kaplayCtx";
+import { game } from "./scene/game";
 import MainMenu from "./scene/mainmenu";
 
 // game sprites
@@ -41,7 +42,7 @@ k.loadSound("city", "sounds/city.mp3");
 // game scenes
 // k.scene("disclaimer", disclaimer);
 k.scene("main-menu", MainMenu);
-// k.scene("game", game);
+k.scene("game", game);
 // k.scene("gameover", gameover);
 
 k.go("main-menu");
