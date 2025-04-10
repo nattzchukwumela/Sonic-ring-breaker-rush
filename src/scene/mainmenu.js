@@ -39,6 +39,7 @@ export default function MainMenu() {
     k.pos(k.center().x, k.center().y - 200),
     k.anchor("center"),
   ]);
+
   makeSonic(k.vec2(200, 768));
 
   k.onUpdate(() => {

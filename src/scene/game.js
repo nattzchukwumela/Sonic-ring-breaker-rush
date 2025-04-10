@@ -4,6 +4,13 @@ import { makeSonic } from "../entities/sonic";
 import { k } from "../kaplayCtx";
 
 export function game() {
+  let score = 0;
+  let scoreMultiplier = 0;
+  const scoreText = k.add([
+    k.text("SCORE : 0", { font: "mania", size: 80 }),
+    k.pos(20, 20),
+  ]);
+
   k.setGravity(3100);
   k.play("ingame-sound", { volume: 0.5 });
 
@@ -40,6 +47,9 @@ export function game() {
       k.destroy(enemy);
       sonic.play("jump");
       sonic.jump();
+      scoreMultiplier += 1;
+      score += 10 * scoreMultiplier;
+      scoreText.text = `SCORE: ${score}`;
       return;
     }
     k.play("hurt", { volume: 0.5 });
@@ -49,9 +59,12 @@ export function game() {
     if (!sonic.isGrounded() || sonic.isGrounded()) {
       k.play("hyper-ring", { volume: 0.5 });
       k.destroy(ring);
+      score++;
+      scoreText.text = `SCORE: ${score}`;
       return;
     }
   });
+
   const spawnMotoBug = () => {
     const motobug = makeMotobug(k.vec2(1950, 815));
     motobug.onUpdate(() => {
