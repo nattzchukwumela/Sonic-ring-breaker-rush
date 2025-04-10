@@ -38,8 +38,10 @@ k.loadSound("hyper-ring", "sounds/HyperRing.wav");
 k.loadSound("jump", "sounds/Jump.wav");
 k.loadSound("ring", "sounds/Ring.wav");
 k.loadSound("city", "sounds/city.mp3");
+k.loadSound("ingame-sound", "sounds/game-sound.mp3");
 
 // game scenes
+// 5233 pin
 // k.scene("disclaimer", disclaimer);
 k.scene("main-menu", MainMenu);
 k.scene("game", game);

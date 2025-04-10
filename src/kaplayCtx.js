@@ -9,7 +9,7 @@ export const k = kaplay({
   touchToMouse: true,
   buttons: {
     jump: {
-      keyboard: ["space"],
+      keyboard: ["up"],
       mouse: "left",
     },
   },
