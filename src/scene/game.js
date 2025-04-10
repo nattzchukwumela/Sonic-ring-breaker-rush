@@ -40,12 +40,18 @@ export function game() {
       k.destroy(enemy);
       sonic.play("jump");
       sonic.jump();
-      // k.play("jump", { volume: 0.5 });
       return;
     }
     k.play("hurt", { volume: 0.5 });
   });
 
+  sonic.onCollide("ring", (ring) => {
+    if (!sonic.isGrounded() || sonic.isGrounded()) {
+      k.play("hyper-ring", { volume: 0.5 });
+      k.destroy(ring);
+      return;
+    }
+  });
   const spawnMotoBug = () => {
     const motobug = makeMotobug(k.vec2(1950, 815));
     motobug.onUpdate(() => {
