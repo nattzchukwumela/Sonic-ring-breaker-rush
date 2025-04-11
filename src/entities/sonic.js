@@ -26,7 +26,7 @@ export function makeSonic(pos) {
               this.play("run");
             }, 2000);
             // this.roll();
-            // k.play("roll", { volume: 0.5 });
+            k.play("roll", { volume: 0.5 });
           }
         });
       },
