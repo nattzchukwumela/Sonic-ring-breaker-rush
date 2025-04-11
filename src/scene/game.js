@@ -1,3 +1,4 @@
+import { makeBlueMonster } from "../entities/blue-monster";
 import { makeMotobug } from "../entities/motobug";
 import { makeRing } from "../entities/ring";
 import { makeSonic } from "../entities/sonic";
@@ -87,6 +88,27 @@ export function game() {
 
   spawnMotoBug();
 
+  const spawnBlueMonster = () => {
+    const monster = makeBlueMonster(k.vec2(1950, 815));
+    monster.onUpdate(() => {
+      if (gameSpeed < 3000) {
+        monster.move(-(gameSpeed + 300), 0);
+        return;
+      }
+      monster.move(-gameSpeed, 0);
+    });
+
+    monster.onExitScreen(() => {
+      if (monster.pos.x < 0) {
+        k.destroy(monster);
+      }
+    });
+
+    const waitTime = k.rand(0.5, 2.5);
+    k.wait(waitTime, spawnBlueMonster);
+  };
+
+  spawnBlueMonster();
   const spawnRing = () => {
     const ring = makeRing(k.vec2(1950, 815));
     ring.onUpdate(() => {

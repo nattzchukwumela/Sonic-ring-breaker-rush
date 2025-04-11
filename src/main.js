@@ -5,7 +5,7 @@ import MainMenu from "./scene/mainmenu";
 // game sprites
 k.loadSprite("chemical-bg", "/graphics/chemical-bg.png");
 k.loadSprite("platform", "/graphics/platforms.png");
-
+k.loadSprite("blue-monster", "/graphics/enemy/idle01.png");
 // sonic sprite
 k.loadSprite("sonic", "/graphics/sonic.png", {
   sliceX: 8,
