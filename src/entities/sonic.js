@@ -9,12 +9,24 @@ export function makeSonic(pos) {
     k.pos(pos),
     k.body({ jumpForce: 1700 }),
     {
-      setControls() {
+      setJump() {
         k.onButtonPress("jump", () => {
           if (this.isGrounded()) {
             this.play("jump");
             this.jump();
             k.play("jump", { volume: 0.5 });
+          }
+        });
+      },
+      setRoll() {
+        k.onButtonPress("roll", () => {
+          if (this.isGrounded()) {
+            this.play("roll");
+            setTimeout(() => {
+              this.play("run");
+            }, 2000);
+            // this.roll();
+            // k.play("roll", { volume: 0.5 });
           }
         });
       },

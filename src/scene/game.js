@@ -39,7 +39,8 @@ export function game() {
   ];
 
   const sonic = makeSonic(k.vec2(200, 750));
-  sonic.setControls();
+  sonic.setJump();
+  sonic.setRoll();
   sonic.setEvents();
   sonic.onCollide("enemy", (enemy) => {
     if (!sonic.isGrounded()) {
@@ -86,7 +87,7 @@ export function game() {
     k.wait(waitTime, spawnMotoBug);
   };
 
-  spawnMotoBug();
+  // spawnMotoBug();
 
   const spawnBlueMonster = () => {
     const monster = makeBlueMonster(k.vec2(1950, 815));

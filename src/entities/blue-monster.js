@@ -8,6 +8,7 @@ export function makeBlueMonster(pos) {
     k.anchor("center"),
     k.pos(pos),
     k.offscreen(),
+    "enemy",
   ]);
 
   return blueMonster;
