@@ -1,7 +1,7 @@
 import { makeBlueMonster } from "../entities/blue-monster";
 import { makeMotobug } from "../entities/motobug";
 import { makeRing } from "../entities/ring";
-import { makeSonic } from "../entities/sonic";
+import { makeSonic, slide } from "../entities/sonic";
 import { k } from "../kaplayCtx";
 
 export function game() {
@@ -30,18 +30,19 @@ export function game() {
   const scaledPlatformWidth = platformWidth * 3.2;
   const platforms = [
     k.add([k.sprite("platform"), k.pos(0, 567), k.scale(3.2)]),
-    k.add([
-      k.sprite("platform"),
-      k.pos(platformWidth, 567),
-      k.scale(3.2),
-      // k.area(),
-    ]),
+    k.add([k.sprite("platform"), k.pos(platformWidth, 567), k.scale(3.2)]),
   ];
 
   const sonic = makeSonic(k.vec2(200, 750));
+
   sonic.setJump();
   sonic.setRoll();
   sonic.setEvents();
+  let isSonicRolling = false;
+  k.onKeyPress("down", () => {
+    isSonicRolling = true;
+  });
+  console.log(isSonicRolling);
   sonic.onCollide("enemy", (enemy) => {
     if (!sonic.isGrounded()) {
       k.play("destroy", { volume: 0.5 });
@@ -52,6 +53,19 @@ export function game() {
       scoreMultiplier += 1;
       score += 10 * scoreMultiplier;
       scoreText.text = `SCORE: ${score}`;
+      return;
+    }
+
+    if (sonic.isGrounded() && isSonicRolling) {
+      k.play("destroy", { volume: 0.5 });
+      k.play("hyper-ring", { volume: 0.5 });
+      k.destroy(enemy);
+      scoreMultiplier += 1;
+      score += 10 * scoreMultiplier;
+      scoreText.text = `SCORE: ${score}`;
+      setTimeout(() => {
+        isSonicRolling = false;
+      }, 2000);
       return;
     }
     k.play("hurt", { volume: 0.5 });
@@ -131,7 +145,9 @@ export function game() {
 
   let gameSpeed = 0;
   k.loop(1, () => {
-    gameSpeed += 50;
+    if (gameSpeed <= 3000) {
+      gameSpeed += 20;
+    }
   });
 
   k.add([
