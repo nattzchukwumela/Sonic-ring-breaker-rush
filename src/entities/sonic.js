@@ -22,6 +22,7 @@ export function makeSonic(pos) {
         k.onButtonPress("roll", () => {
           if (this.isGrounded()) {
             this.play("roll");
+            k.vec2(200, 100);
             setTimeout(() => {
               this.play("run");
             }, 2000);

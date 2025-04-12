@@ -11,19 +11,22 @@ export function LevelOne() {
     k.text("SCORE: 0", { font: "mania", size: 80 }),
     k.pos(20, 20),
   ]);
-
+  const miles = k.add([
+    k.text("Miles: 0", { font: "mania", size: 80 }),
+    k.pos(1550, 20),
+  ]);
   // Game physics
   k.setGravity(3100);
   let gameSpeed = 0;
 
   // Background setup
-  const bgPieceWidth = 2304;
+  const bgPieceWidth = 900;
   const bgPieces = [
     k.add([k.sprite("forest-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]),
     k.add([
       k.sprite("forest-bg"),
-      k.pos(1920 * 2, 0),
-      k.scale(2),
+      k.pos(900 * 1, 0),
+      k.scale(1),
       k.opacity(0.8),
     ]),
   ];
@@ -50,13 +53,31 @@ export function LevelOne() {
   // Initialize Sonic character
   const sonic = makeSonic(k.vec2(200, 750));
   sonic.setJump();
-  sonic.setRoll();
   sonic.setEvents();
+  sonic.setRoll();
 
-  // Rolling state tracking
+  // Rolling state tracking with debounce
   let isSonicRolling = false;
+  let canRoll = true; // New variable to track if rolling is allowed
+
   k.onKeyPress("down", () => {
-    isSonicRolling = true;
+    if (sonic.isGrounded() && canRoll && !isSonicRolling) {
+      isSonicRolling = true;
+      canRoll = false; // Prevent multiple roll triggers
+
+      // Assuming there's a roll animation that takes 1500ms
+      sonic.play("roll"); // You might need to adjust this based on your animation setup
+
+      // Reset rolling state after animation completes
+      k.wait(1.5, () => {
+        isSonicRolling = false;
+
+        // Add a small delay before allowing another roll
+        k.wait(0.3, () => {
+          canRoll = true;
+        });
+      });
+    }
   });
 
   // Collision handlers
@@ -82,9 +103,6 @@ export function LevelOne() {
       scoreMultiplier += 1;
       score += 10 * scoreMultiplier;
       scoreText.text = `SCORE: ${score}`;
-      setTimeout(() => {
-        isSonicRolling = false;
-      }, 2000);
       return;
     }
 
@@ -107,7 +125,6 @@ export function LevelOne() {
     monster.onUpdate(() => {
       const moveSpeed = gameSpeed < 3000 ? -(gameSpeed + 300) : -gameSpeed;
       monster.move(moveSpeed, 0);
-      // monster.setEvents();
     });
 
     monster.onExitScreen(() => {
@@ -128,6 +145,8 @@ export function LevelOne() {
     ring.onUpdate(() => {
       if (gameSpeed < 3000) {
         ring.move(-(gameSpeed + 300), 0);
+      } else {
+        ring.move(-gameSpeed, 0); // Adding this to ensure rings move at higher speeds
       }
     });
 
