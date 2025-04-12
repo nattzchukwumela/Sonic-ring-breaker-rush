@@ -41,6 +41,12 @@ export function LevelOne() {
       k.scale(scale),
       // k.area(),
     ]),
+    k.add([
+      k.sprite("grass-planes"),
+      k.pos(platformWidth, yAxisPosition),
+      k.scale(scale),
+      // k.area(),
+    ]),
   ];
   const sonic = makeSonic(k.vec2(200, 750));
 
@@ -167,6 +173,11 @@ export function LevelOne() {
     platforms[0].move(-gameSpeed, 0);
     platforms[1].moveTo(
       platforms[0].pos.x + scaledPlatformWidth,
+      yAxisPosition,
+    );
+    platforms[1].move(-gameSpeed, 0);
+    platforms[2].moveTo(
+      platforms[1].pos.x + scaledPlatformWidth,
       yAxisPosition,
     );
   });
