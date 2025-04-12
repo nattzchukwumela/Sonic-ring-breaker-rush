@@ -1,11 +1,13 @@
+import { LevelOne } from "./gameLevels/level_01";
 import { k } from "./kaplayCtx";
 import { game } from "./scene/game";
 import MainMenu from "./scene/mainmenu";
 
 // game sprites
 k.loadSprite("chemical-bg", "/graphics/chemical-bg.png");
-k.loadSprite("platform", "/graphics/platforms.png");
+k.loadSprite("platform", "/graphics/platform/platforms.png");
 k.loadSprite("blue-monster", "/graphics/enemy/idle01.png");
+k.loadSprite("grass_platfrom", "graphics/platform/zigzag_grass_platform.png");
 // sonic sprite
 k.loadSprite("sonic", "/graphics/sonic.png", {
   sliceX: 8,
@@ -47,6 +49,7 @@ k.loadSound("roll", "sounds/roll.wav");
 // k.scene("disclaimer", disclaimer);
 k.scene("main-menu", MainMenu);
 k.scene("game", game);
+k.scene("levelOne", LevelOne());
 // k.scene("gameover", gameover);
 
 k.go("main-menu");
