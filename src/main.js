@@ -7,7 +7,6 @@ import MainMenu from "./scene/mainmenu";
 k.loadSprite("chemical-bg", "/graphics/backgrounds/chemical-bg.png");
 k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
 k.loadSprite("platform", "/graphics/platform/platforms.png");
-k.loadSprite("blue-monster", "/graphics/enemy/idle01.png");
 k.loadSprite("grass_platform", "/graphics/platform/zigzag_grass_platform.png");
 k.loadSprite("grass-planes", "/graphics/platform/2dplatform.png");
 
@@ -19,6 +18,15 @@ k.loadSprite("sonic", "/graphics/sonic.png", {
     run: { from: 0, to: 7, loop: true, speed: 30 },
     jump: { from: 8, to: 15, loop: true, speed: 100 },
     roll: { from: 8, to: 15, loop: true, speed: 100 },
+  },
+});
+
+k.loadSprite("blue-monster", "/graphics/enemy/Blue-Monster.png", {
+  sliceX: 2,
+  sliceY: 2,
+  anims: {
+    hit: { from: 0, to: 1, loop: true, speed: 5 },
+    idle: { from: 2, to: 3, loop: true, speed: 5 },
   },
 });
 
