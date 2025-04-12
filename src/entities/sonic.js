@@ -1,7 +1,6 @@
 import { k } from "../kaplayCtx";
 
-let slide = false;
-function makeSonic(pos) {
+export function makeSonic(pos) {
   const sonic = k.add([
     k.sprite("sonic", { anim: "run" }),
     k.scale(4),
@@ -23,15 +22,12 @@ function makeSonic(pos) {
         k.onButtonPress("roll", () => {
           if (this.isGrounded()) {
             this.play("roll");
-            slide = true;
             setTimeout(() => {
               this.play("run");
-              slide = false;
             }, 2000);
             k.play("roll", { volume: 0.5 });
           }
         });
-        return slide;
       },
       setEvents() {
         this.onGround(() => {
@@ -42,5 +38,3 @@ function makeSonic(pos) {
   ]);
   return sonic;
 }
-
-export { slide, makeSonic };

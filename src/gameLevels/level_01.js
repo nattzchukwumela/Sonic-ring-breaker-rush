@@ -1,6 +1,7 @@
 import { makeBlueMonster } from "../entities/blue-monster";
 import { makeRing } from "../entities/ring";
 import { makeSonic } from "../entities/sonic";
+import { k } from "../kaplayCtx";
 
 export function LevelOne() {
   let score = 0;
@@ -12,33 +13,46 @@ export function LevelOne() {
 
   k.setGravity(3100);
 
-  const bgPieceWidth = 1920;
+  const bgPieceWidth = 2304;
   const bgPieces = [
-    k.add([k.sprite("chemical-bg"), k.pos(0, 0), k.scale(2), k.opacity(0.8)]),
+    k.add([k.sprite("forest-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]),
     k.add([
-      k.sprite("chemical-bg"),
+      k.sprite("forest-bg"),
       k.pos(1920 * 2, 0),
       k.scale(2),
       k.opacity(0.8),
     ]),
   ];
 
-  const platformWidth = 1280;
-  const scaledPlatformWidth = platformWidth * 3.2;
+  const platformWidth = 1310;
+  const scale = 1.2;
+  const yAxisPosition = 540;
+  const scaledPlatformWidth = platformWidth * scale;
   const platforms = [
-    k.add([k.sprite("platform"), k.pos(0, 567), k.scale(3.2)]),
-    k.add([k.sprite("platform"), k.pos(platformWidth, 567), k.scale(3.2)]),
+    k.add([
+      k.sprite("grass-planes"),
+      k.pos(0, yAxisPosition),
+      k.scale(scale),
+      // k.area(),
+    ]),
+    k.add([
+      k.sprite("grass-planes"),
+      k.pos(platformWidth, yAxisPosition),
+      k.scale(scale),
+      // k.area(),
+    ]),
   ];
-
   const sonic = makeSonic(k.vec2(200, 750));
 
   sonic.setJump();
   sonic.setRoll();
   sonic.setEvents();
+
   let isSonicRolling = false;
   k.onKeyPress("down", () => {
     isSonicRolling = true;
   });
+
   console.log(isSonicRolling);
   sonic.onCollide("enemy", (enemy) => {
     if (!sonic.isGrounded()) {
@@ -77,28 +91,6 @@ export function LevelOne() {
       return;
     }
   });
-
-  const spawnMotoBug = () => {
-    const motobug = makeMotobug(k.vec2(1950, 815));
-    motobug.onUpdate(() => {
-      if (gameSpeed < 3000) {
-        motobug.move(-(gameSpeed + 300), 0);
-        return;
-      }
-      motobug.move(-gameSpeed, 0);
-    });
-
-    motobug.onExitScreen(() => {
-      if (motobug.pos.x < 0) {
-        k.destroy(motobug);
-      }
-    });
-
-    const waitTime = k.rand(0.5, 2.5);
-    k.wait(waitTime, spawnMotoBug);
-  };
-
-  // spawnMotoBug();
 
   const spawnBlueMonster = () => {
     const monster = makeBlueMonster(k.vec2(1950, 815));
@@ -166,10 +158,16 @@ export function LevelOne() {
     bgPieces[1].moveTo(bgPieces[0].pos.x + bgPieceWidth * 2, 0);
 
     if (platforms[1].pos.x < 0) {
-      platforms[0].moveTo(platforms[1].pos.x + platforms[1].width, 567);
+      platforms[0].moveTo(
+        platforms[1].pos.x + platforms[1].width,
+        yAxisPosition,
+      );
       platforms.push(platforms.shift());
     }
     platforms[0].move(-gameSpeed, 0);
-    platforms[1].moveTo(platforms[0].pos.x + scaledPlatformWidth, 567);
+    platforms[1].moveTo(
+      platforms[0].pos.x + scaledPlatformWidth,
+      yAxisPosition,
+    );
   });
 }
