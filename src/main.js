@@ -1,7 +1,7 @@
 import { LevelOne } from "./gameLevels/level_01";
 import LevelSelect from "./gameLevels/levelSelect";
 import { k } from "./kaplayCtx";
-import { game } from "./scene/game";
+import { LevelFour } from "./gameLevels/Level_04";
 import MainMenu from "./scene/mainMenu";
 
 // game sprites
@@ -10,7 +10,7 @@ k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
 k.loadSprite("platform", "/graphics/platform/platforms.png");
 k.loadSprite("grass_platform", "/graphics/platform/zigzag_grass_platform.png");
 k.loadSprite("grass-planes", "/graphics/platform/2dplatform.png");
-k.loadSprite("forest_bg_2", "/graphics/platform/forest_1.jpg");
+// k.loadSprite("forest_bg_2", "/graphics/platform/forest_1.jpg");
 
 // sonic sprite
 k.loadSprite("sonic", "/graphics/sonic.png", {
@@ -71,5 +71,6 @@ k.onKeyPress("s", () => {
 });
 
 k.scene("level-select", LevelSelect);
-k.scene("level-select", LevelOne);
+k.scene("levelOne", LevelOne);
+k.scene("levelFour", LevelFour);
 // k.go("main-menu");

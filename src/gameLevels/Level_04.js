@@ -3,7 +3,7 @@ import { makeRing } from "../entities/ring";
 import { makeSonic } from "../entities/sonic";
 import { k } from "../kaplayCtx";
 
-export function game() {
+export function LevelFour() {
   let score = 0;
   let scoreMultiplier = 0;
   const scoreText = k.add([

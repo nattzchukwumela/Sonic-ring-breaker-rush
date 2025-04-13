@@ -9,7 +9,7 @@ export default function LevelSelect() {
 
   const stages = [
     { name: "Level 1", scene: "levelOne", unlocked: true },
-    { name: "Level 2", scene: "levelTwo", unlocked: true }, // Set to false if locked
+    { name: "Level 2", scene: "levelFour", unlocked: true }, // Set to false if locked
     { name: "Level 3", scene: "levelThree", unlocked: false },
   ];
 
