@@ -9,11 +9,11 @@ export function makeBlueMonster(pos) {
     k.pos(pos),
     k.offscreen(),
     "enemy",
-    // {
-    //   setEvents() {
-    //     play("idle");
-    //   },
-    // },
+    {
+      playHit() {
+        this.play("hit");
+      },
+    },
   ]);
 
   return blueMonster;

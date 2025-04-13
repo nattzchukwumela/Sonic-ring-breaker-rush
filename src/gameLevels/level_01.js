@@ -72,7 +72,7 @@ export function LevelOne() {
   ];
 
   // Initialize Sonic character
-  const sonic = makeSonic(k.vec2(200, 750));
+  const sonic = makeSonic(k.vec2(350, 750));
   sonic.setJump();
   sonic.setEvents();
   sonic.setRoll();
@@ -105,11 +105,15 @@ export function LevelOne() {
   sonic.onCollide("enemy", (enemy) => {
     if (!sonic.isGrounded()) {
       // Jump attack collision
-      k.play("destroy", { volume: 0.5 });
-      k.play("hyper-ring", { volume: 0.5 });
-      k.destroy(enemy);
       sonic.play("jump");
       sonic.jump();
+      // if (enemy.playHit) enemy.playHit();
+      if (enemy.playHit) {
+        k.play("destroy", { volume: 0.5 });
+        k.play("hyper-ring", { volume: 0.5 });
+        enemy.playHit();
+        k.wait(0.6, () => k.destroy(enemy));
+      }
       scoreMultiplier += 1;
       score += 10 * scoreMultiplier;
       scoreText.text = `SCORE: ${score}`;
@@ -118,9 +122,13 @@ export function LevelOne() {
 
     if (sonic.isGrounded() && isSonicRolling) {
       // Roll attack collision
-      k.play("destroy", { volume: 0.5 });
-      k.play("hyper-ring", { volume: 0.5 });
-      k.destroy(enemy);
+      if (enemy.playHit) {
+        k.play("destroy", { volume: 0.5 });
+        k.play("hyper-ring", { volume: 0.5 });
+        enemy.playHit();
+        k.wait(0.6, () => k.destroy(enemy));
+      }
+
       scoreMultiplier += 1;
       score += 10 * scoreMultiplier;
       scoreText.text = `SCORE: ${score}`;
@@ -129,6 +137,8 @@ export function LevelOne() {
 
     // Hurt collision (no attack)
     k.play("hurt", { volume: 0.5 });
+    score -= 10 * scoreMultiplier;
+    scoreText.text = `SCORE: ${score}`;
   });
 
   sonic.onCollide("ring", (ring) => {
@@ -140,26 +150,6 @@ export function LevelOne() {
     scoreText.text = `SCORE: ${score}`;
     rings.text = `RINGS: ${ringsCount}`;
   });
-
-  // Enemy spawning system
-  const spawnBlueMonster = () => {
-    const monster = makeBlueMonster(k.vec2(1950, 815));
-
-    monster.onUpdate(() => {
-      const moveSpeed = gameSpeed < 3000 ? -(gameSpeed + 300) : -gameSpeed;
-      monster.move(moveSpeed, 0);
-    });
-
-    monster.onExitScreen(() => {
-      if (monster.pos.x < 0) {
-        k.destroy(monster);
-      }
-      return monster;
-    });
-
-    const waitTime = k.rand(0.5, 2.5);
-    k.wait(waitTime, spawnBlueMonster);
-  };
 
   // Ring spawning system
   const spawnRing = () => {
@@ -180,7 +170,23 @@ export function LevelOne() {
     const waitTime = k.rand(0.5, 3);
     k.wait(waitTime, spawnRing);
   };
+  const spawnBlueMonster = () => {
+    const monster = makeBlueMonster(k.vec2(1950, 815));
 
+    monster.onUpdate(() => {
+      const moveSpeed = gameSpeed < 3000 ? -(gameSpeed + 300) : -gameSpeed;
+      monster.move(moveSpeed, 0);
+    });
+
+    monster.onExitScreen(() => {
+      if (monster.pos.x < 0) {
+        k.destroy(monster);
+      }
+    });
+
+    const waitTime = k.rand(0.5, 2.5);
+    k.wait(waitTime, spawnBlueMonster);
+  };
   // Start spawning enemies and rings
   spawnBlueMonster();
   spawnRing();
