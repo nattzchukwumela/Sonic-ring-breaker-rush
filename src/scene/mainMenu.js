@@ -32,13 +32,13 @@ export default function MainMenu() {
   ];
 
   k.add([
-    k.text("Sonic ring run", { font: "mania", size: 80 }),
+    k.text("Sonic: Ringbreaker Rush", { font: "nise-sega-font", size: 80 }),
     k.pos(k.center().x, 200),
     k.anchor("center"),
   ]);
 
   k.add([
-    k.text("Press Click/Space to start", { font: "mania", size: 80 }),
+    k.text("Click anywhere to start", { font: "nise-sega-font", size: 80 }),
     k.pos(k.center().x, k.center().y - 200),
     k.anchor("center"),
   ]);
@@ -59,5 +59,17 @@ export default function MainMenu() {
     }
     platforms[0].move(-3000, 0);
     platforms[1].moveTo(platforms[0].pos.x + platforms[1].width * 2, 520);
+  });
+
+  // game scenes;
+  k.add([
+    k.text("Press S to select stage", { font: "mania", size: 40 }),
+    k.color(k.rgb(255, 255, 255)),
+    k.pos(k.center().x, k.center().y + 150),
+    k.anchor("center"),
+  ]);
+
+  k.onKeyPress("s", () => {
+    k.go("level-select");
   });
 }

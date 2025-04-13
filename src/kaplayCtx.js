@@ -5,7 +5,7 @@ export const k = kaplay({
   height: 1080,
   letterbox: true,
   global: false,
-  background: [0, 0, 0],
+  background: [0, 112, 192],
   touchToMouse: true,
   buttons: {
     jump: {

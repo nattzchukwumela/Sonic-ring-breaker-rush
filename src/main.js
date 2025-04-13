@@ -49,7 +49,11 @@ k.loadSprite("motobug", "graphics/motobug.png", {
 });
 
 // game assets
+// game fonts
 k.loadFont("mania", "fonts/mania.ttf");
+k.loadFont("nise-sega-font", "fonts/nise-sega-sonic/NiseSegaSonic.TTF");
+
+// game sounds
 k.loadSound("destroy", "sounds/Destroy.wav");
 k.loadSound("hurt", "sounds/Hurt.wav");
 k.loadSound("hyper-ring", "sounds/HyperRing.wav");
@@ -59,18 +63,8 @@ k.loadSound("city", "sounds/city.mp3");
 k.loadSound("ingame-sound", "sounds/game-sound.mp3");
 k.loadSound("roll", "sounds/roll.wav");
 
-// game scenes;
-k.add([
-  k.text("Press S to select stage", { font: "mania", size: 40 }),
-  k.pos(k.center().x, k.center().y + 150),
-  k.anchor("center"),
-]);
-
-k.onKeyPress("s", () => {
-  k.go("level-select");
-});
-
 k.scene("level-select", LevelSelect);
 k.scene("levelOne", LevelOne);
 k.scene("levelFour", LevelFour);
-// k.go("main-menu");
+k.scene("main-menu", MainMenu);
+k.go("main-menu");

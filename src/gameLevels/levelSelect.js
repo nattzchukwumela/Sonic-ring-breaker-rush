@@ -1,6 +1,8 @@
 import { k } from "../kaplayCtx";
 
 export default function LevelSelect() {
+  if (!k.getData("best-score")) k.setData("best-score", 0);
+
   k.add([
     k.text("Select Stage", { size: 48, font: "mania" }),
     k.pos(k.center().x, 80),
@@ -9,25 +11,34 @@ export default function LevelSelect() {
 
   const stages = [
     { name: "Level 1", scene: "levelOne", unlocked: true },
-    { name: "Level 2", scene: "levelFour", unlocked: true }, // Set to false if locked
+    { name: "Level 2", scene: "levelFour", unlocked: false },
     { name: "Level 3", scene: "levelThree", unlocked: false },
+    { name: "Level 4", scene: "levelFour", unlocked: true },
   ];
 
-  const buttonYStart = 180;
-
+  let yAxis = -250;
   stages.forEach((stage, index) => {
-    const y = buttonYStart + index * 100;
     const button = k.add([
+      k.sprite("forest-bg"),
+      k.pos(k.center().x, k.center().y + yAxis),
+      k.anchor("center"),
+      k.scale(0.15),
+      k.area(),
+      k.z(1),
+      "level-button",
+      { stage },
+    ]);
+
+    // Add text on top of the sprite
+    k.add([
       k.text(stage.unlocked ? stage.name : "Locked", {
         size: 32,
         font: "mania",
       }),
-      k.pos(k.center().x, y),
+      k.pos(k.center().x, k.center().y + yAxis + 50),
       k.anchor("center"),
-      k.area(),
-      k.color(stage.unlocked ? k.rgb(1, 1, 1) : k.rgb(0.5, 0.5, 0.5)),
-      "level-button",
-      { stage },
+      k.color(stage.unlocked ? k.rgb(255, 255, 255) : k.rgb(0.5, 0.5, 0.5)),
+      k.z(2),
     ]);
 
     button.onClick(() => {
@@ -36,5 +47,7 @@ export default function LevelSelect() {
         k.go(stage.scene);
       }
     });
+
+    yAxis += 200;
   });
 }

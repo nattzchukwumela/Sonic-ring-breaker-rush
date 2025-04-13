@@ -7,17 +7,37 @@ export function LevelOne() {
   // Score management
   let score = 0;
   let scoreMultiplier = 0;
+  let ringsCount = 0;
+
   const scoreText = k.add([
     k.text("SCORE: 0", { font: "mania", size: 80 }),
+    k.color(k.rgb(255, 255, 255)),
     k.pos(20, 20),
+    k.z(2),
   ]);
-  const miles = k.add([
+
+  const rings = k.add([
+    k.text("RINGS: 0", { font: "mania", size: 80 }),
+    k.color(k.rgb(255, 255, 255)),
+    k.pos(20, 100),
+    k.z(2),
+  ]);
+
+  let miles = 0;
+  const distanceTravelled = k.add([
     k.text("Miles: 0", { font: "mania", size: 80 }),
+    k.color(k.rgb(255, 255, 255)),
+    k.z(2),
     k.pos(1550, 20),
   ]);
   // Game physics
   k.setGravity(3100);
   let gameSpeed = 0;
+
+  const travelDistance = () => {
+    distanceTravelled.text = `Miles: ${miles}`;
+    miles += 1;
+  };
 
   // Background setup
   const bgPieceWidth = 900;
@@ -36,6 +56,7 @@ export function LevelOne() {
   const scale = 1.2;
   const yAxisPosition = 540;
   const scaledPlatformWidth = platformWidth * scale;
+
   const platforms = [
     k.add([k.sprite("grass-planes"), k.pos(0, yAxisPosition), k.scale(scale)]),
     k.add([
@@ -115,7 +136,9 @@ export function LevelOne() {
     k.play("hyper-ring", { volume: 0.5 });
     k.destroy(ring);
     score++;
+    ringsCount++;
     scoreText.text = `SCORE: ${score}`;
+    rings.text = `RINGS: ${ringsCount}`;
   });
 
   // Enemy spawning system
@@ -164,8 +187,9 @@ export function LevelOne() {
 
   // Speed progression
   k.loop(1, () => {
+    travelDistance();
     if (gameSpeed <= 3000) {
-      gameSpeed += 20;
+      gameSpeed += 10;
     }
   });
 
