@@ -1,13 +1,13 @@
 import { k } from "../kaplayCtx";
 
-export function makeSonic(pos) {
+export function makeSonic(pos, jumpPower = 1700) {
   const sonic = k.add([
     k.sprite("sonic", { anim: "run" }),
     k.scale(4),
     k.area(),
     k.anchor("center"),
     k.pos(pos),
-    k.body({ jumpForce: 1700 }),
+    k.body({ jumpForce: jumpPower }),
     {
       setJump() {
         k.onButtonPress("jump", () => {
@@ -33,6 +33,22 @@ export function makeSonic(pos) {
       setEvents() {
         this.onGround(() => {
           this.play("run");
+        });
+      },
+      setMoveForward() {
+        const speed = 250;
+
+        k.onKeyDown("right", () => {
+          // if (this.isGrounded()) {
+          //   this.play("run");
+          // }
+
+          this.move(speed, 0);
+        });
+
+        k.onKeyRelease("right", () => {
+          this.stop();
+          // this.play("idle"); // optional, if you add an idle animation
         });
       },
     },

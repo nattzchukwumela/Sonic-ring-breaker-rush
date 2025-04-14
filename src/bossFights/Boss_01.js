@@ -36,12 +36,16 @@ export function BossLevelOne() {
       k.pos(3, 900),
       k.scale(ground_platform_width, 3),
       k.opacity(1),
+      k.body({ isStatic: true }),
+      k.area(),
     ]);
     for (let i = 0; i <= 6; i++) {
       k.add([
         k.sprite("forest_middle_platform"),
         k.pos(platform_position, 900),
         k.scale(ground_platform_width, 3),
+        k.body({ isStatic: true }),
+        k.area(),
         k.opacity(1),
       ]);
       platform_position += 220;
@@ -50,6 +54,8 @@ export function BossLevelOne() {
       k.sprite("forest_upfrontRight_platform"),
       k.pos(1750, 900),
       k.scale(ground_platform_width, 3),
+      k.body({ isStatic: true }),
+      k.area(),
       k.opacity(1),
     ]);
   }
@@ -61,17 +67,60 @@ export function BossLevelOne() {
       k.pos(x, y),
       k.opacity(1),
       k.area(),
+      k.z(1),
+      "oneway",
     ]);
+
     k.add([
       k.sprite("forest_upfrontHalfRight_platform"),
       k.scale(3),
       k.pos(x + 190, y),
       k.opacity(1),
       k.area(),
+      k.z(1),
+      "oneway",
     ]);
   }
 
   generateFloatingPlatform(30);
   generateFloatingPlatform(1510);
   generate_plateforms();
+
+  function makeGroundCollision() {
+    k.add([
+      k.rect(1920, 200),
+      k.opacity(0),
+      k.area(),
+      k.pos(0, 880),
+      k.body({ isStatic: true }),
+    ]);
+  }
+
+  const sonic = makeSonic(k.vec2(350, 750), 2000);
+  sonic.setJump();
+  sonic.setEvents();
+  sonic.setMoveForward();
+  sonic.setRoll();
+
+  // k.onUpdate(() => {
+  //   k.get("oneway").forEach((plat) => {
+  //     const platTop = plat.pos.y;
+  //     const sonicFeet = sonic.pos.y + sonic.height / 2;
+
+  //     // If Sonic is falling and above the platform
+  //     if (sonic.vel.y >= 0 && sonicFeet < platTop + 10) {
+  //       if (!plat.isStatic) {
+  //         plat.use(k.body({ isStatic: true }));
+  //       }
+  //     } else {
+  //       // Disable the collider if Sonic is below or jumping
+  //       if (plat.isStatic) {
+  //         plat.use(
+  //           k.body({ isStatic: true, collisionFilter: { ignored: true } }),
+  //         );
+  //         plat.removeTag("body"); // This disables collision
+  //       }
+  //     }
+  //   });
+  // });
 }

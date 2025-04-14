@@ -15,6 +15,9 @@ export const k = kaplay({
     roll: {
       keyboard: ["down"],
     },
+    run: {
+      keyboard: ["right"],
+    },
   },
   debug: true,
   debugKey: "d",
