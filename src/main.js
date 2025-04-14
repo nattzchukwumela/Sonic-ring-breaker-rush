@@ -12,6 +12,10 @@ k.loadSprite("chemical-bg", "/graphics/backgrounds/chemical-bg.png");
 k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
 k.loadSprite("platform", "/graphics/platform/platforms.png");
 k.loadSprite("grass_platform", "/graphics/platform/zigzag_grass_platform.png");
+k.loadSprite(
+  "forest_platform",
+  "/graphics/platform/zigzag_forest_platform.png",
+);
 k.loadSprite("grass-planes", "/graphics/platform/2dplatform.png");
 k.loadSprite(
   "shroomdoom_bg",

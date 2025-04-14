@@ -27,4 +27,27 @@ export function BossLevelOne() {
     k.anchor("center"),
     k.opacity(0.8),
   ]);
+
+  let platform_position = 220;
+  function generate_plateforms() {
+    k.add([
+      k.sprite("forest_platform"),
+      k.pos(3, 900),
+      k.scale(3.5),
+      k.opacity(1),
+    ]);
+    for (let i = 0; i <= 7; i++) {
+      console.log(i);
+      k.add([
+        k.sprite("forest_platform"),
+        k.pos(platform_position, 900),
+        k.scale(3.5, 3),
+        k.opacity(1),
+      ]);
+      platform_position += 220;
+    }
+    console.log(platform_position);
+  }
+
+  generate_plateforms();
 }
