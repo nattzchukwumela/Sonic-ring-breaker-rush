@@ -48,7 +48,7 @@ export function makeSonic(pos, jumpPower = 1700) {
 
         k.onKeyRelease("right", () => {
           this.stop();
-          // this.play("idle"); // optional, if you add an idle animation
+          this.play("run"); // optional, if you add an idle animation
         });
       },
     },

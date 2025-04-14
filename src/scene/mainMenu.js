@@ -4,7 +4,7 @@ import { k } from "../kaplayCtx";
 export default function MainMenu() {
   if (!k.getData("best-score")) k.setData("best-score", 0);
   k.onButtonPress("jump", () => {
-    k.play("ingame-sound", { volume: 0.5, loop: true });
+    // k.play("ingame-sound", { volume: 0.5, loop: true });
     k.go("levelOneBoss");
   });
 

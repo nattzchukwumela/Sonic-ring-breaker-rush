@@ -51,13 +51,6 @@ k.loadSprite("sonic", "/graphics/sonic.png", {
     roll: { from: 8, to: 15, loop: true, speed: 100 },
   },
 });
-k.loadSprite("sonic_walk", "/graphics/sonic-walk.png", {
-  sliceX: 8,
-  sliceY: 1,
-  anims: {
-    walk: { from: 0, to: 7, loop: true, speed: 30 },
-  },
-});
 
 // boss sprites
 // level one boss / shroomdoom
@@ -119,6 +112,7 @@ k.loadSound("ring", "sounds/Ring.wav");
 k.loadSound("city", "sounds/city.mp3");
 k.loadSound("ingame-sound", "sounds/game-sound.mp3");
 k.loadSound("roll", "sounds/roll.wav");
+k.loadSound("shroomdoom", "sounds/shroomdoom.mp3");
 
 // game scenes
 k.scene("level-select", LevelSelect);

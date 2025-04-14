@@ -4,7 +4,7 @@ import { k } from "../kaplayCtx";
 
 export function BossLevelOne() {
   let bossLive = 0;
-
+  k.play("shroomdoom", { loop: true, volume: 0.5 });
   k.setGravity(3100);
 
   const bossLiveText = k.add([
@@ -102,25 +102,31 @@ export function BossLevelOne() {
   sonic.setMoveForward();
   sonic.setRoll();
 
-  // k.onUpdate(() => {
-  //   k.get("oneway").forEach((plat) => {
-  //     const platTop = plat.pos.y;
-  //     const sonicFeet = sonic.pos.y + sonic.height / 2;
+  sonic.onCollide("enemy", (enemy) => {
+    if (!sonic.isGrounded()) {
+      // Jump attack collision
+      sonic.play("jump");
+      sonic.jump();
+      // if (enemy.playHit) enemy.playHit();
+      if (enemy.playHit) {
+        k.play("destroy", { volume: 0.5 });
+        k.play("hyper-ring", { volume: 0.5 });
+        enemy.playHit();
+        k.wait(0.8, () => enemy.setEvent());
+      }
+    }
 
-  //     // If Sonic is falling and above the platform
-  //     if (sonic.vel.y >= 0 && sonicFeet < platTop + 10) {
-  //       if (!plat.isStatic) {
-  //         plat.use(k.body({ isStatic: true }));
-  //       }
-  //     } else {
-  //       // Disable the collider if Sonic is below or jumping
-  //       if (plat.isStatic) {
-  //         plat.use(
-  //           k.body({ isStatic: true, collisionFilter: { ignored: true } }),
-  //         );
-  //         plat.removeTag("body"); // This disables collision
-  //       }
-  //     }
-  //   });
-  // });
+    if (sonic.isGrounded() && isSonicRolling) {
+      // Roll attack collision
+      if (enemy.playHit) {
+        k.play("destroy", { volume: 0.5 });
+        k.play("hyper-ring", { volume: 0.5 });
+        enemy.playHit();
+        k.wait(0.8, () => enemy.setEvent());
+      }
+    }
+  });
+
+  const shroomdoom = makeShroomDoom(k.vec2(1600, 700));
+  shroomdoom.setEvent();
 }
