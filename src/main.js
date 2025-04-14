@@ -3,15 +3,20 @@ import LevelSelect from "./gameLevels/levelSelect";
 import { k } from "./kaplayCtx";
 import { LevelFour } from "./gameLevels/Level_04";
 import MainMenu from "./scene/mainMenu";
+import { BossLevelOne } from "./bossFights/Boss_01";
 
 // game assets
 
-// game background and platform spritesk.loadSprite("chemical-bg", "/graphics/backgrounds/chemical-bg.png");
+// game background and platform sprites
+k.loadSprite("chemical-bg", "/graphics/backgrounds/chemical-bg.png");
 k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
 k.loadSprite("platform", "/graphics/platform/platforms.png");
 k.loadSprite("grass_platform", "/graphics/platform/zigzag_grass_platform.png");
 k.loadSprite("grass-planes", "/graphics/platform/2dplatform.png");
-
+k.loadSprite(
+  "shroomdoom_bg",
+  "/graphics/backgrounds/boss_backgrounds/shroomdoom_bg.jpg",
+);
 // sonic sprite
 k.loadSprite("sonic", "/graphics/sonic.png", {
   sliceX: 8,
@@ -24,10 +29,19 @@ k.loadSprite("sonic", "/graphics/sonic.png", {
 });
 
 // boss sprites
-// level one boss
+// level one boss / shroomdoom
 k.loadSprite(
   "shroomdoom_one",
-  "/graphics/enemy/boss/mushroom/shroomdoom/shroomdoom_one.png",
+  "/graphics/enemy/boss/shroomdoom/shroomdoom_one.png",
+  {
+    sliceX: 4,
+    sliceY: 3,
+    anims: {
+      death: { from: 0, to: 3, loop: true, speed: 5 },
+      idle: { from: 4, to: 7, loop: true, speed: 5 },
+      hit: { from: 8, to: 11, loop: true, speed: 5 },
+    },
+  },
 );
 
 // fodder enemy sprite
@@ -80,4 +94,5 @@ k.scene("level-select", LevelSelect);
 k.scene("levelOne", LevelOne);
 k.scene("levelFour", LevelFour);
 k.scene("main-menu", MainMenu);
+k.scene("levelOneBoss", BossLevelOne);
 k.go("main-menu");

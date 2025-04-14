@@ -1,4 +1,4 @@
-import { makeMotobug } from "../entities/motobug";
+import { makeMotobug } from "../entities/fodder_entities/motobug";
 import { makeRing } from "../entities/ring";
 import { makeSonic } from "../entities/sonic";
 import { k } from "../kaplayCtx";

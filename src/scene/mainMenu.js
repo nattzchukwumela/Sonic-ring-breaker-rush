@@ -5,7 +5,7 @@ export default function MainMenu() {
   if (!k.getData("best-score")) k.setData("best-score", 0);
   k.onButtonPress("jump", () => {
     k.play("ingame-sound", { volume: 0.5, loop: true });
-    k.go("levelOne");
+    k.go("levelOneBoss");
   });
 
   // for parallax infinite scroll

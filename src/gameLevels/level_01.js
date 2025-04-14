@@ -1,4 +1,4 @@
-import { makeBlueMonster } from "../entities/blue-monster";
+import { makeBlueMonster } from "../entities/fodder_entities/blue-monster";
 import { makeRing } from "../entities/ring";
 import { makeSonic } from "../entities/sonic";
 import { k } from "../kaplayCtx";
@@ -8,6 +8,7 @@ export function LevelOne() {
   let score = 0;
   let scoreMultiplier = 0;
   let ringsCount = 0;
+  let miles = 0;
 
   const scoreText = k.add([
     k.text("SCORE: 0", { font: "mania", size: 80 }),
@@ -23,13 +24,13 @@ export function LevelOne() {
     k.z(2),
   ]);
 
-  let miles = 0;
   const distanceTravelled = k.add([
     k.text("Miles: 0", { font: "mania", size: 80 }),
     k.color(k.rgb(255, 255, 255)),
     k.z(2),
     k.pos(1550, 20),
   ]);
+
   // Game physics
   k.setGravity(3100);
   let gameSpeed = 0;
