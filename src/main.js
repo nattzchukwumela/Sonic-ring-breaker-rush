@@ -11,16 +11,36 @@ import { BossLevelOne } from "./bossFights/Boss_01";
 k.loadSprite("chemical-bg", "/graphics/backgrounds/chemical-bg.png");
 k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
 k.loadSprite("platform", "/graphics/platform/platforms.png");
-k.loadSprite("grass_platform", "/graphics/platform/zigzag_grass_platform.png");
+
+// forest wave platforms
 k.loadSprite(
-  "forest_platform",
-  "/graphics/platform/zigzag_forest_platform.png",
+  "forest_middle_platform",
+  "/graphics/platform/WaveForest_Square.png",
+);
+k.loadSprite(
+  "forest_upfrontLeft_platform",
+  "/graphics/platform/WaveForest_UpRoundLeft.png",
+);
+k.loadSprite(
+  "forest_upfrontRight_platform",
+  "/graphics/platform/WaveForest_UpRoundRight.png",
+);
+k.loadSprite(
+  "forest_upfrontHalfLeft_platform",
+  "/graphics/platform/WaveForest_Half_2RoundLeft.png",
+);
+k.loadSprite(
+  "forest_upfrontHalfRight_platform",
+  "/graphics/platform/WaveForest_Half_2RoundRight.png",
 );
 k.loadSprite("grass-planes", "/graphics/platform/2dplatform.png");
+
+// enemy backgrounds
 k.loadSprite(
   "shroomdoom_bg",
   "/graphics/backgrounds/boss_backgrounds/shroomdoom_bg.jpg",
 );
+
 // sonic sprite
 k.loadSprite("sonic", "/graphics/sonic.png", {
   sliceX: 8,
