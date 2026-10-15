@@ -28,6 +28,12 @@ export const stages = [
     subtitle: "Survive the ultimate gauntlet",
     scene: "levelFourFinal",
   },
+  {
+    id: 5,
+    name: "Demon Dunes",
+    subtitle: "Break the desert guard at sunset",
+    scene: "levelFive",
+  },
 ];
 
 export function getUnlockedStage() {

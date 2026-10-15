@@ -29,7 +29,7 @@ export function addGround(y = 880) {
 export function createPlayerHealth({
   sonic,
   healthText,
-  maxHealth = 3,
+  maxHealth = 20,
   onDeath,
 }) {
   let health = maxHealth;
@@ -43,7 +43,7 @@ export function createPlayerHealth({
   const damage = (sourceX = sonic.pos.x) => {
     if (dead || invulnerable) return false;
 
-    health -= 1;
+    health -= 1;4
     updateText();
     k.play("hurt", { volume: 0.55 });
 

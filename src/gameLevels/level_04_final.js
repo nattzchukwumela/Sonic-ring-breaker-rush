@@ -41,8 +41,10 @@ export function LevelFourFinal(options = {}) {
         },
       ],
       loseMessage: "The Chaos Circuit overwhelmed Sonic.",
+      unlockStage: 5,
+      nextScene: "levelFive",
       victoryTitle: "CHAOS CONQUERED!",
-      victoryMessage: "All four stages complete",
+      victoryMessage: "Demon Dunes unlocked",
     },
     options,
   );

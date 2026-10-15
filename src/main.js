@@ -8,6 +8,8 @@ import GameOver from "./scene/gameover";
 import Victory from "./scene/victory";
 import { LevelThree } from "./gameLevels/level_03";
 import { LevelFourFinal } from "./gameLevels/level_04_final";
+import { LevelFive } from "./gameLevels/level_05_desert";
+import { DesertBoss } from "./bossFights/DesertBoss";
 
 // game assets
 
@@ -15,6 +17,8 @@ import { LevelFourFinal } from "./gameLevels/level_04_final";
 k.loadSprite("chemical-bg", "/graphics/backgrounds/chemical-bg.png");
 k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
 k.loadSprite("forest-day-bg", "/graphics/backgrounds/forest-day.jpg");
+k.loadSprite("desert-day-bg", "/graphics/backgrounds/desert-day.jpg");
+k.loadSprite("desert-sunset-bg", "/graphics/backgrounds/desert-sunset.jpg");
 k.loadSprite("platform", "/graphics/platform/platforms.png");
 k.loadSprite("zigzag-grass", "/graphics/platform/zigzag_grass_platform.png");
 k.loadSprite("zigzag-snow", "/graphics/platform/zigzag_snow_platform.png");
@@ -97,6 +101,10 @@ k.loadSprite("motobug", "graphics/motobug.png", {
   },
 });
 k.loadSprite("ufo-enemy", "/graphics/enemy/ufo_game_enemy.png");
+k.loadSprite("desert-hound", "/graphics/enemy/desert/desert-hound.png");
+k.loadSprite("desert-raider", "/graphics/enemy/desert/desert-raider.png");
+k.loadSprite("desert-brute", "/graphics/enemy/desert/desert-brute.png");
+k.loadSprite("blackheart-boss", "/graphics/enemy/desert/blackheart-boss.png");
 
 // rings sprite
 k.loadSprite("ring", "graphics/ring.png", {
@@ -121,6 +129,7 @@ k.loadSound("city", "sounds/city.mp3");
 k.loadSound("ingame-sound", "sounds/game-sound.mp3");
 k.loadSound("roll", "sounds/roll.wav");
 k.loadSound("shroomdoom", "sounds/shroomdoom.mp3");
+k.loadSound("desert-boss", "sounds/cave-monster.mp3");
 
 // game scenes
 k.scene("level-select", LevelSelect);
@@ -128,8 +137,10 @@ k.scene("levelOne", LevelOne);
 k.scene("levelFour", LevelFour);
 k.scene("levelThree", LevelThree);
 k.scene("levelFourFinal", LevelFourFinal);
+k.scene("levelFive", LevelFive);
 k.scene("main-menu", MainMenu);
 k.scene("levelOneBoss", BossLevelOne);
+k.scene("desertBoss", DesertBoss);
 k.scene("game-over", GameOver);
 k.scene("victory", Victory);
 k.go("main-menu");

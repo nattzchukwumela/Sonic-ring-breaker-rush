@@ -33,12 +33,12 @@ export default function LevelSelect() {
 
   stages.forEach((stage, index) => {
     const unlocked = stage.id <= unlockedStage;
-    const column = index % 2;
-    const row = Math.floor(index / 2);
-    const x = column === 0 ? 520 : 1400;
-    const y = 350 + row * 270;
+    const column = index % 3;
+    const row = Math.floor(index / 3);
+    const x = [330, 960, 1590][column];
+    const y = 365 + row * 255;
     const card = k.add([
-      k.rect(760, 190, { radius: 26 }),
+      k.rect(540, 184, { radius: 26 }),
       k.pos(x, y),
       k.anchor("center"),
       k.area(),
@@ -49,13 +49,13 @@ export default function LevelSelect() {
     ]);
 
     addHudText(unlocked ? `STAGE ${stage.id}  •  ${stage.name}` : `STAGE ${stage.id}  •  LOCKED`, k.vec2(x, y - 30), {
-      size: 39,
+      size: 31,
       anchor: "center",
       color: unlocked ? k.rgb(255, 255, 255) : k.rgb(165, 172, 188),
       z: 3,
     });
     addHudText(unlocked ? stage.subtitle : `Clear Stage ${stage.id - 1} to unlock`, k.vec2(x, y + 40), {
-      size: 26,
+      size: 22,
       anchor: "center",
       color: unlocked ? k.rgb(190, 228, 255) : k.rgb(139, 146, 162),
       z: 3,

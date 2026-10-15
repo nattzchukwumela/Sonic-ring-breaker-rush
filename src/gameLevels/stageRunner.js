@@ -48,8 +48,9 @@ export function createRunnerStage(config, options = {}) {
       k.sprite(config.groundSprite),
       k.pos(index * tileWidth, config.groundY),
       k.scale(tileScale),
+      config.groundSpriteColor ? k.color(config.groundSpriteColor) : null,
       k.z(-1),
-    ]),
+    ].filter(Boolean)),
   );
   addGround(config.groundY - SONIC_FOOT_OFFSET);
 
@@ -223,6 +224,20 @@ export function createRunnerStage(config, options = {}) {
       running = false;
       music.stop();
       k.destroyAll("hazard");
+
+      if (config.completeScene) {
+        addHudText(config.completeText ?? "BOSS AHEAD!", k.vec2(960, 350), {
+          font: "nise-sega-font",
+          size: 78,
+          anchor: "center",
+          color: k.rgb(255, 220, 48),
+          z: 50,
+        });
+        saveBestScore(score);
+        k.wait(1.5, () => k.go(config.completeScene, { score, rings }));
+        return;
+      }
+
       score += rings * 25;
       saveBestScore(score);
       if (config.unlockStage) unlockStage(config.unlockStage);
