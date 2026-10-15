@@ -1,10 +1,12 @@
 import { k } from "../kaplayCtx";
 
+export const SONIC_FOOT_OFFSET = 88;
+
 export function makeSonic(pos, jumpPower = 1700) {
   const sonic = k.add([
     k.sprite("sonic", { anim: "run" }),
     k.scale(4),
-    k.area({ shape: new k.Rect(k.vec2(-11, -17), 22, 36) }),
+    k.area({ shape: new k.Rect(k.vec2(-11, -22), 22, 44) }),
     k.anchor("center"),
     k.pos(pos),
     k.body({ jumpForce: jumpPower }),
@@ -48,6 +50,9 @@ export function makeSonic(pos, jumpPower = 1700) {
         this.onGround(() => {
           if (!this.isDead && !this.isRolling) this.play("run");
         });
+        this.onUpdate(() => {
+          this.pos.x = k.clamp(this.pos.x, 72, k.width() - 72);
+        });
       },
       setMoveForward({ speed = 520, minX = 90, maxX = 1830 } = {}) {
         if (this.moveReady) return;
@@ -68,6 +73,7 @@ export function makeSonic(pos, jumpPower = 1700) {
       bounce() {
         if (this.isDead) return;
         this.play("jump");
+        this.vel.x = 0;
         this.vel.y = -1050;
       },
     },

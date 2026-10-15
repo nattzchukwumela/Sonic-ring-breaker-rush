@@ -58,7 +58,14 @@ export function createPlayerHealth({
 
     invulnerable = true;
     sonic.isInvulnerable = true;
-    sonic.vel = k.vec2(sourceX >= sonic.pos.x ? -520 : 520, -720);
+    const pushDirection = sourceX >= sonic.pos.x ? -1 : 1;
+    sonic.vel.x = 0;
+    sonic.vel.y = -720;
+    sonic.pos.x = k.clamp(
+      sonic.pos.x + pushDirection * 82,
+      82,
+      k.width() - 82,
+    );
 
     const blink = sonic.onUpdate(() => {
       sonic.opacity = Math.floor(k.time() * 12) % 2 === 0 ? 0.25 : 1;

@@ -1,5 +1,5 @@
 import { makeShroomDoom } from "../entities/boss/shroomdoom";
-import { makeSonic } from "../entities/sonic";
+import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore, unlockStage } from "../gameState";
 import { addGround, addHudText, createPlayerHealth } from "../gameplay";
 import { k } from "../kaplayCtx";
@@ -37,7 +37,7 @@ export function BossLevelOne(options = {}) {
       k.z(-1),
     ]);
   }
-  addGround(875);
+  addGround(875 - SONIC_FOOT_OFFSET);
 
   const addFloatingPlatform = (x, y) => {
     k.add([
@@ -56,7 +56,7 @@ export function BossLevelOne(options = {}) {
     ]);
     k.add([
       k.rect(390, 24),
-      k.pos(x, y + 20),
+      k.pos(x, y - SONIC_FOOT_OFFSET),
       k.area(),
       k.body({ isStatic: true }),
       k.opacity(0),

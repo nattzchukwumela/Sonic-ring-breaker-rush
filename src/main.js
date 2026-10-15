@@ -6,13 +6,18 @@ import MainMenu from "./scene/mainMenu";
 import { BossLevelOne } from "./bossFights/Boss_01";
 import GameOver from "./scene/gameover";
 import Victory from "./scene/victory";
+import { LevelThree } from "./gameLevels/level_03";
+import { LevelFourFinal } from "./gameLevels/level_04_final";
 
 // game assets
 
 // game background and platform sprites
 k.loadSprite("chemical-bg", "/graphics/backgrounds/chemical-bg.png");
 k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
+k.loadSprite("forest-day-bg", "/graphics/backgrounds/forest-day.jpg");
 k.loadSprite("platform", "/graphics/platform/platforms.png");
+k.loadSprite("zigzag-grass", "/graphics/platform/zigzag_grass_platform.png");
+k.loadSprite("zigzag-snow", "/graphics/platform/zigzag_snow_platform.png");
 
 // forest wave platforms
 k.loadSprite(
@@ -91,6 +96,7 @@ k.loadSprite("motobug", "graphics/motobug.png", {
     run: { from: 0, to: 4, loop: true, speed: 8 },
   },
 });
+k.loadSprite("ufo-enemy", "/graphics/enemy/ufo_game_enemy.png");
 
 // rings sprite
 k.loadSprite("ring", "graphics/ring.png", {
@@ -120,6 +126,8 @@ k.loadSound("shroomdoom", "sounds/shroomdoom.mp3");
 k.scene("level-select", LevelSelect);
 k.scene("levelOne", LevelOne);
 k.scene("levelFour", LevelFour);
+k.scene("levelThree", LevelThree);
+k.scene("levelFourFinal", LevelFourFinal);
 k.scene("main-menu", MainMenu);
 k.scene("levelOneBoss", BossLevelOne);
 k.scene("game-over", GameOver);

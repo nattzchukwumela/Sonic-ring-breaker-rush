@@ -13,8 +13,20 @@ export const stages = [
   {
     id: 2,
     name: "Chemical Rush",
-    subtitle: "Survive the final sprint",
+    subtitle: "Outrun the Badnik factory",
     scene: "levelFour",
+  },
+  {
+    id: 3,
+    name: "Sky Patrol",
+    subtitle: "Break through the UFO squadron",
+    scene: "levelThree",
+  },
+  {
+    id: 4,
+    name: "Chaos Circuit",
+    subtitle: "Survive the ultimate gauntlet",
+    scene: "levelFourFinal",
   },
 ];
 

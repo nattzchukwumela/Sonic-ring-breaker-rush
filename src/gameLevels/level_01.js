@@ -1,6 +1,6 @@
 import { makeBlueMonster } from "../entities/fodder_entities/blue-monster";
 import { makeRing } from "../entities/ring";
-import { makeSonic } from "../entities/sonic";
+import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore } from "../gameState";
 import {
   addGround,
@@ -46,7 +46,7 @@ export function LevelOne(options = {}) {
     k.z(-2),
   ]);
 
-  addGround();
+  addGround(870 - SONIC_FOOT_OFFSET);
 
   const scoreText = addHudText(`SCORE  ${score}`, k.vec2(34, 28));
   const ringText = addHudText(`RINGS  ${rings}`, k.vec2(34, 82));

@@ -1,7 +1,7 @@
 import { makeMotobug } from "../entities/fodder_entities/motobug";
 import { makeRing } from "../entities/ring";
-import { makeSonic } from "../entities/sonic";
-import { saveBestScore } from "../gameState";
+import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
+import { saveBestScore, unlockStage } from "../gameState";
 import { addGround, addHudText, createPlayerHealth } from "../gameplay";
 import { k } from "../kaplayCtx";
 
@@ -46,7 +46,7 @@ export function LevelFour(options = {}) {
     k.color(k.rgb(34, 188, 212)),
     k.z(-2),
   ]);
-  addGround(875);
+  addGround(875 - SONIC_FOOT_OFFSET);
 
   const scoreText = addHudText(`SCORE  ${score}`, k.vec2(34, 28));
   const ringText = addHudText(`RINGS  ${rings}`, k.vec2(34, 82));
@@ -56,7 +56,7 @@ export function LevelFour(options = {}) {
   const goalText = addHudText(`GOAL  ${GOAL_DISTANCE}m`, k.vec2(1880, 32), {
     anchor: "topright",
   });
-  addHudText("FINAL RUN  •  SPACE / ↑ JUMP  •  ↓ SPIN", k.vec2(960, 1030), {
+  addHudText("CHEMICAL RUSH  •  SPACE / ↑ JUMP  •  ↓ SPIN", k.vec2(960, 1030), {
     size: 30,
     anchor: "bot",
   });
@@ -161,10 +161,12 @@ export function LevelFour(options = {}) {
       music.stop();
       score += rings * 25;
       saveBestScore(score);
+      unlockStage(3);
       k.go("victory", {
-        title: "RUSH COMPLETE!",
-        message: `Ring bonus: ${rings * 25}`,
+        title: "FACTORY CLEARED!",
+        message: `Sky Patrol unlocked • Ring bonus: ${rings * 25}`,
         score,
+        nextScene: "levelThree",
       });
     }
   });
