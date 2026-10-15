@@ -3,12 +3,14 @@ import { k } from "../../kaplayCtx";
 export function makeShroomDoom(pos) {
   const shroomdoom = k.add([
     k.sprite("shroomdoom_one", { anim: "idle" }),
-    k.scale(8),
-    k.area({ shape: new k.Rect(k.vec2(-5, 0), 32, 32) }),
+    k.scale(6),
+    k.area({ shape: new k.Rect(k.vec2(-14, -38), 28, 62) }),
     k.anchor("center"),
     k.pos(pos),
-    k.offscreen(),
+    k.opacity(1),
+    k.z(5),
     "enemy",
+    "boss",
     {
       playHit() {
         this.play("hit");

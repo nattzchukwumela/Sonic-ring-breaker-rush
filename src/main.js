@@ -4,6 +4,8 @@ import { k } from "./kaplayCtx";
 import { LevelFour } from "./gameLevels/Level_04";
 import MainMenu from "./scene/mainMenu";
 import { BossLevelOne } from "./bossFights/Boss_01";
+import GameOver from "./scene/gameover";
+import Victory from "./scene/victory";
 
 // game assets
 
@@ -61,7 +63,7 @@ k.loadSprite(
     sliceX: 4,
     sliceY: 3,
     anims: {
-      death: { from: 0, to: 3, loop: true, speed: 5 },
+      death: { from: 0, to: 3, loop: false, speed: 5 },
       idle: { from: 4, to: 7, loop: true, speed: 5 },
       hit: { from: 8, to: 11, loop: true, speed: 5 },
     },
@@ -120,4 +122,6 @@ k.scene("levelOne", LevelOne);
 k.scene("levelFour", LevelFour);
 k.scene("main-menu", MainMenu);
 k.scene("levelOneBoss", BossLevelOne);
+k.scene("game-over", GameOver);
+k.scene("victory", Victory);
 k.go("main-menu");

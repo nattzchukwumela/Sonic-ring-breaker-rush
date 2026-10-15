@@ -4,14 +4,24 @@ export function makeSonic(pos, jumpPower = 1700) {
   const sonic = k.add([
     k.sprite("sonic", { anim: "run" }),
     k.scale(4),
-    k.area(),
+    k.area({ shape: new k.Rect(k.vec2(-11, -17), 22, 36) }),
     k.anchor("center"),
     k.pos(pos),
     k.body({ jumpForce: jumpPower }),
+    k.opacity(1),
+    "sonic",
     {
+      isRolling: false,
+      isInvulnerable: false,
+      isDead: false,
+      jumpReady: false,
+      rollReady: false,
+      moveReady: false,
       setJump() {
+        if (this.jumpReady) return;
+        this.jumpReady = true;
         k.onButtonPress("jump", () => {
-          if (this.isGrounded()) {
+          if (!this.isDead && this.isGrounded()) {
             this.play("jump");
             this.jump();
             k.play("jump", { volume: 0.5 });
@@ -19,37 +29,46 @@ export function makeSonic(pos, jumpPower = 1700) {
         });
       },
       setRoll() {
+        if (this.rollReady) return;
+        this.rollReady = true;
         k.onButtonPress("roll", () => {
-          if (this.isGrounded()) {
+          if (!this.isDead && this.isGrounded() && !this.isRolling) {
+            this.isRolling = true;
             this.play("roll");
-            k.vec2(200, 100);
-            setTimeout(() => {
+            k.wait(0.7, () => {
+              if (!this.exists() || this.isDead) return;
+              this.isRolling = false;
               this.play("run");
-            }, 2000);
+            });
             k.play("roll", { volume: 0.5 });
           }
         });
       },
       setEvents() {
         this.onGround(() => {
-          this.play("run");
+          if (!this.isDead && !this.isRolling) this.play("run");
         });
       },
-      setMoveForward() {
-        const speed = 250;
-
-        k.onKeyDown("right", () => {
-          // if (this.isGrounded()) {
-          //   this.play("run");
-          // }
-
-          this.move(speed, 0);
+      setMoveForward({ speed = 520, minX = 90, maxX = 1830 } = {}) {
+        if (this.moveReady) return;
+        this.moveReady = true;
+        k.onButtonDown("left", () => {
+          if (!this.isDead) this.move(-speed, 0);
         });
-
-        k.onKeyRelease("right", () => {
-          this.stop();
-          this.play("run"); // optional, if you add an idle animation
+        k.onButtonDown("right", () => {
+          if (!this.isDead) this.move(speed, 0);
         });
+        this.onUpdate(() => {
+          this.pos.x = k.clamp(this.pos.x, minX, maxX);
+        });
+      },
+      isAttacking() {
+        return !this.isDead && (this.isRolling || !this.isGrounded());
+      },
+      bounce() {
+        if (this.isDead) return;
+        this.play("jump");
+        this.vel.y = -1050;
       },
     },
   ]);

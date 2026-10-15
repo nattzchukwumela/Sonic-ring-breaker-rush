@@ -1,155 +1,176 @@
 import { makeMotobug } from "../entities/fodder_entities/motobug";
 import { makeRing } from "../entities/ring";
 import { makeSonic } from "../entities/sonic";
+import { saveBestScore } from "../gameState";
+import { addGround, addHudText, createPlayerHealth } from "../gameplay";
 import { k } from "../kaplayCtx";
 
-export function LevelFour() {
-  let score = 0;
-  let scoreMultiplier = 0;
-  const scoreText = k.add([
-    k.text("SCORE : 0", { font: "mania", size: 80 }),
-    k.pos(20, 20),
-  ]);
+const GOAL_DISTANCE = 650;
 
-  k.setGravity(3100);
+export function LevelFour(options = {}) {
+  let score = Number(options.score ?? 0);
+  let rings = Number(options.rings ?? 0);
+  let distance = 0;
+  let gameSpeed = 620;
+  let running = true;
 
-  const bgPieceWidth = 1920;
-  const bgPieces = [
-    k.add([k.sprite("chemical-bg"), k.pos(0, 0), k.scale(2), k.opacity(0.8)]),
+  k.setGravity(3200);
+  const music = k.play("city", { loop: true, volume: 0.32 });
+
+  const backgrounds = [0, 1920].map((x) =>
     k.add([
       k.sprite("chemical-bg"),
-      k.pos(1920 * 2, 0),
-      k.scale(2),
-      k.opacity(0.8),
+      k.pos(x, 0),
+      k.opacity(0.86),
+      k.z(-10),
     ]),
-  ];
+  );
+  const platformWidth = 1920;
+  const platforms = [0, platformWidth].map((x) =>
+    k.add([
+      k.sprite("platform"),
+      k.pos(x, 760),
+      k.scale(1.5),
+      k.z(-1),
+    ]),
+  );
+  k.add([
+    k.rect(k.width(), 205),
+    k.pos(0, 875),
+    k.color(k.rgb(22, 56, 88)),
+    k.z(-3),
+  ]);
+  k.add([
+    k.rect(k.width(), 18),
+    k.pos(0, 875),
+    k.color(k.rgb(34, 188, 212)),
+    k.z(-2),
+  ]);
+  addGround(875);
 
-  const platformWidth = 1280;
-  const scaledPlatformWidth = platformWidth * 3.2;
-  const platforms = [
-    k.add([k.sprite("platform"), k.pos(0, 567), k.scale(3.2)]),
-    k.add([k.sprite("platform"), k.pos(platformWidth, 567), k.scale(3.2)]),
-  ];
+  const scoreText = addHudText(`SCORE  ${score}`, k.vec2(34, 28));
+  const ringText = addHudText(`RINGS  ${rings}`, k.vec2(34, 82));
+  const healthText = addHudText("", k.vec2(34, 136), {
+    color: k.rgb(255, 220, 48),
+  });
+  const goalText = addHudText(`GOAL  ${GOAL_DISTANCE}m`, k.vec2(1880, 32), {
+    anchor: "topright",
+  });
+  addHudText("FINAL RUN  •  SPACE / ↑ JUMP  •  ↓ SPIN", k.vec2(960, 1030), {
+    size: 30,
+    anchor: "bot",
+  });
 
-  const sonic = makeSonic(k.vec2(200, 750));
-
+  const sonic = makeSonic(k.vec2(330, 760));
   sonic.setJump();
   sonic.setRoll();
   sonic.setEvents();
-  let isSonicRolling = false;
-  k.onKeyPress("down", () => {
-    isSonicRolling = true;
-  });
-  console.log(isSonicRolling);
-  sonic.onCollide("enemy", (enemy) => {
-    if (!sonic.isGrounded()) {
-      k.play("destroy", { volume: 0.5 });
-      k.play("hyper-ring", { volume: 0.5 });
-      k.destroy(enemy);
-      sonic.play("jump");
-      sonic.jump();
-      scoreMultiplier += 1;
-      score += 10 * scoreMultiplier;
-      scoreText.text = `SCORE: ${score}`;
-      return;
-    }
 
-    if (sonic.isGrounded() && isSonicRolling) {
+  const finishWithLoss = () => {
+    if (!running) return;
+    running = false;
+    music.stop();
+    saveBestScore(score);
+    k.go("game-over", {
+      retryScene: "levelFour",
+      stageName: "Chemical Rush",
+      score,
+      reason: "The Badniks ended the final run.",
+    });
+  };
+
+  const playerHealth = createPlayerHealth({
+    sonic,
+    healthText,
+    onDeath: finishWithLoss,
+  });
+
+  sonic.onCollide("enemy", (enemy) => {
+    if (!running || playerHealth.isDead() || enemy.defeated) return;
+    if (sonic.isAttacking()) {
+      enemy.defeated = true;
+      sonic.bounce();
       k.play("destroy", { volume: 0.5 });
-      k.play("hyper-ring", { volume: 0.5 });
+      score += 150;
+      scoreText.text = `SCORE  ${score}`;
       k.destroy(enemy);
-      scoreMultiplier += 1;
-      score += 10 * scoreMultiplier;
-      scoreText.text = `SCORE: ${score}`;
-      setTimeout(() => {
-        isSonicRolling = false;
-      }, 2000);
       return;
     }
-    k.play("hurt", { volume: 0.5 });
+    playerHealth.damage(enemy.pos.x);
   });
 
   sonic.onCollide("ring", (ring) => {
-    if (!sonic.isGrounded() || sonic.isGrounded()) {
-      k.play("hyper-ring", { volume: 0.5 });
-      k.destroy(ring);
-      score++;
-      scoreText.text = `SCORE: ${score}`;
-      return;
-    }
+    if (!running) return;
+    k.destroy(ring);
+    k.play("ring", { volume: 0.45 });
+    rings += 1;
+    score += 10;
+    scoreText.text = `SCORE  ${score}`;
+    ringText.text = `RINGS  ${rings}`;
   });
 
-  const spawnMotoBug = () => {
-    const motobug = makeMotobug(k.vec2(1950, 815));
+  const spawnMotobug = () => {
+    if (!running) return;
+    const motobug = makeMotobug(k.vec2(2020, 815));
     motobug.onUpdate(() => {
-      if (gameSpeed < 3000) {
-        motobug.move(-(gameSpeed + 300), 0);
-        return;
-      }
-      motobug.move(-gameSpeed, 0);
+      if (running && !motobug.defeated) motobug.move(-(gameSpeed + 120), 0);
     });
-
     motobug.onExitScreen(() => {
-      if (motobug.pos.x < 0) {
-        k.destroy(motobug);
-      }
+      if (motobug.pos.x < -150) k.destroy(motobug);
     });
-
-    const waitTime = k.rand(0.5, 2.5);
-    k.wait(waitTime, spawnMotoBug);
+    k.wait(k.rand(1.35, 2.55), spawnMotobug);
   };
 
-  spawnMotoBug();
-
-  const spawnRing = () => {
-    const ring = makeRing(k.vec2(1950, 815));
-    ring.onUpdate(() => {
-      if (gameSpeed < 3000) {
-        ring.move(-(gameSpeed + 300), 0);
-        return;
-      }
-    });
-    ring.onExitScreen(() => {
-      if (ring.pos.x < 0) k.destroy(ring);
-    });
-
-    const waitTime = k.rand(0.5, 3);
-
-    k.wait(waitTime, spawnRing);
-  };
-
-  spawnRing();
-
-  let gameSpeed = 0;
-  k.loop(1, () => {
-    if (gameSpeed <= 3000) {
-      gameSpeed += 20;
-    } else {
-      console.log(gameSpeed);
+  const spawnRings = () => {
+    if (!running) return;
+    const count = Math.round(k.rand(3, 7));
+    const high = k.rand(0, 1) > 0.5;
+    for (let index = 0; index < count; index += 1) {
+      const arc = high ? Math.sin((index / Math.max(1, count - 1)) * Math.PI) * 120 : 0;
+      const ring = makeRing(k.vec2(1980 + index * 82, 805 - arc));
+      ring.onUpdate(() => {
+        if (running) ring.move(-(gameSpeed + 120), 0);
+      });
+      ring.onExitScreen(() => {
+        if (ring.pos.x < -80) k.destroy(ring);
+      });
     }
-  });
+    k.wait(k.rand(1.9, 3.3), spawnRings);
+  };
 
-  k.add([
-    k.rect(1920, 200),
-    k.opacity(0),
-    k.area(),
-    k.pos(0, 880),
-    k.body({ isStatic: true }),
-  ]);
+  k.wait(1.2, spawnRings);
+  k.wait(2.2, spawnMotobug);
 
   k.onUpdate(() => {
-    if (bgPieces[1].pos.x < 0) {
-      bgPieces[0].moveTo(bgPieces[1].pos.x + bgPieceWidth * 2, 0);
-      bgPieces.push(bgPieces.shift());
-    }
-    bgPieces[0].move(-100, 0);
-    bgPieces[1].moveTo(bgPieces[0].pos.x + bgPieceWidth * 2, 0);
+    if (!running) return;
+    gameSpeed = Math.min(1120, gameSpeed + 11 * k.dt());
+    distance = Math.min(GOAL_DISTANCE, distance + (gameSpeed * k.dt()) / 38);
+    goalText.text = `GOAL  ${Math.ceil(GOAL_DISTANCE - distance)}m`;
 
-    if (platforms[1].pos.x < 0) {
-      platforms[0].moveTo(platforms[1].pos.x + platforms[1].width, 567);
-      platforms.push(platforms.shift());
+    for (const background of backgrounds) {
+      background.move(-90, 0);
+      if (background.pos.x <= -1920) background.pos.x += 3840;
     }
-    platforms[0].move(-gameSpeed, 0);
-    platforms[1].moveTo(platforms[0].pos.x + scaledPlatformWidth, 567);
+    for (const platform of platforms) {
+      platform.move(-gameSpeed, 0);
+      if (platform.pos.x <= -platformWidth) platform.pos.x += platformWidth * 2;
+    }
+
+    if (distance >= GOAL_DISTANCE) {
+      running = false;
+      music.stop();
+      score += rings * 25;
+      saveBestScore(score);
+      k.go("victory", {
+        title: "RUSH COMPLETE!",
+        message: `Ring bonus: ${rings * 25}`,
+        score,
+      });
+    }
+  });
+
+  k.onKeyPress("escape", () => {
+    music.stop();
+    k.go("level-select");
   });
 }

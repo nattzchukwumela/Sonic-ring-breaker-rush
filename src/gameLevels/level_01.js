@@ -1,242 +1,183 @@
 import { makeBlueMonster } from "../entities/fodder_entities/blue-monster";
 import { makeRing } from "../entities/ring";
 import { makeSonic } from "../entities/sonic";
+import { saveBestScore } from "../gameState";
+import {
+  addGround,
+  addHudText,
+  addScrollingBackdrop,
+  createPlayerHealth,
+} from "../gameplay";
 import { k } from "../kaplayCtx";
 
-export function LevelOne() {
-  // Score management
-  let score = 0;
-  let scoreMultiplier = 0;
-  let ringsCount = 0;
-  let miles = 0;
+const GOAL_DISTANCE = 500;
 
-  const scoreText = k.add([
-    k.text("SCORE: 0", { font: "mania", size: 80 }),
-    k.color(k.rgb(255, 255, 255)),
-    k.pos(20, 20),
-    k.z(2),
-  ]);
+export function LevelOne(options = {}) {
+  let score = Number(options.score ?? 0);
+  let rings = Number(options.rings ?? 0);
+  let distance = 0;
+  let gameSpeed = 480;
+  let running = true;
 
-  const rings = k.add([
-    k.text("RINGS: 0", { font: "mania", size: 80 }),
-    k.color(k.rgb(255, 255, 255)),
-    k.pos(20, 100),
-    k.z(2),
-  ]);
-
-  const distanceTravelled = k.add([
-    k.text("Miles: 0", { font: "mania", size: 80 }),
-    k.color(k.rgb(255, 255, 255)),
-    k.z(2),
-    k.pos(1550, 20),
-  ]);
-
-  // Game physics
   k.setGravity(3100);
-  let gameSpeed = 0;
+  const music = k.play("ingame-sound", { volume: 0.28, loop: true });
+  const moveBackdrop = addScrollingBackdrop("forest-bg");
 
-  const travelDistance = () => {
-    distanceTravelled.text = `Miles: ${miles}`;
-    miles += 1;
-  };
-
-  // Background setup
-  const bgPieceWidth = 900;
-  const bgPieces = [
-    k.add([k.sprite("forest-bg"), k.pos(0, 0), k.scale(1), k.opacity(0.8)]),
-    k.add([
-      k.sprite("forest-bg"),
-      k.pos(900 * 1, 0),
-      k.scale(1),
-      k.opacity(0.8),
-    ]),
-  ];
-
-  // Platform configuration
-  const platformWidth = 1310;
-  const scale = 1.2;
-  const yAxisPosition = 540;
-  const scaledPlatformWidth = platformWidth * scale;
-
-  const platforms = [
-    k.add([k.sprite("grass-planes"), k.pos(0, yAxisPosition), k.scale(scale)]),
+  const platformWidth = 1514 * 1.25;
+  const platforms = [0, platformWidth].map((x) =>
     k.add([
       k.sprite("grass-planes"),
-      k.pos(platformWidth, yAxisPosition),
-      k.scale(scale),
+      k.pos(x, 540),
+      k.scale(1.25),
+      k.z(-2),
     ]),
-    k.add([
-      k.sprite("grass-planes"),
-      k.pos(platformWidth, yAxisPosition),
-      k.scale(scale),
-    ]),
-  ];
+  );
 
-  // Initialize Sonic character
-  const sonic = makeSonic(k.vec2(350, 750));
-  sonic.setJump();
-  sonic.setEvents();
-  sonic.setRoll();
+  k.add([
+    k.rect(k.width(), 210),
+    k.pos(0, 870),
+    k.color(k.rgb(139, 82, 50)),
+    k.z(-3),
+  ]);
+  k.add([
+    k.rect(k.width(), 18),
+    k.pos(0, 870),
+    k.color(k.rgb(31, 170, 77)),
+    k.z(-2),
+  ]);
 
-  // Rolling state tracking with debounce
-  let isSonicRolling = false;
-  let canRoll = true; // New variable to track if rolling is allowed
+  addGround();
 
-  k.onKeyPress("down", () => {
-    if (sonic.isGrounded() && canRoll && !isSonicRolling) {
-      isSonicRolling = true;
-      canRoll = false; // Prevent multiple roll triggers
-
-      // Assuming there's a roll animation that takes 1500ms
-      sonic.play("roll"); // You might need to adjust this based on your animation setup
-
-      // Reset rolling state after animation completes
-      k.wait(1.5, () => {
-        isSonicRolling = false;
-
-        // Add a small delay before allowing another roll
-        k.wait(0.3, () => {
-          canRoll = true;
-        });
-      });
-    }
+  const scoreText = addHudText(`SCORE  ${score}`, k.vec2(34, 28));
+  const ringText = addHudText(`RINGS  ${rings}`, k.vec2(34, 82));
+  const healthText = addHudText("", k.vec2(34, 136), {
+    color: k.rgb(255, 220, 48),
+  });
+  const goalText = addHudText(`LAIR  ${GOAL_DISTANCE}m`, k.vec2(1880, 32), {
+    anchor: "topright",
+  });
+  addHudText("SPACE / ↑  JUMP     ↓  SPIN", k.vec2(960, 1030), {
+    size: 30,
+    anchor: "bot",
+    color: k.rgb(225, 242, 255),
   });
 
-  // Collision handlers
+  const sonic = makeSonic(k.vec2(350, 760));
+  sonic.setJump();
+  sonic.setRoll();
+  sonic.setEvents();
+
+  const endRun = (reason) => {
+    if (!running) return;
+    running = false;
+    music.stop();
+    saveBestScore(score);
+    k.go("game-over", {
+      retryScene: "levelOne",
+      stageName: "Emerald Woods",
+      score,
+      reason,
+    });
+  };
+
+  const playerHealth = createPlayerHealth({
+    sonic,
+    healthText,
+    onDeath: () => endRun("Shroomdoom's scouts stopped the run."),
+  });
+
   sonic.onCollide("enemy", (enemy) => {
-    if (!sonic.isGrounded()) {
-      // Jump attack collision
-      sonic.play("jump");
-      sonic.jump();
-      // if (enemy.playHit) enemy.playHit();
-      if (enemy.playHit) {
-        k.play("destroy", { volume: 0.5 });
-        k.play("hyper-ring", { volume: 0.5 });
-        enemy.playHit();
-        k.wait(0.6, () => k.destroy(enemy));
-      }
-      scoreMultiplier += 1;
-      score += 10 * scoreMultiplier;
-      scoreText.text = `SCORE: ${score}`;
+    if (!running || playerHealth.isDead() || enemy.defeated) return;
+
+    if (sonic.isAttacking()) {
+      enemy.defeated = true;
+      sonic.bounce();
+      enemy.playHit?.();
+      k.play("destroy", { volume: 0.5 });
+      score += 100;
+      scoreText.text = `SCORE  ${score}`;
+      k.wait(0.25, () => {
+        if (enemy.exists()) k.destroy(enemy);
+      });
       return;
     }
 
-    if (sonic.isGrounded() && isSonicRolling) {
-      // Roll attack collision
-      if (enemy.playHit) {
-        k.play("destroy", { volume: 0.5 });
-        k.play("hyper-ring", { volume: 0.5 });
-        enemy.playHit();
-        k.wait(0.6, () => k.destroy(enemy));
-      }
-
-      scoreMultiplier += 1;
-      score += 10 * scoreMultiplier;
-      scoreText.text = `SCORE: ${score}`;
-      return;
-    }
-
-    // Hurt collision (no attack)
-    k.play("hurt", { volume: 0.5 });
-    score -= 10 * scoreMultiplier;
-    scoreText.text = `SCORE: ${score}`;
+    playerHealth.damage(enemy.pos.x);
   });
 
   sonic.onCollide("ring", (ring) => {
-    // Collect ring
-    k.play("hyper-ring", { volume: 0.5 });
+    if (!running) return;
+    k.play("ring", { volume: 0.45 });
     k.destroy(ring);
-    score++;
-    ringsCount++;
-    scoreText.text = `SCORE: ${score}`;
-    rings.text = `RINGS: ${ringsCount}`;
+    rings += 1;
+    score += 10;
+    scoreText.text = `SCORE  ${score}`;
+    ringText.text = `RINGS  ${rings}`;
   });
 
-  // Ring spawning system
-  const spawnRing = () => {
-    const ring = makeRing(k.vec2(1950, 815));
-
-    ring.onUpdate(() => {
-      if (gameSpeed < 3000) {
-        ring.move(-(gameSpeed + 300), 0);
-      } else {
-        ring.move(-gameSpeed, 0); // Adding this to ensure rings move at higher speeds
-      }
-    });
-
-    ring.onExitScreen(() => {
-      if (ring.pos.x < 0) k.destroy(ring);
-    });
-
-    const waitTime = k.rand(0.5, 3);
-    k.wait(waitTime, spawnRing);
-  };
-  const spawnBlueMonster = () => {
-    const monster = makeBlueMonster(k.vec2(1950, 815));
-
+  const spawnEnemy = () => {
+    if (!running) return;
+    const monster = makeBlueMonster(k.vec2(2020, 810));
     monster.onUpdate(() => {
-      const moveSpeed = gameSpeed < 3000 ? -(gameSpeed + 300) : -gameSpeed;
-      monster.move(moveSpeed, 0);
+      if (!running || monster.defeated) return;
+      monster.move(-(gameSpeed + 140), 0);
     });
-
     monster.onExitScreen(() => {
-      if (monster.pos.x < 0) {
-        k.destroy(monster);
-      }
+      if (monster.pos.x < -150) k.destroy(monster);
     });
-
-    const waitTime = k.rand(0.5, 2.5);
-    k.wait(waitTime, spawnBlueMonster);
+    k.wait(k.rand(1.7, 3.1), spawnEnemy);
   };
-  // Start spawning enemies and rings
-  spawnBlueMonster();
-  spawnRing();
 
-  // Speed progression
-  k.loop(1, () => {
-    travelDistance();
-    if (gameSpeed <= 3000) {
-      gameSpeed += 10;
+  const spawnRingTrail = () => {
+    if (!running) return;
+    const count = Math.round(k.rand(3, 6));
+    const height = k.rand(0, 1) > 0.55 ? 650 : 805;
+
+    for (let index = 0; index < count; index += 1) {
+      const ring = makeRing(k.vec2(1980 + index * 86, height));
+      ring.onUpdate(() => {
+        if (running) ring.move(-(gameSpeed + 140), 0);
+      });
+      ring.onExitScreen(() => {
+        if (ring.pos.x < -80) k.destroy(ring);
+      });
+    }
+
+    k.wait(k.rand(2.1, 3.8), spawnRingTrail);
+  };
+
+  k.wait(1.4, spawnRingTrail);
+  k.wait(2.4, spawnEnemy);
+
+  k.onUpdate(() => {
+    if (!running) return;
+
+    gameSpeed = Math.min(900, gameSpeed + 8 * k.dt());
+    distance = Math.min(GOAL_DISTANCE, distance + (gameSpeed * k.dt()) / 34);
+    goalText.text = `LAIR  ${Math.ceil(GOAL_DISTANCE - distance)}m`;
+
+    moveBackdrop(75);
+    for (const platform of platforms) {
+      platform.move(-gameSpeed, 0);
+      if (platform.pos.x <= -platformWidth) platform.pos.x += platformWidth * 2;
+    }
+
+    if (distance >= GOAL_DISTANCE) {
+      running = false;
+      music.stop();
+      saveBestScore(score);
+      addHudText("SHROOMDOOM AHEAD!", k.center(), {
+        size: 86,
+        anchor: "center",
+        color: k.rgb(255, 220, 48),
+        z: 50,
+      });
+      k.wait(1.5, () => k.go("levelOneBoss", { score, rings }));
     }
   });
 
-  // Ground collision
-  k.add([
-    k.rect(1920, 200),
-    k.opacity(0),
-    k.area(),
-    k.pos(0, 880),
-    k.body({ isStatic: true }),
-  ]);
-
-  // Game update loop - handles parallax scrolling
-  k.onUpdate(() => {
-    // Background parallax
-    if (bgPieces[1].pos.x < 0) {
-      bgPieces[0].moveTo(bgPieces[1].pos.x + bgPieceWidth * 2, 0);
-      bgPieces.push(bgPieces.shift());
-    }
-    bgPieces[0].move(-100, 0);
-    bgPieces[1].moveTo(bgPieces[0].pos.x + bgPieceWidth * 2, 0);
-
-    // Platform scrolling
-    if (platforms[1].pos.x < 0) {
-      platforms[0].moveTo(
-        platforms[1].pos.x + platforms[1].width,
-        yAxisPosition,
-      );
-      platforms.push(platforms.shift());
-    }
-
-    platforms[0].move(-gameSpeed, 0);
-    platforms[1].moveTo(
-      platforms[0].pos.x + scaledPlatformWidth,
-      yAxisPosition,
-    );
-    platforms[1].move(-gameSpeed, 0);
-    platforms[2].moveTo(
-      platforms[1].pos.x + scaledPlatformWidth,
-      yAxisPosition,
-    );
+  k.onKeyPress("escape", () => {
+    music.stop();
+    k.go("level-select");
   });
 }

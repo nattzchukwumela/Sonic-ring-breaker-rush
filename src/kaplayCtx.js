@@ -9,16 +9,19 @@ export const k = kaplay({
   touchToMouse: true,
   buttons: {
     jump: {
-      keyboard: ["up"],
+      keyboard: ["space", "up", "w"],
       mouse: "left",
     },
     roll: {
-      keyboard: ["down"],
+      keyboard: ["down", "s"],
     },
-    run: {
-      keyboard: ["right"],
+    left: {
+      keyboard: ["left", "a"],
+    },
+    right: {
+      keyboard: ["right", "d"],
     },
   },
-  debug: true,
+  debug: false,
   debugKey: "d",
 });

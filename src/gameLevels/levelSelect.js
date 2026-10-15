@@ -1,53 +1,81 @@
+import { getBestScore, getUnlockedStage, stages } from "../gameState";
+import { addActionButton, addHudText } from "../gameplay";
 import { k } from "../kaplayCtx";
 
 export default function LevelSelect() {
-  if (!k.getData("best-score")) k.setData("best-score", 0);
+  k.setGravity(0);
+  const unlockedStage = getUnlockedStage();
 
   k.add([
-    k.text("Select Stage", { size: 48, font: "mania" }),
-    k.pos(k.center().x, 80),
+    k.sprite("forest-bg"),
+    k.pos(k.center()),
     k.anchor("center"),
+    k.opacity(0.46),
+    k.z(-10),
+  ]);
+  k.add([
+    k.rect(k.width(), k.height()),
+    k.color(k.rgb(3, 20, 56)),
+    k.opacity(0.58),
+    k.z(-9),
   ]);
 
-  const stages = [
-    { name: "Level 1", scene: "levelOne", unlocked: true },
-    { name: "Level 2", scene: "levelFour", unlocked: false },
-    { name: "Level 3", scene: "levelThree", unlocked: false },
-    { name: "Level 4", scene: "levelFour", unlocked: true },
-  ];
+  addHudText("SELECT STAGE", k.vec2(960, 110), {
+    font: "nise-sega-font",
+    size: 74,
+    anchor: "center",
+    color: k.rgb(255, 220, 48),
+  });
+  addHudText(`BEST SCORE  ${getBestScore()}`, k.vec2(960, 185), {
+    size: 34,
+    anchor: "center",
+  });
 
-  let yAxis = -250;
   stages.forEach((stage, index) => {
-    const button = k.add([
-      k.sprite("forest-bg"),
-      k.pos(k.center().x, k.center().y + yAxis),
+    const unlocked = stage.id <= unlockedStage;
+    const y = 360 + index * 250;
+    const card = k.add([
+      k.rect(1040, 180, { radius: 26 }),
+      k.pos(960, y),
       k.anchor("center"),
-      k.scale(0.15),
       k.area(),
-      k.z(1),
-      "level-button",
-      { stage },
-    ]);
-
-    // Add text on top of the sprite
-    k.add([
-      k.text(stage.unlocked ? stage.name : "Locked", {
-        size: 32,
-        font: "mania",
-      }),
-      k.pos(k.center().x, k.center().y + yAxis + 50),
-      k.anchor("center"),
-      k.color(stage.unlocked ? k.rgb(255, 255, 255) : k.rgb(0.5, 0.5, 0.5)),
+      k.color(unlocked ? k.rgb(13, 68, 139) : k.rgb(45, 52, 70)),
+      k.opacity(0.94),
+      k.outline(7, unlocked ? k.rgb(255, 210, 48) : k.rgb(112, 120, 139)),
       k.z(2),
     ]);
 
-    button.onClick(() => {
-      if (stage.unlocked) {
-        k.play("ingame-sound", { volume: 0.5, loop: true });
-        k.go(stage.scene);
-      }
+    addHudText(unlocked ? `STAGE ${stage.id}  •  ${stage.name}` : `STAGE ${stage.id}  •  LOCKED`, k.vec2(960, y - 28), {
+      size: 48,
+      anchor: "center",
+      color: unlocked ? k.rgb(255, 255, 255) : k.rgb(165, 172, 188),
+      z: 3,
+    });
+    addHudText(unlocked ? stage.subtitle : "Defeat Shroomdoom to unlock", k.vec2(960, y + 42), {
+      size: 30,
+      anchor: "center",
+      color: unlocked ? k.rgb(190, 228, 255) : k.rgb(139, 146, 162),
+      z: 3,
     });
 
-    yAxis += 200;
+    if (unlocked) {
+      card.onHoverUpdate(() => {
+        card.color = k.rgb(24, 103, 202);
+        k.setCursor("pointer");
+      });
+      card.onHoverEnd(() => {
+        card.color = k.rgb(13, 68, 139);
+        k.setCursor("default");
+      });
+      card.onClick(() => k.go(stage.scene));
+    }
   });
+
+  addActionButton({
+    label: "BACK",
+    position: k.vec2(960, 940),
+    width: 300,
+    onPress: () => k.go("main-menu"),
+  });
+  k.onKeyPress("escape", () => k.go("main-menu"));
 }
