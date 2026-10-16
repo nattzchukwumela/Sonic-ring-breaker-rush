@@ -1,7 +1,7 @@
 import { makeMotobug } from "../entities/fodder_entities/motobug";
 import { makeRing } from "../entities/ring";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
-import { saveBestScore, unlockStage } from "../gameState";
+import { saveBestScore } from "../gameState";
 import {
   addGround,
   addHudText,
@@ -164,15 +164,16 @@ export function LevelFour(options = {}) {
     if (distance >= GOAL_DISTANCE) {
       running = false;
       music.stop();
-      score += rings * 25;
       saveBestScore(score);
-      unlockStage(3);
-      k.go("victory", {
-        title: "FACTORY CLEARED!",
-        message: `Sky Patrol unlocked • Ring bonus: ${rings * 25}`,
-        score,
-        nextScene: "levelThree",
+      k.destroyAll("enemy");
+      addHudText("VOLTITAN AHEAD!", k.vec2(960, 360), {
+        font: "nise-sega-font",
+        size: 72,
+        anchor: "center",
+        color: k.rgb(255, 220, 48),
+        z: 50,
       });
+      k.wait(1.6, () => k.go("chemicalBoss", { score, rings }));
     }
   });
 

@@ -7,6 +7,7 @@ import { setupPwaExperience } from "./pwa";
 import { LevelFour } from "./gameLevels/Level_04";
 import MainMenu from "./scene/mainMenu";
 import { BossLevelOne } from "./bossFights/Boss_01";
+import { ChemicalBoss } from "./bossFights/ChemicalBoss";
 import GameOver from "./scene/gameover";
 import Victory from "./scene/victory";
 import { LevelThree } from "./gameLevels/level_03";
@@ -100,6 +101,23 @@ k.loadSprite(
     anims: {
       spore: { from: 0, to: 3, loop: true, speed: 12 },
       roots: { from: 4, to: 7, loop: false, speed: 8 },
+      impact: { from: 8, to: 11, loop: false, speed: 14 },
+    },
+  },
+);
+k.loadSprite(
+  "voltitan-boss",
+  "/graphics/enemies/bosses/Neon%20City%20Robot%20Enforcer.png",
+);
+k.loadSprite(
+  "voltitan-attacks",
+  "/graphics/attacks/Voltitan's%20Neon%20Attack%20Sprite%20Sheet.png",
+  {
+    sliceX: 4,
+    sliceY: 3,
+    anims: {
+      energy: { from: 0, to: 3, loop: true, speed: 12 },
+      surge: { from: 4, to: 7, loop: true, speed: 12 },
       impact: { from: 8, to: 11, loop: false, speed: 14 },
     },
   },
@@ -235,6 +253,7 @@ k.scene("levelFive", LevelFive);
 k.scene("levelSix", LevelSix);
 k.scene("main-menu", MainMenu);
 k.scene("levelOneBoss", BossLevelOne);
+k.scene("chemicalBoss", ChemicalBoss);
 k.scene("iceBoss", IceBoss);
 k.scene("desertBoss", DesertBoss);
 k.scene("spaceBoss", SpaceBoss);
