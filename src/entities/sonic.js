@@ -1,4 +1,5 @@
 import { k } from "../kaplayCtx";
+import { showMobileControls } from "../mobileControls";
 
 export const SONIC_FOOT_OFFSET = 88;
 
@@ -16,18 +17,31 @@ export function makeSonic(pos, jumpPower = 1700) {
       isRolling: false,
       isInvulnerable: false,
       isDead: false,
+      jumpsUsed: 0,
+      maxJumps: 2,
       jumpReady: false,
       rollReady: false,
       moveReady: false,
       setJump() {
         if (this.jumpReady) return;
         this.jumpReady = true;
+        showMobileControls();
+        this.onGround(() => {
+          this.jumpsUsed = 0;
+        });
         k.onButtonPress("jump", () => {
-          if (!this.isDead && this.isGrounded()) {
-            this.play("jump");
-            this.jump();
-            k.play("jump", { volume: 0.5 });
-          }
+          if (this.isDead) return;
+
+          const grounded = this.isGrounded();
+          if (grounded) this.jumpsUsed = 0;
+          else if (this.jumpsUsed === 0) this.jumpsUsed = 1;
+          if (this.jumpsUsed >= this.maxJumps) return;
+
+          this.play("jump");
+          if (grounded) this.jump(jumpPower);
+          else this.vel.y = -jumpPower * 0.9;
+          this.jumpsUsed += 1;
+          k.play("jump", { volume: 0.5 });
         });
       },
       setRoll() {
@@ -75,6 +89,7 @@ export function makeSonic(pos, jumpPower = 1700) {
         this.play("jump");
         this.vel.x = 0;
         this.vel.y = -1050;
+        this.jumpsUsed = 1;
       },
     },
   ]);

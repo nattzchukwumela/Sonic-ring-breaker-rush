@@ -62,7 +62,7 @@ export function createRunnerStage(config, options = {}) {
   const goalText = addHudText(`GOAL  ${config.goal}m`, k.vec2(1880, 32), {
     anchor: "topright",
   });
-  addHudText(`${config.name.toUpperCase()}  •  SPACE / ↑ JUMP  •  ↓ SPIN`, k.vec2(960, 1030), {
+  addHudText(`${config.name.toUpperCase()}  •  SPACE / ↑ DOUBLE JUMP  •  ↓ SPIN`, k.vec2(960, 1030), {
     size: 30,
     anchor: "bot",
   });

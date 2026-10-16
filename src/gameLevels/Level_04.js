@@ -56,7 +56,7 @@ export function LevelFour(options = {}) {
   const goalText = addHudText(`GOAL  ${GOAL_DISTANCE}m`, k.vec2(1880, 32), {
     anchor: "topright",
   });
-  addHudText("CHEMICAL RUSH  •  SPACE / ↑ JUMP  •  ↓ SPIN", k.vec2(960, 1030), {
+  addHudText("CHEMICAL RUSH  •  SPACE / ↑ DOUBLE JUMP  •  ↓ SPIN", k.vec2(960, 1030), {
     size: 30,
     anchor: "bot",
   });

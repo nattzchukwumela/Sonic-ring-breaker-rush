@@ -56,7 +56,7 @@ export function LevelOne(options = {}) {
   const goalText = addHudText(`LAIR  ${GOAL_DISTANCE}m`, k.vec2(1880, 32), {
     anchor: "topright",
   });
-  addHudText("SPACE / ↑  JUMP     ↓  SPIN", k.vec2(960, 1030), {
+  addHudText("SPACE / ↑  DOUBLE JUMP     ↓  SPIN", k.vec2(960, 1030), {
     size: 30,
     anchor: "bot",
     color: k.rgb(225, 242, 255),

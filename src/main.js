@@ -1,3 +1,4 @@
+import "./style.css";
 import { LevelOne } from "./gameLevels/level_01";
 import LevelSelect from "./gameLevels/levelSelect";
 import { k } from "./kaplayCtx";
@@ -123,6 +124,13 @@ k.loadSprite("desert-brute", "/graphics/enemies/desert/brute.png");
 k.loadSprite("blackheart-boss", "/graphics/enemies/desert/blackheart.png");
 k.loadSprite("ice-kirby", "/graphics/enemies/ice/ice-kirby.png");
 k.loadSprite("ice-king", "/graphics/enemies/bosses/ice-king.png");
+k.loadSprite("storm-falcon", "/graphics/enemies/bosses/storm-falcon.png");
+k.loadSprite("sky-bird", "/graphics/enemies/sky/bird.png", {
+  sliceX: 6,
+  anims: {
+    fly: { from: 0, to: 5, loop: true, speed: 9 },
+  },
+});
 k.loadSprite("winged-invader", "/graphics/enemies/space/winged-invader.png");
 k.loadSprite("flying-parasite", "/graphics/enemies/space/flying-parasite.png");
 k.loadSprite("invader-overlord", "/graphics/enemies/space/invader-overlord.png");

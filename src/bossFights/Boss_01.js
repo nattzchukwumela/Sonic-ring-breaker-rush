@@ -75,7 +75,7 @@ export function BossLevelOne(options = {}) {
     anchor: "topright",
     color: k.rgb(255, 118, 83),
   });
-  addHudText("A / D  MOVE     SPACE / ↑  JUMP     ↓  SPIN", k.vec2(960, 1030), {
+  addHudText("A / D  MOVE     SPACE / ↑  DOUBLE JUMP     ↓  SPIN", k.vec2(960, 1030), {
     size: 30,
     anchor: "bot",
   });

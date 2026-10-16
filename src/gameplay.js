@@ -29,7 +29,7 @@ export function addGround(y = 880) {
 export function createPlayerHealth({
   sonic,
   healthText,
-  maxHealth = 20,
+  maxHealth = 10,
   onDeath,
 }) {
   let health = maxHealth;
