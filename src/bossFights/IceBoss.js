@@ -123,7 +123,7 @@ export function IceBoss(options = {}) {
       k.anchor("center"),
       k.scale(0.34),
       k.rotate(attackAngle),
-      k.area({ shape: new k.Circle(k.vec2(0), 74) }),
+      k.area({ shape: new k.Rect(k.vec2(-74, -74), 148, 148) }),
       k.opacity(1),
       k.z(7),
       k.lifespan(5),

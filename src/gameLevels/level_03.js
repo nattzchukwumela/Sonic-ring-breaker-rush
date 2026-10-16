@@ -299,7 +299,7 @@ export function LevelThree(options = {}) {
       k.anchor("center"),
       k.scale(0.34),
       k.rotate(attackAngle),
-      k.area({ shape: new k.Circle(k.vec2(0), 68) }),
+      k.area({ shape: new k.Rect(k.vec2(-68, -68), 136, 136) }),
       k.opacity(1),
       k.z(7),
       k.lifespan(5),

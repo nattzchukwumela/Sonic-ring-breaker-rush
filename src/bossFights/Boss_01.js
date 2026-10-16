@@ -150,7 +150,7 @@ export function BossLevelOne(options = {}) {
       k.anchor("center"),
       k.scale(0.34),
       k.rotate(attackAngle),
-      k.area({ shape: new k.Circle(k.vec2(0), 88) }),
+      k.area({ shape: new k.Rect(k.vec2(-88, -88), 176, 176) }),
       k.opacity(1),
       k.z(6),
       k.lifespan(5),
