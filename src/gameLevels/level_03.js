@@ -11,10 +11,16 @@ const SHORT_PLATFORM_SCALE = 0.22;
 const LARGE_PLATFORM_WIDTH = 2172 * LARGE_PLATFORM_SCALE;
 const SHORT_PLATFORM_WIDTH = 1346 * SHORT_PLATFORM_SCALE;
 const START_PLATFORM_Y = 940;
-const SUMMIT_PLATFORM_Y = -2160;
+const SUMMIT_PLATFORM_Y = -4080;
 const SUMMIT_DISTANCE = START_PLATFORM_Y - SUMMIT_PLATFORM_Y;
 const BOSS_MAX_HEALTH = 15;
-const BOSS_Y = SUMMIT_PLATFORM_Y - SONIC_FOOT_OFFSET - 295;
+const ARENA_UPPER_PLATFORM_Y = SUMMIT_PLATFORM_Y - 300;
+const ARENA_CAMERA_Y = SUMMIT_PLATFORM_Y - 350;
+const BOSS_TRIGGER_Y = SUMMIT_PLATFORM_Y - SONIC_FOOT_OFFSET;
+const BOSS_Y = ARENA_UPPER_PLATFORM_Y - SONIC_FOOT_OFFSET - 225;
+const BOSS_LOWEST_Y = ARENA_UPPER_PLATFORM_Y - SONIC_FOOT_OFFSET - 180;
+const BOSS_LEFT_BOUND = 330;
+const BOSS_RIGHT_BOUND = 1590;
 
 const platformRoute = [
   { x: 560, y: 700 },
@@ -29,6 +35,14 @@ const platformRoute = [
   { x: 900, y: -1460, falling: true },
   { x: 540, y: -1700 },
   { x: 800, y: -1940, falling: true },
+  { x: 1190, y: -2180 },
+  { x: 900, y: -2420, falling: true },
+  { x: 560, y: -2660 },
+  { x: 220, y: -2900, falling: true },
+  { x: 560, y: -3140 },
+  { x: 900, y: -3380, falling: true },
+  { x: 1230, y: -3620 },
+  { x: 1320, y: -3860, falling: true },
 ];
 
 const birdRoute = [
@@ -37,6 +51,9 @@ const birdRoute = [
   { x: 1490, y: -820, minX: 1260, maxX: 1740 },
   { x: 270, y: -1400, minX: 120, maxX: 520 },
   { x: 1480, y: -1880, minX: 1260, maxX: 1740 },
+  { x: 320, y: -2540, minX: 130, maxX: 570 },
+  { x: 1480, y: -3260, minX: 1250, maxX: 1760 },
+  { x: 280, y: -3720, minX: 120, maxX: 540 },
 ];
 
 export function LevelThree(options = {}) {
@@ -81,7 +98,7 @@ export function LevelThree(options = {}) {
     color: k.rgb(255, 220, 48),
   });
   addHudText(
-    "SKY PATROL  •  A / D MOVE  •  SPACE / ↑ DOUBLE JUMP  •  ESCAPE THE FALLING PLATFORMS",
+    "SKY PATROL  •  A / D MOVE  •  SPACE / ↑ DOUBLE JUMP  •  USE THE HIGH PLATFORMS TO STRIKE FROM ABOVE",
     k.vec2(960, 1030),
     {
       size: 26,
@@ -169,6 +186,22 @@ export function LevelThree(options = {}) {
     y: SUMMIT_PLATFORM_Y,
     scale: LARGE_PLATFORM_SCALE,
     width: LARGE_PLATFORM_WIDTH,
+  });
+
+  addPlatform({
+    sprite: "sky-short-platform",
+    x: 170,
+    y: ARENA_UPPER_PLATFORM_Y,
+    scale: SHORT_PLATFORM_SCALE,
+    width: SHORT_PLATFORM_WIDTH,
+  });
+
+  addPlatform({
+    sprite: "sky-short-platform",
+    x: k.width() - 170 - SHORT_PLATFORM_WIDTH,
+    y: ARENA_UPPER_PLATFORM_Y,
+    scale: SHORT_PLATFORM_SCALE,
+    width: SHORT_PLATFORM_WIDTH,
   });
 
   const goalY = SUMMIT_PLATFORM_Y - SONIC_FOOT_OFFSET - 78;
@@ -411,7 +444,10 @@ export function LevelThree(options = {}) {
   k.onUpdate(() => {
     if (!stageActive) return;
 
-    cameraY = Math.min(cameraY, sonic.pos.y - 150);
+    cameraY = Math.max(
+      ARENA_CAMERA_Y,
+      Math.min(cameraY, sonic.pos.y - 150),
+    );
     k.camPos(960, cameraY);
 
     if (!bossActive && !bossDefeated) {
@@ -419,7 +455,7 @@ export function LevelThree(options = {}) {
       summitText.text = `SUMMIT  ${Math.ceil(SUMMIT_DISTANCE - climbed)}m`;
     }
 
-    if (!bossActive && !bossDefeated && sonic.pos.y < -1800) {
+    if (!bossActive && !bossDefeated && sonic.pos.y < BOSS_TRIGGER_Y) {
       bossActive = true;
       updateBossHud();
     }
@@ -428,13 +464,16 @@ export function LevelThree(options = {}) {
       bossAttackTimer -= k.dt();
       const bossSpeed = bossHealth <= 7 ? 245 : 175;
       boss.move(bossDirection * bossSpeed, 0);
-      boss.pos.y = BOSS_Y + Math.sin(k.time() * 2.8) * 45;
+      boss.pos.y = Math.min(
+        BOSS_Y + Math.sin(k.time() * 2.8) * 45,
+        BOSS_LOWEST_Y,
+      );
 
-      if (boss.pos.x < 900) {
-        boss.pos.x = 900;
+      if (boss.pos.x < BOSS_LEFT_BOUND) {
+        boss.pos.x = BOSS_LEFT_BOUND;
         bossDirection = 1;
-      } else if (boss.pos.x > 1280) {
-        boss.pos.x = 1280;
+      } else if (boss.pos.x > BOSS_RIGHT_BOUND) {
+        boss.pos.x = BOSS_RIGHT_BOUND;
         bossDirection = -1;
       }
       boss.flipX = sonic.pos.x > boss.pos.x;
