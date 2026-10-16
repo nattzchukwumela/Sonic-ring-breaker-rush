@@ -86,17 +86,21 @@ k.loadSprite("sonic", "/graphics/characters/sonic.png", {
 });
 
 // boss sprites
-// level one boss / shroomdoom
+// level one boss / Shroom Doom
 k.loadSprite(
-  "shroomdoom_one",
-  "/graphics/enemies/bosses/shroomdoom.png",
+  "shroomdoom-boss",
+  "/graphics/enemies/bosses/Shroom%20Doom,%20Crimson-Eyed%20Forest%20Boss-1.png",
+);
+k.loadSprite(
+  "shroomdoom-attacks",
+  "/graphics/attacks/Shroom%20Doom%20attack%20sprite%20sheet-2.png",
   {
     sliceX: 4,
     sliceY: 3,
     anims: {
-      death: { from: 0, to: 3, loop: false, speed: 5 },
-      idle: { from: 4, to: 7, loop: true, speed: 5 },
-      hit: { from: 8, to: 11, loop: true, speed: 5 },
+      spore: { from: 0, to: 3, loop: true, speed: 12 },
+      roots: { from: 4, to: 7, loop: false, speed: 8 },
+      impact: { from: 8, to: 11, loop: false, speed: 14 },
     },
   },
 );

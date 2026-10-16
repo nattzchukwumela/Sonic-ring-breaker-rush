@@ -84,7 +84,7 @@ export function LevelOne(options = {}) {
   const playerHealth = createPlayerHealth({
     sonic,
     healthText,
-    onDeath: () => endRun("Shroomdoom's scouts stopped the run."),
+    onDeath: () => endRun("Shroom Doom's scouts stopped the run."),
   });
 
   sonic.onCollide("enemy", (enemy) => {
@@ -167,7 +167,7 @@ export function LevelOne(options = {}) {
       running = false;
       music.stop();
       saveBestScore(score);
-      addHudText("SHROOMDOOM AHEAD!", k.center(), {
+      addHudText("SHROOM DOOM AHEAD!", k.center(), {
         size: 86,
         anchor: "center",
         color: k.rgb(255, 220, 48),

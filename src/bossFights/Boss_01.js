@@ -12,6 +12,7 @@ import { k } from "../kaplayCtx";
 
 const BOSS_MAX_HEALTH = STANDARD_BOSS_MAX_HEALTH;
 const BOSS_RAGE_HEALTH = Math.floor(BOSS_MAX_HEALTH / 2);
+const BOSS_GROUND_Y = 875 - SONIC_FOOT_OFFSET;
 
 export function BossLevelOne(options = {}) {
   let score = Number(options.score ?? 0);
@@ -22,6 +23,7 @@ export function BossLevelOne(options = {}) {
   let attackTimer = 1.6;
   let chargeTimer = 0;
   let direction = -1;
+  let attackPattern = 0;
 
   k.setGravity(3100);
   const music = k.play("shroomdoom", { loop: true, volume: 0.38 });
@@ -44,7 +46,7 @@ export function BossLevelOne(options = {}) {
       k.z(-1),
     ]);
   }
-  addGround(875 - SONIC_FOOT_OFFSET);
+  addGround(BOSS_GROUND_Y);
 
   const addFloatingPlatform = (x, y) => {
     k.add([
@@ -88,7 +90,7 @@ export function BossLevelOne(options = {}) {
   });
 
   const updateBossHud = () => {
-    bossText.text = `SHROOMDOOM  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
+    bossText.text = `SHROOM DOOM  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
   };
   updateBossHud();
 
@@ -108,9 +110,9 @@ export function BossLevelOne(options = {}) {
     k.go("game-over", {
       retryScene: "levelOneBoss",
       retryData: { score, rings },
-      stageName: "Shroomdoom's Lair",
+      stageName: "Shroom Doom's Lair",
       score,
-      reason: "Shroomdoom wins this round.",
+      reason: "Shroom Doom wins this round.",
     });
   };
 
@@ -120,6 +122,18 @@ export function BossLevelOne(options = {}) {
     onDeath: loseBattle,
   });
 
+  const spawnShroomImpact = (position) => {
+    k.add([
+      k.sprite("shroomdoom-attacks", { anim: "impact" }),
+      k.pos(position),
+      k.anchor("center"),
+      k.scale(0.42),
+      k.opacity(1),
+      k.z(8),
+      k.lifespan(0.38),
+    ]);
+  };
+
   const spawnSpore = () => {
     if (!battleActive || !boss.exists()) return;
     const origin = boss.pos.add(k.vec2(direction * 90, -120));
@@ -128,41 +142,73 @@ export function BossLevelOne(options = {}) {
     const length = Math.max(1, Math.hypot(dx, dy));
     const speed = bossHealth <= BOSS_RAGE_HEALTH ? 720 : 600;
     const velocity = k.vec2((dx / length) * speed, (dy / length) * speed);
+    const attackAngle = (Math.atan2(dy, Math.abs(dx)) * 180) / Math.PI;
 
     const spore = k.add([
-      k.circle(30),
+      k.sprite("shroomdoom-attacks", { anim: "spore" }),
       k.pos(origin),
       k.anchor("center"),
-      k.area(),
-      k.color(k.rgb(159, 235, 72)),
-      k.outline(8, k.rgb(70, 40, 110)),
+      k.scale(0.34),
+      k.rotate(attackAngle),
+      k.area({ shape: new k.Circle(k.vec2(0), 88) }),
       k.opacity(1),
       k.z(6),
       k.lifespan(5),
       "hazard",
-      { velocity },
+      { showShroomImpact: true, velocity },
     ]);
+    spore.flipX = dx > 0;
     spore.onUpdate(() => spore.move(spore.velocity));
+  };
+
+  const spawnRootAttack = (horizontalOffset = 0) => {
+    if (!battleActive) return;
+    const targetX = k.clamp(sonic.pos.x + horizontalOffset, 110, 1810);
+    const rootScale = 0.48;
+    const rootFrameHeight = 1024 / 3;
+    const roots = k.add([
+      k.sprite("shroomdoom-attacks", { anim: "roots" }),
+      k.pos(targetX, BOSS_GROUND_Y - (rootFrameHeight * rootScale) / 2),
+      k.anchor("center"),
+      k.scale(rootScale),
+      k.opacity(1),
+      k.z(6),
+      k.lifespan(0.58),
+    ]);
+
+    k.wait(0.18, () => {
+      if (!battleActive || !roots.exists()) return;
+      k.add([
+        k.rect(120, 170),
+        k.pos(targetX, BOSS_GROUND_Y - 85),
+        k.anchor("center"),
+        k.area(),
+        k.opacity(0),
+        k.lifespan(0.3),
+        "hazard",
+      ]);
+    });
   };
 
   sonic.onCollide("hazard", (hazard) => {
     if (!battleActive) return;
+    const sourceX = hazard.pos.x;
+    if (hazard.showShroomImpact) spawnShroomImpact(hazard.pos.clone());
     if (hazard.exists()) k.destroy(hazard);
-    playerHealth.damage(hazard.pos.x);
+    playerHealth.damage(sourceX);
   });
 
   const defeatBoss = () => {
     battleActive = false;
     music.stop();
     k.destroyAll("hazard");
-    boss.play("death");
-    boss.opacity = 1;
+    boss.playDeath();
     score += 2000;
     scoreText.text = `SCORE  ${score}`;
     saveBestScore(score);
     unlockStage(2);
 
-    addHudText("SHROOMDOOM DEFEATED!", k.vec2(960, 350), {
+    addHudText("SHROOM DOOM DEFEATED!", k.vec2(960, 350), {
       size: 78,
       anchor: "center",
       color: k.rgb(255, 220, 48),
@@ -188,7 +234,6 @@ export function BossLevelOne(options = {}) {
     updateBossHud();
     k.play("destroy", { volume: 0.55 });
     boss.playHit();
-    boss.opacity = 0.55;
     sonic.bounce();
 
     if (bossHealth <= 0) {
@@ -199,7 +244,6 @@ export function BossLevelOne(options = {}) {
     k.wait(0.75, () => {
       if (!boss.exists() || !battleActive) return;
       bossInvulnerable = false;
-      boss.opacity = 1;
       boss.setEvent();
     });
   };
@@ -234,8 +278,18 @@ export function BossLevelOne(options = {}) {
     if (attackTimer <= 0) {
       direction = sonic.pos.x < boss.pos.x ? -1 : 1;
       chargeTimer = 0.65;
-      spawnSpore();
-      if (bossHealth <= BOSS_RAGE_HEALTH) k.wait(0.28, spawnSpore);
+      const attackType = attackPattern % 2 === 0 ? "spore" : "roots";
+      attackPattern += 1;
+
+      if (attackType === "spore") {
+        spawnSpore();
+        if (bossHealth <= BOSS_RAGE_HEALTH) k.wait(0.28, spawnSpore);
+      } else {
+        spawnRootAttack();
+        if (bossHealth <= BOSS_RAGE_HEALTH) {
+          k.wait(0.28, () => spawnRootAttack(direction * 170));
+        }
+      }
       attackTimer = bossHealth <= BOSS_RAGE_HEALTH ? 1.45 : 2.2;
     }
   });
