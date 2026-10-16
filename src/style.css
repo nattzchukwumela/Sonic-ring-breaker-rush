@@ -14,16 +14,24 @@ body {
 body {
   position: fixed;
   inset: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
   -webkit-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 canvas {
-  max-width: none;
-  max-height: none;
-  object-fit: contain;
+  /* KAPLAY sets width and height inline, so these rules must take priority. */
+  width: min(100%, 177.7778dvh) !important;
+  height: auto !important;
+  max-height: 100%;
+  aspect-ratio: 16 / 9;
   touch-action: none;
+}
+
+#rotate-prompt {
+  display: none;
 }
 
 #mobile-controls {
@@ -95,7 +103,34 @@ canvas {
   }
 }
 
-@media (orientation: portrait) {
+@media (pointer: coarse) and (orientation: portrait) {
+  #rotate-prompt {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 32px;
+    background: #041b4a;
+    color: white;
+    text-align: center;
+    font: 600 clamp(16px, 4vw, 22px) / 1.4 system-ui, sans-serif;
+  }
+
+  #rotate-prompt strong {
+    color: #ffdc30;
+    font-size: clamp(26px, 8vw, 42px);
+  }
+
+  .rotate-prompt__icon {
+    color: #ffdc30;
+    font-size: 76px;
+    line-height: 1;
+  }
+
   :root {
     --mobile-control-size: clamp(62px, 18vw, 90px);
   }

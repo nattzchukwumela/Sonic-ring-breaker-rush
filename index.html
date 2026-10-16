@@ -16,10 +16,15 @@
             * { box-sizing: border-box; }
             html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #041b4a; }
             body { display: grid; place-items: center; }
-            canvas { display: block; width: 100%; height: 100%; }
+            canvas { display: block; }
         </style>
     </head>
     <body>
+        <div id="rotate-prompt" role="status" aria-label="Rotate your phone to landscape to play">
+            <span class="rotate-prompt__icon" aria-hidden="true">↻</span>
+            <strong>Rotate your phone</strong>
+            <span>Play in landscape for the full game view.</span>
+        </div>
         <script type="module" src="/src/main.js"></script>
     </body>
 </html>

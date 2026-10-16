@@ -2,6 +2,7 @@ import "./style.css";
 import { LevelOne } from "./gameLevels/level_01";
 import LevelSelect from "./gameLevels/levelSelect";
 import { k } from "./kaplayCtx";
+import { setupMobileExperience } from "./mobileExperience";
 import { LevelFour } from "./gameLevels/Level_04";
 import MainMenu from "./scene/mainMenu";
 import { BossLevelOne } from "./bossFights/Boss_01";
@@ -15,6 +16,8 @@ import { LevelSix } from "./gameLevels/level_06_space";
 import { SpaceBoss } from "./bossFights/SpaceBoss";
 import { IceBoss } from "./bossFights/IceBoss";
 import Splash from "./scene/splash";
+
+setupMobileExperience();
 
 // game assets
 
