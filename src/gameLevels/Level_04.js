@@ -15,7 +15,7 @@ export function LevelFour(options = {}) {
   let running = true;
 
   k.setGravity(3200);
-  const music = k.play("city", { loop: true, volume: 0.32 });
+  const music = k.play("chemical-rush", { loop: true, volume: 0.32 });
 
   const backgrounds = [0, 1920].map((x) =>
     k.add([

@@ -133,6 +133,8 @@ k.loadSound("hyper-ring", "sounds/HyperRing.wav");
 k.loadSound("jump", "sounds/Jump.wav");
 k.loadSound("ring", "sounds/Ring.wav");
 k.loadSound("city", "sounds/city.mp3");
+k.loadSound("chemical-rush", "sounds/Claws_in_the_Hangar.mp3");
+k.loadSound("sky-patrol", "sounds/Emerald_Glade_Dash.mp3");
 k.loadSound("unknown-trajectory", "sounds/Trajectory_Unknown.mp3");
 k.loadSound("ingame-sound", "sounds/game-sound.mp3");
 k.loadSound("roll", "sounds/roll.wav");

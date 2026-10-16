@@ -15,7 +15,7 @@ export function LevelThree(options = {}) {
       groundSprite: "zigzag-grass",
       groundColor: k.rgb(102, 66, 38),
       groundY: 840,
-      music: "ingame-sound",
+      music: "sky-patrol",
       goal: 700,
       startSpeed: 610,
       maxSpeed: 980,
