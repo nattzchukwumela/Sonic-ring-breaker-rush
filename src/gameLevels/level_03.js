@@ -308,6 +308,7 @@ export function LevelThree(options = {}) {
       k.area(),
       k.color(k.rgb(35, 35, 68)),
       k.outline(6, k.rgb(160, 210, 255)),
+      k.opacity(1),
       k.z(4),
       k.lifespan(6),
       "hazard",
