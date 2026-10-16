@@ -20,24 +20,25 @@ export default function LevelSelect() {
     k.z(-9),
   ]);
 
-  addHudText("SELECT STAGE", k.vec2(960, 110), {
+  addHudText("SELECT STAGE", k.vec2(960, 70), {
     font: "nise-sega-font",
-    size: 74,
+    size: 62,
     anchor: "center",
     color: k.rgb(255, 220, 48),
   });
-  addHudText(`BEST SCORE  ${getBestScore()}`, k.vec2(960, 185), {
-    size: 34,
+  addHudText(`BEST SCORE  ${getBestScore()}`, k.vec2(960, 135), {
+    size: 28,
     anchor: "center",
   });
 
   stages.forEach((stage, index) => {
     const unlocked = stage.id <= unlockedStage;
-    const firstRow = [260, 730, 1190, 1660];
-    const x = index < 4 ? firstRow[index] : firstRow[index - 4];
-    const y = index < 4 ? 350 : 650;
+    const column = index % 5;
+    const row = Math.floor(index / 5);
+    const x = [200, 580, 960, 1340, 1720][column];
+    const y = 355 + row * 310;
     const card = k.add([
-      k.rect(410, 210, { radius: 26 }),
+      k.rect(340, 230, { radius: 24 }),
       k.pos(x, y),
       k.anchor("center"),
       k.area(),
@@ -47,20 +48,20 @@ export default function LevelSelect() {
       k.z(2),
     ]);
 
-    addHudText(`STAGE ${stage.id}`, k.vec2(x, y - 56), {
-      size: 27,
+    addHudText(`STAGE ${stage.id}`, k.vec2(x, y - 68), {
+      size: 22,
       anchor: "center",
       color: unlocked ? k.rgb(255, 255, 255) : k.rgb(165, 172, 188),
       z: 3,
     });
-    addHudText(unlocked ? stage.name : "LOCKED", k.vec2(x, y - 10), {
-      size: 25,
+    addHudText(unlocked ? stage.name : "LOCKED", k.vec2(x, y - 22), {
+      size: 20,
       anchor: "center",
       color: unlocked ? k.rgb(255, 220, 48) : k.rgb(165, 172, 188),
       z: 3,
     });
-    addHudText(unlocked ? stage.subtitle : `Clear Stage ${stage.id - 1} to unlock`, k.vec2(x, y + 48), {
-      size: 18,
+    addHudText(unlocked ? stage.subtitle : `Clear Stage ${stage.id - 1} to unlock`, k.vec2(x, y + 40), {
+      size: 14,
       anchor: "center",
       color: unlocked ? k.rgb(190, 228, 255) : k.rgb(139, 146, 162),
       z: 3,
@@ -82,7 +83,7 @@ export default function LevelSelect() {
   addActionButton({
     label: "BACK",
     position: k.vec2(960, 920),
-    width: 300,
+    width: 280,
     onPress: () => k.go("main-menu"),
   });
   k.onKeyPress("escape", () => k.go("main-menu"));

@@ -15,9 +15,13 @@ import { LevelFourFinal } from "./gameLevels/level_04_final";
 import { LevelFive } from "./gameLevels/level_05_desert";
 import { LevelVolcano } from "./gameLevels/level_06_volcano";
 import { LevelUnderwater } from "./gameLevels/level_07_underwater";
+import { LevelStormFactory } from "./gameLevels/level_08_storm_factory";
+import { LevelHauntedRuins } from "./gameLevels/level_09_haunted_ruins";
 import { DesertBoss } from "./bossFights/DesertBoss";
 import { VolcanoBoss } from "./bossFights/VolcanoBoss";
 import { UnderwaterBoss } from "./bossFights/UnderwaterBoss";
+import { StormFactoryBoss } from "./bossFights/StormFactoryBoss";
+import { HauntedRuinsBoss } from "./bossFights/HauntedRuinsBoss";
 import { LevelSix } from "./gameLevels/level_06_space";
 import { SpaceBoss } from "./bossFights/SpaceBoss";
 import { IceBoss } from "./bossFights/IceBoss";
@@ -51,6 +55,22 @@ k.loadSprite(
   "underwater-boss-bg",
   "/graphics/backgrounds/bosses/Underwater%20Ruins%20Throne%20Chamber-1.png",
 );
+k.loadSprite(
+  "storm-factory-stage-bg",
+  "/graphics/backgrounds/stages/Violet%20Lightning%20Storm%20Factory-1.png",
+);
+k.loadSprite(
+  "storm-factory-boss-bg",
+  "/graphics/backgrounds/bosses/Storm%20Factory%20Turbine%20Chamber-2.png",
+);
+k.loadSprite(
+  "haunted-ruins-stage-bg",
+  "/graphics/backgrounds/stages/Moonlit%20Haunted%20Ruins-1.png",
+);
+k.loadSprite(
+  "haunted-ruins-boss-bg",
+  "/graphics/backgrounds/bosses/Haunted%20Bell%20Tower%20Arena-2.png",
+);
 k.loadSprite("space-nebula-bg", "/graphics/backgrounds/stages/space-nebula.jpg");
 k.loadSprite("frozen-glacier-bg", "/graphics/backgrounds/stages/frozen-glacier.png");
 k.loadSprite(
@@ -72,6 +92,14 @@ k.loadSprite(
 k.loadSprite(
   "underwater-platform",
   "/graphics/platforms/underwater%20ruins/Submerged%20Temple%20Ruins%20Platform.png",
+);
+k.loadSprite(
+  "storm-factory-platform",
+  "/graphics/platforms/storm%20factory/Storm%20Factory%20Steel%20Conveyor%20Platform-3.png",
+);
+k.loadSprite(
+  "haunted-ruins-platform",
+  "/graphics/platforms/huanted%20ruins/Haunted%20Gothic%20Ruins%20Platform%20Strip-3.png",
 );
 
 // forest wave platforms
@@ -203,6 +231,48 @@ k.loadSprite(
   },
 );
 k.loadSprite(
+  "sparkgear",
+  "/graphics/enemies/storm%20factory/Sparkgear,%20the%20orange-eyed%20cogwheel%20bot-4.png",
+);
+k.loadSprite(
+  "geargrind-boss",
+  "/graphics/enemies/bosses/Geargrind,%20the%20Spinning%20Gear%20Boss-5.png",
+);
+k.loadSprite(
+  "geargrind-attacks",
+  "/graphics/attacks/Geargrind%20robot%20boss%20attack%20sprites-6.png",
+  {
+    sliceX: 4,
+    sliceY: 3,
+    anims: {
+      saw: { from: 0, to: 3, loop: true, speed: 13 },
+      lightning: { from: 4, to: 7, loop: true, speed: 13 },
+      impact: { from: 8, to: 11, loop: false, speed: 14 },
+    },
+  },
+);
+k.loadSprite(
+  "wispwick",
+  "/graphics/enemies/huanted%20ruins/Wispwick,%20the%20Haunted%20Lantern%20Ghost-4.png",
+);
+k.loadSprite(
+  "phantom-bell-boss",
+  "/graphics/enemies/bosses/Phantom%20Bell,%20Haunted%20Ruins%20Boss-5.png",
+);
+k.loadSprite(
+  "phantom-bell-attacks",
+  "/graphics/attacks/Phantom%20Bell%20Ghost%20Attack%20Sprite%20Sheet-6.png",
+  {
+    sliceX: 4,
+    sliceY: 3,
+    anims: {
+      spirit: { from: 0, to: 3, loop: true, speed: 12 },
+      portal: { from: 4, to: 7, loop: true, speed: 12 },
+      impact: { from: 8, to: 11, loop: false, speed: 14 },
+    },
+  },
+);
+k.loadSprite(
   "dunefang-boss",
   "/graphics/enemies/bosses/Dunefang,%20Sand%20Demon%20Boss.png",
 );
@@ -288,12 +358,16 @@ k.loadSound("glacier-velocity", "/sounds/music/stages/frozen-glacier.mp3");
 k.loadSound("demon-dunes", "/sounds/music/stages/demon-dunes.mp3");
 k.loadSound("obsidian-overdrive", "/sounds/music/stages/Obsidian_Overdrive.mp3");
 k.loadSound("currents-sleep", "/sounds/music/stages/Where_the_Currents_Sleep.mp3");
+k.loadSound("high-voltage-requiem", "/sounds/music/stages/High_Voltage_Requiem.mp3");
+k.loadSound("midnight-keep", "/sounds/music/stages/Midnight_at_the_Keep.mp3");
 k.loadSound("unknown-trajectory", "/sounds/music/stages/starfall-station.mp3");
 k.loadSound("shroomdoom", "/sounds/music/bosses/shroomdoom.mp3");
 k.loadSound("ice-boss", "/sounds/music/bosses/ice-king.mp3");
 k.loadSound("desert-boss", "/sounds/music/bosses/blackheart.mp3");
 k.loadSound("target-locked", "/sounds/music/bosses/Target_Locked.mp3");
 k.loadSound("guardian-flood", "/sounds/music/bosses/Guardian_of_the_Flood.mp3");
+k.loadSound("geargrind-boss-music", "/sounds/music/bosses/i_can_t_see_it.mp3");
+k.loadSound("belfry-iron-chains", "/sounds/music/bosses/Belfry_of_Iron_Chains.mp3");
 k.loadSound("final-boss", "/sounds/music/bosses/final-boss.mp3");
 k.loadSound(
   "level-complete",
@@ -310,6 +384,8 @@ k.scene("levelFourFinal", LevelFourFinal);
 k.scene("levelFive", LevelFive);
 k.scene("levelVolcano", LevelVolcano);
 k.scene("levelUnderwater", LevelUnderwater);
+k.scene("levelStormFactory", LevelStormFactory);
+k.scene("levelHauntedRuins", LevelHauntedRuins);
 k.scene("levelSix", LevelSix);
 k.scene("main-menu", MainMenu);
 k.scene("levelOneBoss", BossLevelOne);
@@ -318,6 +394,8 @@ k.scene("iceBoss", IceBoss);
 k.scene("desertBoss", DesertBoss);
 k.scene("volcanoBoss", VolcanoBoss);
 k.scene("underwaterBoss", UnderwaterBoss);
+k.scene("stormFactoryBoss", StormFactoryBoss);
+k.scene("hauntedRuinsBoss", HauntedRuinsBoss);
 k.scene("spaceBoss", SpaceBoss);
 k.scene("game-over", GameOver);
 k.scene("victory", Victory);

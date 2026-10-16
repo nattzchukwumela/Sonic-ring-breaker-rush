@@ -48,6 +48,18 @@ export const stages = [
   },
   {
     id: 8,
+    name: "High Voltage Requiem",
+    subtitle: "Break through the lightning factory",
+    scene: "levelStormFactory",
+  },
+  {
+    id: 9,
+    name: "Midnight Keep",
+    subtitle: "Break the curse of the haunted ruins",
+    scene: "levelHauntedRuins",
+  },
+  {
+    id: 10,
     name: "Starfall Station",
     subtitle: "Stop the invaders beyond the stars",
     scene: "levelSix",

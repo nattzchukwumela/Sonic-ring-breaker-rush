@@ -175,9 +175,9 @@ export function UnderwaterBoss(options = {}) {
     k.wait(2.2, () =>
       k.go("victory", {
         title: "RUINS RESTORED!",
-        message: `Starfall Station unlocked • Ring bonus: ${rings * 25}`,
+        message: `High Voltage Requiem unlocked • Ring bonus: ${rings * 25}`,
         score,
-        nextScene: "levelSix",
+        nextScene: "levelStormFactory",
       }),
     );
   };

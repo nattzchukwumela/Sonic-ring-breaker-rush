@@ -108,6 +108,7 @@ export function ChemicalBoss(options = {}) {
       k.pos(position),
       k.anchor("center"),
       k.scale(0.34),
+      k.opacity(1),
       k.z(8),
       k.lifespan(0.38),
     ]);
