@@ -131,7 +131,10 @@ k.loadSprite(
   "/graphics/enemies/bosses/Dunefang,%20Sand%20Demon%20Boss.png",
 );
 k.loadSprite("ice-kirby", "/graphics/enemies/ice/ice-kirby.png");
-k.loadSprite("ice-king", "/graphics/enemies/bosses/ice-king.png");
+k.loadSprite(
+  "frostmaw-boss",
+  "/graphics/enemies/bosses/Frostmaw,%20the%20Glacier%20Beast.png",
+);
 k.loadSprite("storm-falcon", "/graphics/enemies/bosses/storm-falcon.png");
 k.loadSprite("sky-bird", "/graphics/enemies/sky/bird.png", {
   sliceX: 6,

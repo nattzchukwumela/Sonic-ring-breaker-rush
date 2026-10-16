@@ -33,7 +33,7 @@ export function LevelFourFinal(options = {}) {
       ],
       loseMessage: "The frozen valley stopped Sonic in his tracks.",
       completeScene: "iceBoss",
-      completeText: "ICE KING AWAITS!",
+      completeText: "FROSTMAW AWAITS!",
     },
     options,
   );

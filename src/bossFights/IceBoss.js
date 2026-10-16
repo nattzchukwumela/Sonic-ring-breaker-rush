@@ -1,4 +1,4 @@
-import { makeIceKing } from "../entities/boss/iceKing";
+import { makeFrostmaw } from "../entities/boss/frostmaw";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore, unlockStage } from "../gameState";
 import {
@@ -64,7 +64,7 @@ export function IceBoss(options = {}) {
   });
 
   const updateBossHud = () => {
-    bossText.text = `ICE KING  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
+    bossText.text = `FROSTMAW  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
   };
   updateBossHud();
 
@@ -74,7 +74,7 @@ export function IceBoss(options = {}) {
   sonic.setEvents();
   sonic.setMoveForward();
 
-  const boss = makeIceKing(k.vec2(1510, 670));
+  const boss = makeFrostmaw(k.vec2(1510, 670));
 
   const loseBattle = () => {
     if (!battleActive) return;
@@ -84,9 +84,9 @@ export function IceBoss(options = {}) {
     k.go("game-over", {
       retryScene: "iceBoss",
       retryData: { score, rings },
-      stageName: "Ice King's Glacier",
+      stageName: "Frostmaw's Glacier",
       score,
-      reason: "The Ice King froze Sonic's run.",
+      reason: "Frostmaw froze Sonic's run.",
     });
   };
 
@@ -136,7 +136,7 @@ export function IceBoss(options = {}) {
     saveBestScore(score);
     unlockStage(5);
 
-    addHudText("ICE KING DEFEATED!", k.vec2(960, 325), {
+    addHudText("FROSTMAW DEFEATED!", k.vec2(960, 325), {
       font: "nise-sega-font",
       size: 72,
       anchor: "center",
