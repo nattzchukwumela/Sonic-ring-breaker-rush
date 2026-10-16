@@ -18,67 +18,58 @@ import Splash from "./scene/splash";
 // game assets
 
 // game background and platform sprites
-k.loadSprite("chemical-bg", "/graphics/backgrounds/chemical-bg.png");
-k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
-k.loadSprite("forest-day-bg", "/graphics/backgrounds/forest-day.jpg");
-k.loadSprite(
-  "sky-islands-bg",
-  "/graphics/backgrounds/Pixel Sky Islands and Waterfalls.png",
-);
-k.loadSprite("desert-day-bg", "/graphics/backgrounds/desert-day.jpg");
-k.loadSprite("desert-sunset-bg", "/graphics/backgrounds/desert-sunset.jpg");
-k.loadSprite("space-nebula-bg", "/graphics/backgrounds/space-nebula.jpg");
-k.loadSprite(
-  "frozen-glacier-bg",
-  "/graphics/backgrounds/Frozen Glacier Valley.png",
-);
+k.loadSprite("chemical-bg", "/graphics/backgrounds/stages/chemical-rush.png");
+k.loadSprite("forest-bg", "/graphics/backgrounds/stages/forest.png");
+k.loadSprite("forest-day-bg", "/graphics/backgrounds/stages/forest-day.jpg");
+k.loadSprite("sky-islands-bg", "/graphics/backgrounds/stages/sky-islands.png");
+k.loadSprite("desert-day-bg", "/graphics/backgrounds/stages/desert-day.jpg");
+k.loadSprite("desert-sunset-bg", "/graphics/backgrounds/stages/desert-sunset.jpg");
+k.loadSprite("space-nebula-bg", "/graphics/backgrounds/stages/space-nebula.jpg");
+k.loadSprite("frozen-glacier-bg", "/graphics/backgrounds/stages/frozen-glacier.png");
 k.loadSprite(
   "ice-cap-boss-bg",
-  "/graphics/backgrounds/boss_backgrounds/ice-cap-zone.png",
+  "/graphics/backgrounds/bosses/ice-cap-zone.png",
 );
-k.loadSprite(
-  "intro-splash",
-  "/graphics/backgrounds/Sonic’s Forest-to-Space Boss Rush.png",
-);
-k.loadSprite("platform", "/graphics/platform/platforms.png");
-k.loadSprite("zigzag-grass", "/graphics/platform/zigzag_grass_platform.png");
-k.loadSprite("zigzag-snow", "/graphics/platform/zigzag_snow_platform.png");
-k.loadSprite("sky-large-platform", "/graphics/platform/sky-large-platform.png");
-k.loadSprite("sky-short-platform", "/graphics/platform/sky-short-platform.png");
-k.loadSprite("ice-boss-platform", "/graphics/platform/ice-boss-platform.png");
-k.loadSprite("space-platform", "/graphics/platform/space-platform.png");
+k.loadSprite("intro-splash", "/graphics/backgrounds/splash/title-card.png");
+k.loadSprite("platform", "/graphics/platforms/common/chemical-platform.png");
+k.loadSprite("zigzag-grass", "/graphics/platforms/common/zigzag-grass.png");
+k.loadSprite("zigzag-snow", "/graphics/platforms/common/zigzag-snow.png");
+k.loadSprite("sky-large-platform", "/graphics/platforms/sky/large.png");
+k.loadSprite("sky-short-platform", "/graphics/platforms/sky/short.png");
+k.loadSprite("ice-boss-platform", "/graphics/platforms/ice/boss-platform.png");
+k.loadSprite("space-platform", "/graphics/platforms/space/platform.png");
 
 // forest wave platforms
 k.loadSprite(
   "forest_middle_platform",
-  "/graphics/platform/WaveForest_Square.png",
+  "/graphics/platforms/forest/square.png",
 );
 k.loadSprite(
   "forest_upfrontLeft_platform",
-  "/graphics/platform/WaveForest_UpRoundLeft.png",
+  "/graphics/platforms/forest/upper-left.png",
 );
 k.loadSprite(
   "forest_upfrontRight_platform",
-  "/graphics/platform/WaveForest_UpRoundRight.png",
+  "/graphics/platforms/forest/upper-right.png",
 );
 k.loadSprite(
   "forest_upfrontHalfLeft_platform",
-  "/graphics/platform/WaveForest_Half_2RoundLeft.png",
+  "/graphics/platforms/forest/half-left.png",
 );
 k.loadSprite(
   "forest_upfrontHalfRight_platform",
-  "/graphics/platform/WaveForest_Half_2RoundRight.png",
+  "/graphics/platforms/forest/half-right.png",
 );
-k.loadSprite("grass-planes", "/graphics/platform/2dplatform.png");
+k.loadSprite("grass-planes", "/graphics/platforms/common/grass-plane.png");
 
 // enemy backgrounds
 k.loadSprite(
   "shroomdoom_bg",
-  "/graphics/backgrounds/boss_backgrounds/shroomdoom_bg.jpg",
+  "/graphics/backgrounds/bosses/shroomdoom.jpg",
 );
 
 // sonic sprite
-k.loadSprite("sonic", "/graphics/sonic.png", {
+k.loadSprite("sonic", "/graphics/characters/sonic.png", {
   sliceX: 8,
   sliceY: 2,
   anims: {
@@ -92,7 +83,7 @@ k.loadSprite("sonic", "/graphics/sonic.png", {
 // level one boss / shroomdoom
 k.loadSprite(
   "shroomdoom_one",
-  "/graphics/enemy/boss/shroomdoom/shroomdoom_one.png",
+  "/graphics/enemies/bosses/shroomdoom.png",
   {
     sliceX: 4,
     sliceY: 3,
@@ -107,7 +98,7 @@ k.loadSprite(
 // fodder enemy sprite
 k.loadSprite(
   "blue-monster",
-  "/graphics/enemy/fodder/blue_monster/Blue-Monster.png",
+  "/graphics/enemies/common/blue-monster.png",
   {
     sliceX: 2,
     sliceY: 2,
@@ -118,26 +109,26 @@ k.loadSprite(
   },
 );
 
-k.loadSprite("motobug", "graphics/motobug.png", {
+k.loadSprite("motobug", "/graphics/enemies/common/motobug.png", {
   sliceX: 5,
   sliceY: 1,
   anims: {
     run: { from: 0, to: 4, loop: true, speed: 8 },
   },
 });
-k.loadSprite("ufo-enemy", "/graphics/enemy/ufo_game_enemy.png");
-k.loadSprite("desert-hound", "/graphics/enemy/desert/desert-hound.png");
-k.loadSprite("desert-raider", "/graphics/enemy/desert/desert-raider.png");
-k.loadSprite("desert-brute", "/graphics/enemy/desert/desert-brute.png");
-k.loadSprite("blackheart-boss", "/graphics/enemy/desert/blackheart-boss.png");
-k.loadSprite("ice-kirby", "/graphics/enemy/ice/ice-kirby.png");
-k.loadSprite("ice-king", "/graphics/enemy/boss/ice-king/ice-king.png");
-k.loadSprite("winged-invader", "/graphics/enemy/space/winged-invader.png");
-k.loadSprite("flying-parasite", "/graphics/enemy/space/flying-parasite.png");
-k.loadSprite("invader-overlord", "/graphics/enemy/space/invader-overlord.png");
+k.loadSprite("ufo-enemy", "/graphics/enemies/common/ufo.png");
+k.loadSprite("desert-hound", "/graphics/enemies/desert/hound.png");
+k.loadSprite("desert-raider", "/graphics/enemies/desert/raider.png");
+k.loadSprite("desert-brute", "/graphics/enemies/desert/brute.png");
+k.loadSprite("blackheart-boss", "/graphics/enemies/desert/blackheart.png");
+k.loadSprite("ice-kirby", "/graphics/enemies/ice/ice-kirby.png");
+k.loadSprite("ice-king", "/graphics/enemies/bosses/ice-king.png");
+k.loadSprite("winged-invader", "/graphics/enemies/space/winged-invader.png");
+k.loadSprite("flying-parasite", "/graphics/enemies/space/flying-parasite.png");
+k.loadSprite("invader-overlord", "/graphics/enemies/space/invader-overlord.png");
 
 // rings sprite
-k.loadSprite("ring", "graphics/ring.png", {
+k.loadSprite("ring", "/graphics/collectibles/ring.png", {
   sliceX: 16,
   sliceY: 1,
   anims: {
@@ -146,30 +137,26 @@ k.loadSprite("ring", "graphics/ring.png", {
 });
 
 // game fonts
-k.loadFont("mania", "fonts/mania.ttf");
-k.loadFont("nise-sega-font", "fonts/nise-sega-sonic/NiseSegaSonic.TTF");
+k.loadFont("mania", "/fonts/mania.ttf");
+k.loadFont("nise-sega-font", "/fonts/nise-sega/nise-sega-sonic.ttf");
 
 // game sounds
-k.loadSound("destroy", "sounds/Destroy.wav");
-k.loadSound("hurt", "sounds/Hurt.wav");
-k.loadSound("hyper-ring", "sounds/HyperRing.wav");
-k.loadSound("jump", "sounds/Jump.wav");
-k.loadSound("ring", "sounds/Ring.wav");
-k.loadSound("city", "sounds/city.mp3");
-k.loadSound("chemical-rush", "sounds/Claws_in_the_Hangar.mp3");
-k.loadSound("sky-patrol", "sounds/Emerald_Glade_Dash.mp3");
-k.loadSound("glacier-velocity", "sounds/Glacier_Velocity.mp3");
-k.loadSound("ice-boss", "sounds/Velocity_at_Midnight.mp3");
-k.loadSound("unknown-trajectory", "sounds/Trajectory_Unknown.mp3");
-k.loadSound("ingame-sound", "sounds/game-sound.mp3");
-k.loadSound("roll", "sounds/roll.wav");
-k.loadSound("shroomdoom", "sounds/shroomdoom.mp3");
-k.loadSound("demon-dunes", "sounds/dune/Mirage_Peak_Run.mp3");
-k.loadSound(
-  "desert-boss",
-  "sounds/dune/Steel_Teeth_of_the_Titan (boss fight).mp3",
-);
-k.loadSound("final-boss", "sounds/Last_Stand_at_Zenith.mp3");
+k.loadSound("destroy", "/sounds/sfx/destroy.wav");
+k.loadSound("hurt", "/sounds/sfx/hurt.wav");
+k.loadSound("hyper-ring", "/sounds/sfx/hyper-ring.wav");
+k.loadSound("jump", "/sounds/sfx/jump.wav");
+k.loadSound("ring", "/sounds/sfx/ring.wav");
+k.loadSound("roll", "/sounds/sfx/roll.wav");
+k.loadSound("ingame-sound", "/sounds/music/stages/emerald-woods.mp3");
+k.loadSound("chemical-rush", "/sounds/music/stages/chemical-rush.mp3");
+k.loadSound("sky-patrol", "/sounds/music/stages/sky-patrol.mp3");
+k.loadSound("glacier-velocity", "/sounds/music/stages/frozen-glacier.mp3");
+k.loadSound("demon-dunes", "/sounds/music/stages/demon-dunes.mp3");
+k.loadSound("unknown-trajectory", "/sounds/music/stages/starfall-station.mp3");
+k.loadSound("shroomdoom", "/sounds/music/bosses/shroomdoom.mp3");
+k.loadSound("ice-boss", "/sounds/music/bosses/ice-king.mp3");
+k.loadSound("desert-boss", "/sounds/music/bosses/blackheart.mp3");
+k.loadSound("final-boss", "/sounds/music/bosses/final-boss.mp3");
 
 // game scenes
 k.scene("splash", Splash);
