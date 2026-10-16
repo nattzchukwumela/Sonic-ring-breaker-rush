@@ -51,7 +51,7 @@ export function createRunnerStage(config, options = {}) {
   const groundTiles = Array.from({ length: tileCount }, (_, index) =>
     k.add([
       k.sprite(config.groundSprite),
-      k.pos(index * tileWidth, config.groundY),
+      k.pos(index * tileWidth, config.groundY + (config.groundSpriteOffsetY ?? 0)),
       k.scale(groundScale[0], groundScale[1]),
       config.groundSpriteColor ? k.color(config.groundSpriteColor) : null,
       k.z(-1),

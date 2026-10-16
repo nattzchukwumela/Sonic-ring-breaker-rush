@@ -163,9 +163,9 @@ export function DesertBoss(options = {}) {
     k.wait(2.2, () =>
       k.go("victory", {
         title: "DESERT RESTORED!",
-        message: `Starfall Station unlocked • Ring bonus: ${rings * 25}`,
+        message: `Obsidian Overdrive unlocked • Ring bonus: ${rings * 25}`,
         score,
-        nextScene: "levelSix",
+        nextScene: "levelVolcano",
       }),
     );
   };

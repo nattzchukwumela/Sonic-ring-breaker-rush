@@ -33,12 +33,12 @@ export default function LevelSelect() {
 
   stages.forEach((stage, index) => {
     const unlocked = stage.id <= unlockedStage;
-    const column = index % 3;
-    const row = Math.floor(index / 3);
-    const x = [330, 960, 1590][column];
-    const y = 365 + row * 255;
+    const firstRow = [260, 730, 1190, 1660];
+    const secondRow = [490, 960, 1430];
+    const x = index < 4 ? firstRow[index] : secondRow[index - 4];
+    const y = index < 4 ? 350 : 650;
     const card = k.add([
-      k.rect(540, 184, { radius: 26 }),
+      k.rect(410, 210, { radius: 26 }),
       k.pos(x, y),
       k.anchor("center"),
       k.area(),
@@ -48,14 +48,20 @@ export default function LevelSelect() {
       k.z(2),
     ]);
 
-    addHudText(unlocked ? `STAGE ${stage.id}  •  ${stage.name}` : `STAGE ${stage.id}  •  LOCKED`, k.vec2(x, y - 30), {
-      size: 31,
+    addHudText(`STAGE ${stage.id}`, k.vec2(x, y - 56), {
+      size: 27,
       anchor: "center",
       color: unlocked ? k.rgb(255, 255, 255) : k.rgb(165, 172, 188),
       z: 3,
     });
-    addHudText(unlocked ? stage.subtitle : `Clear Stage ${stage.id - 1} to unlock`, k.vec2(x, y + 40), {
-      size: 22,
+    addHudText(unlocked ? stage.name : "LOCKED", k.vec2(x, y - 10), {
+      size: 25,
+      anchor: "center",
+      color: unlocked ? k.rgb(255, 220, 48) : k.rgb(165, 172, 188),
+      z: 3,
+    });
+    addHudText(unlocked ? stage.subtitle : `Clear Stage ${stage.id - 1} to unlock`, k.vec2(x, y + 48), {
+      size: 18,
       anchor: "center",
       color: unlocked ? k.rgb(190, 228, 255) : k.rgb(139, 146, 162),
       z: 3,
@@ -76,7 +82,7 @@ export default function LevelSelect() {
 
   addActionButton({
     label: "BACK",
-    position: k.vec2(960, 930),
+    position: k.vec2(960, 920),
     width: 300,
     onPress: () => k.go("main-menu"),
   });

@@ -36,6 +36,12 @@ export const stages = [
   },
   {
     id: 6,
+    name: "Obsidian Overdrive",
+    subtitle: "Outrun the eruption and reach the crater",
+    scene: "levelVolcano",
+  },
+  {
+    id: 7,
     name: "Starfall Station",
     subtitle: "Stop the invaders beyond the stars",
     scene: "levelSix",
