@@ -19,7 +19,7 @@ export const stages = [
   {
     id: 3,
     name: "Sky Patrol",
-    subtitle: "Break through the UFO squadron",
+    subtitle: "Climb the collapsing sky islands",
     scene: "levelThree",
   },
   {

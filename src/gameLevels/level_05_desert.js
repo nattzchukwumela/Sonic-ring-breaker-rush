@@ -20,7 +20,7 @@ export function LevelFive(options = {}) {
       groundSpriteColor: k.rgb(246, 170, 67),
       groundColor: k.rgb(151, 76, 32),
       groundY: 850,
-      music: "ingame-sound",
+      music: "demon-dunes",
       goal: 850,
       startSpeed: 680,
       maxSpeed: 1080,

@@ -1,5 +1,4 @@
-import { makeMotobug } from "../entities/fodder_entities/motobug";
-import { makeUfo } from "../entities/fodder_entities/ufo";
+import { makeIceKirby } from "../entities/fodder_entities/iceKirby";
 import { k } from "../kaplayCtx";
 import { createRunnerStage } from "./stageRunner";
 
@@ -16,7 +15,7 @@ export function LevelFourFinal(options = {}) {
       groundSprite: "zigzag-snow",
       groundColor: k.rgb(18, 45, 78),
       groundY: 840,
-      music: "city",
+      music: "glacier-velocity",
       goal: 900,
       startSpeed: 760,
       maxSpeed: 1250,
@@ -25,25 +24,16 @@ export function LevelFourFinal(options = {}) {
       enemyDelay: [1.05, 1.9],
       enemies: [
         {
-          create: makeMotobug,
+          create: makeIceKirby,
           flying: false,
           fires: false,
-          points: 175,
+          points: 225,
           speedBonus: 150,
-        },
-        {
-          create: makeUfo,
-          flying: true,
-          fires: true,
-          points: 300,
-          speedBonus: 180,
         },
       ],
       loseMessage: "The frozen valley stopped Sonic in his tracks.",
-      unlockStage: 5,
-      nextScene: "levelFive",
-      victoryTitle: "GLACIER CROSSED!",
-      victoryMessage: "Demon Dunes unlocked",
+      completeScene: "iceBoss",
+      completeText: "ICE KING AWAITS!",
     },
     options,
   );
