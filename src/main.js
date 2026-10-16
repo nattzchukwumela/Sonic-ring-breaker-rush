@@ -126,7 +126,10 @@ k.loadSprite("ufo-enemy", "/graphics/enemies/common/ufo.png");
 k.loadSprite("desert-hound", "/graphics/enemies/desert/hound.png");
 k.loadSprite("desert-raider", "/graphics/enemies/desert/raider.png");
 k.loadSprite("desert-brute", "/graphics/enemies/desert/brute.png");
-k.loadSprite("blackheart-boss", "/graphics/enemies/desert/blackheart.png");
+k.loadSprite(
+  "dunefang-boss",
+  "/graphics/enemies/bosses/Dunefang,%20Sand%20Demon%20Boss.png",
+);
 k.loadSprite("ice-kirby", "/graphics/enemies/ice/ice-kirby.png");
 k.loadSprite("ice-king", "/graphics/enemies/bosses/ice-king.png");
 k.loadSprite("storm-falcon", "/graphics/enemies/bosses/storm-falcon.png");

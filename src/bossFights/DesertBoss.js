@@ -1,4 +1,4 @@
-import { makeBlackheart } from "../entities/boss/blackheart";
+import { makeDunefang } from "../entities/boss/dunefang";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore, unlockStage } from "../gameState";
 import {
@@ -61,7 +61,7 @@ export function DesertBoss(options = {}) {
   });
 
   const updateBossHud = () => {
-    bossText.text = `BLACKHEART  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
+    bossText.text = `DUNEFANG  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
   };
   updateBossHud();
 
@@ -71,7 +71,7 @@ export function DesertBoss(options = {}) {
   sonic.setEvents();
   sonic.setMoveForward();
 
-  const boss = makeBlackheart(k.vec2(1510, 650));
+  const boss = makeDunefang(k.vec2(1510, 650));
 
   const loseBattle = () => {
     if (!battleActive) return;
@@ -81,9 +81,9 @@ export function DesertBoss(options = {}) {
     k.go("game-over", {
       retryScene: "desertBoss",
       retryData: { score, rings },
-      stageName: "Blackheart's Sunset",
+      stageName: "Dunefang's Dunes",
       score,
-      reason: "Blackheart claimed the desert.",
+      reason: "Dunefang claimed the desert.",
     });
   };
 
@@ -133,7 +133,7 @@ export function DesertBoss(options = {}) {
     saveBestScore(score);
     unlockStage(6);
 
-    addHudText("BLACKHEART DEFEATED!", k.vec2(960, 325), {
+    addHudText("DUNEFANG DEFEATED!", k.vec2(960, 325), {
       font: "nise-sega-font",
       size: 72,
       anchor: "center",
