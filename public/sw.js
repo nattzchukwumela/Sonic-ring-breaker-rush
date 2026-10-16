@@ -1,4 +1,4 @@
-const CACHE_NAME = "ringbreaker-rush-v1";
+const CACHE_NAME = "ringbreaker-rush-v2";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -39,6 +39,26 @@ self.addEventListener("fetch", (event) => {
   const requestUrl = new URL(event.request.url);
   if (requestUrl.origin !== self.location.origin) return;
 
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          const copy = networkResponse.clone();
+          void caches
+            .open(CACHE_NAME)
+            .then((cache) => cache.put(event.request, copy))
+            .catch(() => {});
+          return networkResponse;
+        })
+        .catch(() =>
+          caches
+            .match(event.request)
+            .then((response) => response ?? caches.match("/index.html")),
+        ),
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
@@ -54,12 +74,7 @@ self.addEventListener("fetch", (event) => {
           }
           return networkResponse;
         })
-        .catch(() => {
-          if (event.request.mode === "navigate") {
-            return caches.match("/index.html");
-          }
-          return Response.error();
-        });
+        .catch(() => Response.error());
     }),
   );
 });

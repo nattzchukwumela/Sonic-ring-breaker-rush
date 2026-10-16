@@ -4,8 +4,22 @@ import { k } from "../kaplayCtx";
 
 export default function Victory(options = {}) {
   const score = Number(options.score ?? 0);
+  let leaving = false;
   saveBestScore(score);
   k.setGravity(0);
+  const completionMusic = k.play("level-complete", {
+    loop: true,
+    volume: 0.42,
+  });
+
+  const leaveVictory = (scene, data) => {
+    if (leaving) return;
+    leaving = true;
+    completionMusic.stop();
+    k.go(scene, data);
+  };
+
+  const goToStageSelect = () => leaveVictory("level-select");
 
   k.add([
     k.sprite("forest-bg"),
@@ -40,21 +54,26 @@ export default function Victory(options = {}) {
     anchor: "center",
     color: k.rgb(255, 220, 48),
   });
+  addHudText("PRESS ENTER / SPACE OR CHOOSE AN OPTION", k.vec2(960, 645), {
+    size: 25,
+    anchor: "center",
+    color: k.rgb(190, 228, 255),
+  });
 
+  let primaryAction;
   if (options.nextScene) {
-    const next = () => k.go(options.nextScene, { score });
+    primaryAction = () => leaveVictory(options.nextScene, { score });
     addActionButton({
       label: "NEXT STAGE",
       position: k.vec2(960, 730),
-      onPress: next,
+      onPress: primaryAction,
     });
-    k.onKeyPress("space", next);
-    k.onKeyPress("enter", next);
   } else {
+    primaryAction = goToStageSelect;
     addActionButton({
       label: "PLAY AGAIN",
       position: k.vec2(960, 730),
-      onPress: () => k.go("level-select"),
+      onPress: primaryAction,
     });
   }
 
@@ -62,7 +81,9 @@ export default function Victory(options = {}) {
     label: "STAGE SELECT",
     position: k.vec2(960, 855),
     width: 380,
-    onPress: () => k.go("level-select"),
+    onPress: goToStageSelect,
   });
-  k.onKeyPress("escape", () => k.go("level-select"));
+  k.onKeyPress(["space", "enter"], primaryAction);
+  k.onKeyPress("escape", goToStageSelect);
+  k.onSceneLeave(() => completionMusic.stop());
 }

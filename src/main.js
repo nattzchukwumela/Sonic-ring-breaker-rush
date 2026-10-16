@@ -170,6 +170,10 @@ k.loadSound("shroomdoom", "/sounds/music/bosses/shroomdoom.mp3");
 k.loadSound("ice-boss", "/sounds/music/bosses/ice-king.mp3");
 k.loadSound("desert-boss", "/sounds/music/bosses/blackheart.mp3");
 k.loadSound("final-boss", "/sounds/music/bosses/final-boss.mp3");
+k.loadSound(
+  "level-complete",
+  "/sounds/music/level%20finish%20sound/The_Perfect_Run.mp3",
+);
 
 // game scenes
 k.scene("splash", Splash);
