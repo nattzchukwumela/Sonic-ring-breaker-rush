@@ -2,7 +2,12 @@ import { makeMotobug } from "../entities/fodder_entities/motobug";
 import { makeRing } from "../entities/ring";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore, unlockStage } from "../gameState";
-import { addGround, addHudText, createPlayerHealth } from "../gameplay";
+import {
+  addGround,
+  addHudText,
+  addPauseFeature,
+  createPlayerHealth,
+} from "../gameplay";
 import { k } from "../kaplayCtx";
 
 const GOAL_DISTANCE = 650;
@@ -171,8 +176,10 @@ export function LevelFour(options = {}) {
     }
   });
 
-  k.onKeyPress("escape", () => {
-    music.stop();
-    k.go("level-select");
+  addPauseFeature({
+    onExit: () => {
+      music.stop();
+      k.go("level-select");
+    },
   });
 }

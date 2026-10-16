@@ -30,7 +30,7 @@ export function makeSonic(pos, jumpPower = 1700) {
           this.jumpsUsed = 0;
         });
         k.onButtonPress("jump", () => {
-          if (this.isDead) return;
+          if (this.isDead || k.debug.paused) return;
 
           const grounded = this.isGrounded();
           if (grounded) this.jumpsUsed = 0;
@@ -48,7 +48,12 @@ export function makeSonic(pos, jumpPower = 1700) {
         if (this.rollReady) return;
         this.rollReady = true;
         k.onButtonPress("roll", () => {
-          if (!this.isDead && this.isGrounded() && !this.isRolling) {
+          if (
+            !this.isDead &&
+            !k.debug.paused &&
+            this.isGrounded() &&
+            !this.isRolling
+          ) {
             this.isRolling = true;
             this.play("roll");
             k.wait(0.7, () => {
@@ -72,10 +77,10 @@ export function makeSonic(pos, jumpPower = 1700) {
         if (this.moveReady) return;
         this.moveReady = true;
         k.onButtonDown("left", () => {
-          if (!this.isDead) this.move(-speed, 0);
+          if (!this.isDead && !k.debug.paused) this.move(-speed, 0);
         });
         k.onButtonDown("right", () => {
-          if (!this.isDead) this.move(speed, 0);
+          if (!this.isDead && !k.debug.paused) this.move(speed, 0);
         });
         this.onUpdate(() => {
           this.pos.x = k.clamp(this.pos.x, minX, maxX);

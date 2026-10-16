@@ -1,7 +1,12 @@
 import { makeRing } from "../entities/ring";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore, unlockStage } from "../gameState";
-import { addGround, addHudText, createPlayerHealth } from "../gameplay";
+import {
+  addGround,
+  addHudText,
+  addPauseFeature,
+  createPlayerHealth,
+} from "../gameplay";
 import { k } from "../kaplayCtx";
 
 export function createRunnerStage(config, options = {}) {
@@ -250,8 +255,10 @@ export function createRunnerStage(config, options = {}) {
     }
   });
 
-  k.onKeyPress("escape", () => {
-    music.stop();
-    k.go("level-select");
+  addPauseFeature({
+    onExit: () => {
+      music.stop();
+      k.go("level-select");
+    },
   });
 }

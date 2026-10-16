@@ -1,10 +1,17 @@
 import { makeInvaderOverlord } from "../entities/boss/invaderOverlord";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore } from "../gameState";
-import { addGround, addHudText, createPlayerHealth } from "../gameplay";
+import {
+  addGround,
+  addHudText,
+  addPauseFeature,
+  createPlayerHealth,
+  FINAL_BOSS_MAX_HEALTH,
+} from "../gameplay";
 import { k } from "../kaplayCtx";
 
-const BOSS_MAX_HEALTH = 8;
+const BOSS_MAX_HEALTH = FINAL_BOSS_MAX_HEALTH;
+const BOSS_RAGE_HEALTH = Math.floor(BOSS_MAX_HEALTH / 2);
 
 export function SpaceBoss(options = {}) {
   let score = Number(options.score ?? 0);
@@ -53,9 +60,7 @@ export function SpaceBoss(options = {}) {
   });
 
   const updateBossHud = () => {
-    bossText.text = `INVADER OVERLORD  ${"●".repeat(bossHealth)}${"○".repeat(
-      BOSS_MAX_HEALTH - bossHealth,
-    )}`;
+    bossText.text = `INVADER OVERLORD  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
   };
   updateBossHud();
 
@@ -93,7 +98,7 @@ export function SpaceBoss(options = {}) {
     const dx = sonic.pos.x - origin.x;
     const dy = sonic.pos.y - origin.y + verticalOffset;
     const length = Math.max(1, Math.hypot(dx, dy));
-    const speed = bossHealth <= 4 ? 900 : 740;
+    const speed = bossHealth <= BOSS_RAGE_HEALTH ? 900 : 740;
     const laser = k.add([
       k.rect(72, 18, { radius: 9 }),
       k.pos(origin),
@@ -177,7 +182,12 @@ export function SpaceBoss(options = {}) {
 
     attackTimer -= k.dt();
     chargeTimer = Math.max(0, chargeTimer - k.dt());
-    const speed = chargeTimer > 0 ? 660 : bossHealth <= 4 ? 280 : 190;
+    const speed =
+      chargeTimer > 0
+        ? 660
+        : bossHealth <= BOSS_RAGE_HEALTH
+          ? 280
+          : 190;
     boss.move(direction * speed, 0);
 
     if (boss.pos.x < 760) {
@@ -192,13 +202,17 @@ export function SpaceBoss(options = {}) {
       direction = sonic.pos.x < boss.pos.x ? -1 : 1;
       chargeTimer = 0.62;
       fireLaser();
-      if (bossHealth <= 4) k.wait(0.28, () => fireLaser(-110));
-      attackTimer = bossHealth <= 4 ? 1.35 : 2;
+      if (bossHealth <= BOSS_RAGE_HEALTH) {
+        k.wait(0.28, () => fireLaser(-110));
+      }
+      attackTimer = bossHealth <= BOSS_RAGE_HEALTH ? 1.35 : 2;
     }
   });
 
-  k.onKeyPress("escape", () => {
-    music.stop();
-    k.go("level-select");
+  addPauseFeature({
+    onExit: () => {
+      music.stop();
+      k.go("level-select");
+    },
   });
 }

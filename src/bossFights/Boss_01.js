@@ -1,10 +1,17 @@
 import { makeShroomDoom } from "../entities/boss/shroomdoom";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore, unlockStage } from "../gameState";
-import { addGround, addHudText, createPlayerHealth } from "../gameplay";
+import {
+  addGround,
+  addHudText,
+  addPauseFeature,
+  createPlayerHealth,
+  STANDARD_BOSS_MAX_HEALTH,
+} from "../gameplay";
 import { k } from "../kaplayCtx";
 
-const BOSS_MAX_HEALTH = 6;
+const BOSS_MAX_HEALTH = STANDARD_BOSS_MAX_HEALTH;
+const BOSS_RAGE_HEALTH = Math.floor(BOSS_MAX_HEALTH / 2);
 
 export function BossLevelOne(options = {}) {
   let score = Number(options.score ?? 0);
@@ -81,9 +88,7 @@ export function BossLevelOne(options = {}) {
   });
 
   const updateBossHud = () => {
-    bossText.text = `SHROOMDOOM  ${"●".repeat(bossHealth)}${"○".repeat(
-      BOSS_MAX_HEALTH - bossHealth,
-    )}`;
+    bossText.text = `SHROOMDOOM  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
   };
   updateBossHud();
 
@@ -121,7 +126,7 @@ export function BossLevelOne(options = {}) {
     const dx = sonic.pos.x - origin.x;
     const dy = sonic.pos.y - origin.y;
     const length = Math.max(1, Math.hypot(dx, dy));
-    const speed = bossHealth <= 3 ? 720 : 600;
+    const speed = bossHealth <= BOSS_RAGE_HEALTH ? 720 : 600;
     const velocity = k.vec2((dx / length) * speed, (dy / length) * speed);
 
     const spore = k.add([
@@ -210,7 +215,12 @@ export function BossLevelOne(options = {}) {
 
     attackTimer -= k.dt();
     chargeTimer = Math.max(0, chargeTimer - k.dt());
-    const speed = chargeTimer > 0 ? 560 : bossHealth <= 3 ? 220 : 150;
+    const speed =
+      chargeTimer > 0
+        ? 560
+        : bossHealth <= BOSS_RAGE_HEALTH
+          ? 220
+          : 150;
     boss.move(direction * speed, 0);
 
     if (boss.pos.x < 720) {
@@ -225,13 +235,15 @@ export function BossLevelOne(options = {}) {
       direction = sonic.pos.x < boss.pos.x ? -1 : 1;
       chargeTimer = 0.65;
       spawnSpore();
-      if (bossHealth <= 3) k.wait(0.28, spawnSpore);
-      attackTimer = bossHealth <= 3 ? 1.45 : 2.2;
+      if (bossHealth <= BOSS_RAGE_HEALTH) k.wait(0.28, spawnSpore);
+      attackTimer = bossHealth <= BOSS_RAGE_HEALTH ? 1.45 : 2.2;
     }
   });
 
-  k.onKeyPress("escape", () => {
-    music.stop();
-    k.go("level-select");
+  addPauseFeature({
+    onExit: () => {
+      music.stop();
+      k.go("level-select");
+    },
   });
 }

@@ -3,7 +3,12 @@ import { makeSkyBird } from "../entities/fodder_entities/skyBird";
 import { makeRing } from "../entities/ring";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore, unlockStage } from "../gameState";
-import { addHudText, createPlayerHealth } from "../gameplay";
+import {
+  addHudText,
+  addPauseFeature,
+  createPlayerHealth,
+  STANDARD_BOSS_MAX_HEALTH,
+} from "../gameplay";
 import { k } from "../kaplayCtx";
 
 const LARGE_PLATFORM_SCALE = 0.28;
@@ -13,7 +18,8 @@ const SHORT_PLATFORM_WIDTH = 1346 * SHORT_PLATFORM_SCALE;
 const START_PLATFORM_Y = 940;
 const SUMMIT_PLATFORM_Y = -4080;
 const SUMMIT_DISTANCE = START_PLATFORM_Y - SUMMIT_PLATFORM_Y;
-const BOSS_MAX_HEALTH = 15;
+const BOSS_MAX_HEALTH = STANDARD_BOSS_MAX_HEALTH;
+const BOSS_RAGE_HEALTH = Math.floor(BOSS_MAX_HEALTH / 2);
 const ARENA_UPPER_PLATFORM_Y = SUMMIT_PLATFORM_Y - 300;
 const ARENA_CAMERA_Y = SUMMIT_PLATFORM_Y - 350;
 const BOSS_TRIGGER_Y = SUMMIT_PLATFORM_Y - SONIC_FOOT_OFFSET;
@@ -272,7 +278,7 @@ export function LevelThree(options = {}) {
     const dx = sonic.pos.x - origin.x;
     const dy = sonic.pos.y - origin.y + verticalOffset;
     const length = Math.max(1, Math.hypot(dx, dy));
-    const speed = bossHealth <= 7 ? 820 : 690;
+    const speed = bossHealth <= BOSS_RAGE_HEALTH ? 820 : 690;
     const bolt = k.add([
       k.circle(22),
       k.pos(origin),
@@ -462,7 +468,7 @@ export function LevelThree(options = {}) {
 
     if (bossActive && !playerHealth.isDead()) {
       bossAttackTimer -= k.dt();
-      const bossSpeed = bossHealth <= 7 ? 245 : 175;
+      const bossSpeed = bossHealth <= BOSS_RAGE_HEALTH ? 245 : 175;
       boss.move(bossDirection * bossSpeed, 0);
       boss.pos.y = Math.min(
         BOSS_Y + Math.sin(k.time() * 2.8) * 45,
@@ -481,17 +487,21 @@ export function LevelThree(options = {}) {
       if (bossAttackTimer <= 0) {
         bossDirection = sonic.pos.x < boss.pos.x ? -1 : 1;
         fireStormBolt();
-        if (bossHealth <= 7) k.wait(0.28, () => fireStormBolt(-115));
-        bossAttackTimer = bossHealth <= 7 ? 1.3 : 1.9;
+        if (bossHealth <= BOSS_RAGE_HEALTH) {
+          k.wait(0.28, () => fireStormBolt(-115));
+        }
+        bossAttackTimer = bossHealth <= BOSS_RAGE_HEALTH ? 1.3 : 1.9;
       }
     }
 
     if (sonic.pos.y > cameraY + 760) loseStage();
   });
 
-  k.onKeyPress("escape", () => {
-    music.stop();
-    resetCamera();
-    k.go("level-select");
+  addPauseFeature({
+    onExit: () => {
+      music.stop();
+      resetCamera();
+      k.go("level-select");
+    },
   });
 }

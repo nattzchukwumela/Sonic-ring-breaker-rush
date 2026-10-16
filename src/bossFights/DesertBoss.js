@@ -1,10 +1,17 @@
 import { makeBlackheart } from "../entities/boss/blackheart";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
 import { saveBestScore, unlockStage } from "../gameState";
-import { addGround, addHudText, createPlayerHealth } from "../gameplay";
+import {
+  addGround,
+  addHudText,
+  addPauseFeature,
+  createPlayerHealth,
+  STANDARD_BOSS_MAX_HEALTH,
+} from "../gameplay";
 import { k } from "../kaplayCtx";
 
-const BOSS_MAX_HEALTH = 8;
+const BOSS_MAX_HEALTH = STANDARD_BOSS_MAX_HEALTH;
+const BOSS_RAGE_HEALTH = Math.floor(BOSS_MAX_HEALTH / 2);
 
 export function DesertBoss(options = {}) {
   let score = Number(options.score ?? 0);
@@ -54,9 +61,7 @@ export function DesertBoss(options = {}) {
   });
 
   const updateBossHud = () => {
-    bossText.text = `BLACKHEART  ${"●".repeat(bossHealth)}${"○".repeat(
-      BOSS_MAX_HEALTH - bossHealth,
-    )}`;
+    bossText.text = `BLACKHEART  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
   };
   updateBossHud();
 
@@ -94,7 +99,7 @@ export function DesertBoss(options = {}) {
     const dx = sonic.pos.x - origin.x;
     const dy = sonic.pos.y - origin.y + angleOffset;
     const length = Math.max(1, Math.hypot(dx, dy));
-    const speed = bossHealth <= 4 ? 790 : 650;
+    const speed = bossHealth <= BOSS_RAGE_HEALTH ? 790 : 650;
     const fireball = k.add([
       k.circle(28),
       k.pos(origin),
@@ -180,7 +185,12 @@ export function DesertBoss(options = {}) {
 
     attackTimer -= k.dt();
     chargeTimer = Math.max(0, chargeTimer - k.dt());
-    const speed = chargeTimer > 0 ? 610 : bossHealth <= 4 ? 250 : 175;
+    const speed =
+      chargeTimer > 0
+        ? 610
+        : bossHealth <= BOSS_RAGE_HEALTH
+          ? 250
+          : 175;
     boss.move(direction * speed, 0);
 
     if (boss.pos.x < 760) {
@@ -195,16 +205,18 @@ export function DesertBoss(options = {}) {
       direction = sonic.pos.x < boss.pos.x ? -1 : 1;
       chargeTimer = 0.7;
       spawnFireball();
-      if (bossHealth <= 4) {
+      if (bossHealth <= BOSS_RAGE_HEALTH) {
         k.wait(0.24, () => spawnFireball(-120));
         k.wait(0.48, () => spawnFireball(95));
       }
-      attackTimer = bossHealth <= 4 ? 1.55 : 2.2;
+      attackTimer = bossHealth <= BOSS_RAGE_HEALTH ? 1.55 : 2.2;
     }
   });
 
-  k.onKeyPress("escape", () => {
-    music.stop();
-    k.go("level-select");
+  addPauseFeature({
+    onExit: () => {
+      music.stop();
+      k.go("level-select");
+    },
   });
 }

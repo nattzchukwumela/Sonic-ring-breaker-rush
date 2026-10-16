@@ -5,6 +5,7 @@ import { saveBestScore } from "../gameState";
 import {
   addGround,
   addHudText,
+  addPauseFeature,
   addScrollingBackdrop,
   createPlayerHealth,
 } from "../gameplay";
@@ -176,8 +177,10 @@ export function LevelOne(options = {}) {
     }
   });
 
-  k.onKeyPress("escape", () => {
-    music.stop();
-    k.go("level-select");
+  addPauseFeature({
+    onExit: () => {
+      music.stop();
+      k.go("level-select");
+    },
   });
 }
