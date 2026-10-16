@@ -73,6 +73,7 @@ export function LevelThree(options = {}) {
   let bossInvulnerable = false;
   let bossDirection = -1;
   let bossAttackTimer = 1.2;
+  let bossAttackPattern = 0;
 
   k.setGravity(2800);
   k.camPos(k.center());
@@ -272,27 +273,44 @@ export function LevelThree(options = {}) {
     summitText.text = `STORM FALCON  HP ${bossHealth} / ${BOSS_MAX_HEALTH}`;
   };
 
-  const fireStormBolt = (verticalOffset = 0) => {
+  const spawnStormImpact = (position) => {
+    k.add([
+      k.sprite("storm-falcon-attacks", { anim: "impact" }),
+      k.pos(position),
+      k.anchor("center"),
+      k.scale(0.42),
+      k.opacity(1),
+      k.z(8),
+      k.lifespan(0.38),
+    ]);
+  };
+
+  const fireStormAttack = (attackType, verticalOffset = 0) => {
     if (!stageActive || !bossActive || bossDefeated || !boss.exists()) return;
     const origin = boss.pos.add(k.vec2(bossDirection * 150, 35));
     const dx = sonic.pos.x - origin.x;
     const dy = sonic.pos.y - origin.y + verticalOffset;
     const length = Math.max(1, Math.hypot(dx, dy));
     const speed = bossHealth <= BOSS_RAGE_HEALTH ? 820 : 690;
-    const bolt = k.add([
-      k.circle(22),
+    const attackAngle = (Math.atan2(dy, Math.abs(dx)) * 180) / Math.PI;
+    const attack = k.add([
+      k.sprite("storm-falcon-attacks", { anim: attackType }),
       k.pos(origin),
       k.anchor("center"),
-      k.area(),
-      k.color(k.rgb(55, 235, 255)),
-      k.outline(7, k.rgb(255, 205, 35)),
-      k.opacity(0.95),
+      k.scale(0.34),
+      k.rotate(attackAngle),
+      k.area({ shape: new k.Circle(k.vec2(0), 68) }),
+      k.opacity(1),
       k.z(7),
       k.lifespan(5),
       "hazard",
-      { velocity: k.vec2((dx / length) * speed, (dy / length) * speed) },
+      {
+        showStormImpact: true,
+        velocity: k.vec2((dx / length) * speed, (dy / length) * speed),
+      },
     ]);
-    bolt.onUpdate(() => bolt.move(bolt.velocity));
+    attack.flipX = dx > 0;
+    attack.onUpdate(() => attack.move(attack.velocity));
   };
 
   const defeatBoss = () => {
@@ -399,6 +417,7 @@ export function LevelThree(options = {}) {
   sonic.onCollide("hazard", (hazard) => {
     if (!stageActive || playerHealth.isDead()) return;
     const sourceX = hazard.pos.x;
+    if (hazard.showStormImpact) spawnStormImpact(hazard.pos.clone());
     if (hazard.exists()) k.destroy(hazard);
     playerHealth.damage(sourceX);
   });
@@ -486,9 +505,11 @@ export function LevelThree(options = {}) {
 
       if (bossAttackTimer <= 0) {
         bossDirection = sonic.pos.x < boss.pos.x ? -1 : 1;
-        fireStormBolt();
+        const attackType = bossAttackPattern % 2 === 0 ? "energy" : "missile";
+        bossAttackPattern += 1;
+        fireStormAttack(attackType);
         if (bossHealth <= BOSS_RAGE_HEALTH) {
-          k.wait(0.28, () => fireStormBolt(-115));
+          k.wait(0.28, () => fireStormAttack(attackType, -115));
         }
         bossAttackTimer = bossHealth <= BOSS_RAGE_HEALTH ? 1.3 : 1.9;
       }

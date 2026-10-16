@@ -130,12 +130,51 @@ k.loadSprite(
   "dunefang-boss",
   "/graphics/enemies/bosses/Dunefang,%20Sand%20Demon%20Boss.png",
 );
+k.loadSprite(
+  "dunefang-attacks",
+  "/graphics/attacks/Sand%20and%20Lava%20Attack%20Sprite%20Sheet.png",
+  {
+    sliceX: 4,
+    sliceY: 3,
+    anims: {
+      sand: { from: 0, to: 3, loop: true, speed: 12 },
+      lava: { from: 4, to: 7, loop: true, speed: 12 },
+      impact: { from: 8, to: 11, loop: false, speed: 14 },
+    },
+  },
+);
 k.loadSprite("ice-kirby", "/graphics/enemies/ice/ice-kirby.png");
 k.loadSprite(
   "frostmaw-boss",
   "/graphics/enemies/bosses/Frostmaw,%20the%20Glacier%20Beast.png",
 );
+k.loadSprite(
+  "frostmaw-attacks",
+  "/graphics/attacks/Frostmaw's%20Crystal%20Ice%20Attack%20Frames.png",
+  {
+    sliceX: 4,
+    sliceY: 3,
+    anims: {
+      shard: { from: 0, to: 3, loop: true, speed: 12 },
+      orb: { from: 4, to: 7, loop: true, speed: 12 },
+      impact: { from: 8, to: 11, loop: false, speed: 14 },
+    },
+  },
+);
 k.loadSprite("storm-falcon", "/graphics/enemies/bosses/storm-falcon.png");
+k.loadSprite(
+  "storm-falcon-attacks",
+  "/graphics/attacks/Storm%20Falcon%20attack%20sprite%20sheet.png",
+  {
+    sliceX: 4,
+    sliceY: 3,
+    anims: {
+      energy: { from: 0, to: 3, loop: true, speed: 12 },
+      missile: { from: 4, to: 7, loop: true, speed: 12 },
+      impact: { from: 8, to: 11, loop: false, speed: 14 },
+    },
+  },
+);
 k.loadSprite("sky-bird", "/graphics/enemies/sky/bird.png", {
   sliceX: 6,
   anims: {

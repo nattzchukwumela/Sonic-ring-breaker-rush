@@ -22,6 +22,7 @@ export function DesertBoss(options = {}) {
   let attackTimer = 1.5;
   let chargeTimer = 0;
   let direction = -1;
+  let attackPattern = 0;
 
   k.setGravity(3100);
   const music = k.play("desert-boss", { loop: true, volume: 0.36 });
@@ -93,32 +94,50 @@ export function DesertBoss(options = {}) {
     onDeath: loseBattle,
   });
 
-  const spawnFireball = (angleOffset = 0) => {
+  const spawnAttackImpact = (position) => {
+    k.add([
+      k.sprite("dunefang-attacks", { anim: "impact" }),
+      k.pos(position),
+      k.anchor("center"),
+      k.scale(0.42),
+      k.opacity(1),
+      k.z(8),
+      k.lifespan(0.38),
+    ]);
+  };
+
+  const spawnDunefangAttack = (attackType, angleOffset = 0) => {
     if (!battleActive || !boss.exists()) return;
     const origin = boss.pos.add(k.vec2(direction * 135, -60));
     const dx = sonic.pos.x - origin.x;
     const dy = sonic.pos.y - origin.y + angleOffset;
     const length = Math.max(1, Math.hypot(dx, dy));
     const speed = bossHealth <= BOSS_RAGE_HEALTH ? 790 : 650;
-    const fireball = k.add([
-      k.circle(28),
+    const attackAngle = (Math.atan2(dy, Math.abs(dx)) * 180) / Math.PI;
+    const attack = k.add([
+      k.sprite("dunefang-attacks", { anim: attackType }),
       k.pos(origin),
       k.anchor("center"),
-      k.area(),
-      k.color(k.rgb(70, 10, 83)),
-      k.outline(9, k.rgb(255, 94, 35)),
+      k.scale(0.34),
+      k.rotate(attackAngle),
+      k.area({ shape: new k.Circle(k.vec2(0), 82) }),
       k.opacity(1),
       k.z(7),
       k.lifespan(5),
       "hazard",
-      { velocity: k.vec2((dx / length) * speed, (dy / length) * speed) },
+      {
+        showImpact: true,
+        velocity: k.vec2((dx / length) * speed, (dy / length) * speed),
+      },
     ]);
-    fireball.onUpdate(() => fireball.move(fireball.velocity));
+    attack.flipX = dx > 0;
+    attack.onUpdate(() => attack.move(attack.velocity));
   };
 
   sonic.onCollide("hazard", (hazard) => {
     if (!battleActive) return;
     const sourceX = hazard.pos.x;
+    if (hazard.showImpact) spawnAttackImpact(hazard.pos.clone());
     if (hazard.exists()) k.destroy(hazard);
     playerHealth.damage(sourceX);
   });
@@ -204,10 +223,12 @@ export function DesertBoss(options = {}) {
     if (attackTimer <= 0) {
       direction = sonic.pos.x < boss.pos.x ? -1 : 1;
       chargeTimer = 0.7;
-      spawnFireball();
+      const attackType = attackPattern % 2 === 0 ? "sand" : "lava";
+      attackPattern += 1;
+      spawnDunefangAttack(attackType);
       if (bossHealth <= BOSS_RAGE_HEALTH) {
-        k.wait(0.24, () => spawnFireball(-120));
-        k.wait(0.48, () => spawnFireball(95));
+        k.wait(0.24, () => spawnDunefangAttack(attackType, -120));
+        k.wait(0.48, () => spawnDunefangAttack(attackType, 95));
       }
       attackTimer = bossHealth <= BOSS_RAGE_HEALTH ? 1.55 : 2.2;
     }

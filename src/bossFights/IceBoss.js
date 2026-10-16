@@ -22,6 +22,7 @@ export function IceBoss(options = {}) {
   let attackTimer = 1.5;
   let chargeTimer = 0;
   let direction = -1;
+  let attackPattern = 0;
 
   k.setGravity(3100);
   const music = k.play("ice-boss", { loop: true, volume: 0.36 });
@@ -96,32 +97,50 @@ export function IceBoss(options = {}) {
     onDeath: loseBattle,
   });
 
-  const fireIceBolt = (verticalOffset = 0) => {
+  const spawnFrostImpact = (position) => {
+    k.add([
+      k.sprite("frostmaw-attacks", { anim: "impact" }),
+      k.pos(position),
+      k.anchor("center"),
+      k.scale(0.42),
+      k.opacity(1),
+      k.z(8),
+      k.lifespan(0.38),
+    ]);
+  };
+
+  const fireFrostmawAttack = (attackType, verticalOffset = 0) => {
     if (!battleActive || !boss.exists()) return;
     const origin = boss.pos.add(k.vec2(direction * 125, -55));
     const dx = sonic.pos.x - origin.x;
     const dy = sonic.pos.y - origin.y + verticalOffset;
     const length = Math.max(1, Math.hypot(dx, dy));
     const speed = bossHealth <= BOSS_RAGE_HEALTH ? 830 : 680;
-    const iceBolt = k.add([
-      k.circle(25),
+    const attackAngle = (Math.atan2(dy, Math.abs(dx)) * 180) / Math.PI;
+    const attack = k.add([
+      k.sprite("frostmaw-attacks", { anim: attackType }),
       k.pos(origin),
       k.anchor("center"),
-      k.area(),
-      k.color(k.rgb(185, 245, 255)),
-      k.outline(8, k.rgb(28, 126, 245)),
+      k.scale(0.34),
+      k.rotate(attackAngle),
+      k.area({ shape: new k.Circle(k.vec2(0), 74) }),
       k.opacity(1),
       k.z(7),
       k.lifespan(5),
       "hazard",
-      { velocity: k.vec2((dx / length) * speed, (dy / length) * speed) },
+      {
+        showFrostImpact: true,
+        velocity: k.vec2((dx / length) * speed, (dy / length) * speed),
+      },
     ]);
-    iceBolt.onUpdate(() => iceBolt.move(iceBolt.velocity));
+    attack.flipX = dx > 0;
+    attack.onUpdate(() => attack.move(attack.velocity));
   };
 
   sonic.onCollide("hazard", (hazard) => {
     if (!battleActive) return;
     const sourceX = hazard.pos.x;
+    if (hazard.showFrostImpact) spawnFrostImpact(hazard.pos.clone());
     if (hazard.exists()) k.destroy(hazard);
     playerHealth.damage(sourceX);
   });
@@ -207,10 +226,12 @@ export function IceBoss(options = {}) {
     if (attackTimer <= 0) {
       direction = sonic.pos.x < boss.pos.x ? -1 : 1;
       chargeTimer = 0.68;
-      fireIceBolt();
+      const attackType = attackPattern % 2 === 0 ? "shard" : "orb";
+      attackPattern += 1;
+      fireFrostmawAttack(attackType);
       if (bossHealth <= BOSS_RAGE_HEALTH) {
-        k.wait(0.24, () => fireIceBolt(-115));
-        k.wait(0.48, () => fireIceBolt(90));
+        k.wait(0.24, () => fireFrostmawAttack(attackType, -115));
+        k.wait(0.48, () => fireFrostmawAttack(attackType, 90));
       }
       attackTimer = bossHealth <= BOSS_RAGE_HEALTH ? 1.5 : 2.15;
     }
