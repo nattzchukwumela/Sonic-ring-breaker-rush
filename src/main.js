@@ -12,6 +12,7 @@ import { LevelFive } from "./gameLevels/level_05_desert";
 import { DesertBoss } from "./bossFights/DesertBoss";
 import { LevelSix } from "./gameLevels/level_06_space";
 import { SpaceBoss } from "./bossFights/SpaceBoss";
+import Splash from "./scene/splash";
 
 // game assets
 
@@ -22,6 +23,14 @@ k.loadSprite("forest-day-bg", "/graphics/backgrounds/forest-day.jpg");
 k.loadSprite("desert-day-bg", "/graphics/backgrounds/desert-day.jpg");
 k.loadSprite("desert-sunset-bg", "/graphics/backgrounds/desert-sunset.jpg");
 k.loadSprite("space-nebula-bg", "/graphics/backgrounds/space-nebula.jpg");
+k.loadSprite(
+  "frozen-glacier-bg",
+  "/graphics/backgrounds/Frozen Glacier Valley.png",
+);
+k.loadSprite(
+  "intro-splash",
+  "/graphics/backgrounds/Sonic’s Forest-to-Space Boss Rush.png",
+);
 k.loadSprite("platform", "/graphics/platform/platforms.png");
 k.loadSprite("zigzag-grass", "/graphics/platform/zigzag_grass_platform.png");
 k.loadSprite("zigzag-snow", "/graphics/platform/zigzag_snow_platform.png");
@@ -143,6 +152,7 @@ k.loadSound("desert-boss", "sounds/cave-monster.mp3");
 k.loadSound("final-boss", "sounds/Last_Stand_at_Zenith.mp3");
 
 // game scenes
+k.scene("splash", Splash);
 k.scene("level-select", LevelSelect);
 k.scene("levelOne", LevelOne);
 k.scene("levelFour", LevelFour);
@@ -156,4 +166,4 @@ k.scene("desertBoss", DesertBoss);
 k.scene("spaceBoss", SpaceBoss);
 k.scene("game-over", GameOver);
 k.scene("victory", Victory);
-k.go("main-menu");
+k.go("splash");

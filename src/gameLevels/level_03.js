@@ -35,7 +35,7 @@ export function LevelThree(options = {}) {
       unlockStage: 4,
       nextScene: "levelFourFinal",
       victoryTitle: "SKY PATROL CLEAR!",
-      victoryMessage: "Chaos Circuit unlocked",
+      victoryMessage: "Frozen Glacier Valley unlocked",
     },
     options,
   );

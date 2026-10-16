@@ -24,8 +24,8 @@ export const stages = [
   },
   {
     id: 4,
-    name: "Chaos Circuit",
-    subtitle: "Survive the ultimate gauntlet",
+    name: "Frozen Glacier Valley",
+    subtitle: "Race across the frozen wilderness",
     scene: "levelFourFinal",
   },
   {
