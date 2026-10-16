@@ -16,7 +16,7 @@ export function createRunnerStage(config, options = {}) {
   let gameSpeed = config.startSpeed;
   let running = true;
 
-  k.setGravity(3200);
+  k.setGravity(config.gravity ?? 3200);
   const music = k.play(config.music, { loop: true, volume: 0.3 });
 
   const backgrounds = [0, config.backgroundWidth].map((x) =>
@@ -72,7 +72,10 @@ export function createRunnerStage(config, options = {}) {
     anchor: "bot",
   });
 
-  const sonic = makeSonic(k.vec2(330, config.groundY - 120));
+  const sonic = makeSonic(
+    k.vec2(330, config.groundY - 120),
+    config.jumpPower ?? 1700,
+  );
   sonic.setJump();
   sonic.setRoll();
   sonic.setEvents();

@@ -42,6 +42,12 @@ export const stages = [
   },
   {
     id: 7,
+    name: "Underwater Ruins",
+    subtitle: "Cross the sunken temple and wake its guardian",
+    scene: "levelUnderwater",
+  },
+  {
+    id: 8,
     name: "Starfall Station",
     subtitle: "Stop the invaders beyond the stars",
     scene: "levelSix",

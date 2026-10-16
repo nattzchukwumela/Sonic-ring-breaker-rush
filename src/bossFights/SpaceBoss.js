@@ -142,7 +142,7 @@ export function SpaceBoss(options = {}) {
     k.wait(2.2, () =>
       k.go("victory", {
         title: "GALAXY SAVED!",
-        message: `All seven stages complete • Ring bonus: ${rings * 25}`,
+        message: `All eight stages complete • Ring bonus: ${rings * 25}`,
         score,
       }),
     );

@@ -34,8 +34,7 @@ export default function LevelSelect() {
   stages.forEach((stage, index) => {
     const unlocked = stage.id <= unlockedStage;
     const firstRow = [260, 730, 1190, 1660];
-    const secondRow = [490, 960, 1430];
-    const x = index < 4 ? firstRow[index] : secondRow[index - 4];
+    const x = index < 4 ? firstRow[index] : firstRow[index - 4];
     const y = index < 4 ? 350 : 650;
     const card = k.add([
       k.rect(410, 210, { radius: 26 }),

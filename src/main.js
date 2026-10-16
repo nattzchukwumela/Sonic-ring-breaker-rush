@@ -14,8 +14,10 @@ import { LevelThree } from "./gameLevels/level_03";
 import { LevelFourFinal } from "./gameLevels/level_04_final";
 import { LevelFive } from "./gameLevels/level_05_desert";
 import { LevelVolcano } from "./gameLevels/level_06_volcano";
+import { LevelUnderwater } from "./gameLevels/level_07_underwater";
 import { DesertBoss } from "./bossFights/DesertBoss";
 import { VolcanoBoss } from "./bossFights/VolcanoBoss";
+import { UnderwaterBoss } from "./bossFights/UnderwaterBoss";
 import { LevelSix } from "./gameLevels/level_06_space";
 import { SpaceBoss } from "./bossFights/SpaceBoss";
 import { IceBoss } from "./bossFights/IceBoss";
@@ -41,6 +43,14 @@ k.loadSprite(
   "volcano-boss-bg",
   "/graphics/backgrounds/bosses/Molten%20Basalt%20Crater%20Arena.png",
 );
+k.loadSprite(
+  "underwater-stage-bg",
+  "/graphics/backgrounds/stages/Mystic%20Sunken%20Temple%20Ruins.png",
+);
+k.loadSprite(
+  "underwater-boss-bg",
+  "/graphics/backgrounds/bosses/Underwater%20Ruins%20Throne%20Chamber-1.png",
+);
 k.loadSprite("space-nebula-bg", "/graphics/backgrounds/stages/space-nebula.jpg");
 k.loadSprite("frozen-glacier-bg", "/graphics/backgrounds/stages/frozen-glacier.png");
 k.loadSprite(
@@ -58,6 +68,10 @@ k.loadSprite("space-platform", "/graphics/platforms/space/platform.png");
 k.loadSprite(
   "volcano-platform",
   "/graphics/platforms/volcanoe/Molten%20basalt%20volcanic%20running%20platform.png",
+);
+k.loadSprite(
+  "underwater-platform",
+  "/graphics/platforms/underwater%20ruins/Submerged%20Temple%20Ruins%20Platform.png",
 );
 
 // forest wave platforms
@@ -172,6 +186,23 @@ k.loadSprite(
   "/graphics/enemies/bosses/Magmaclaw_%20Molten%20Basalt%20Crab%20Boss.png",
 );
 k.loadSprite(
+  "abyssfang-boss",
+  "/graphics/enemies/bosses/Abyssfang,%20the%20robotic%20sea%20serpent-2.png",
+);
+k.loadSprite(
+  "abyssfang-attacks",
+  "/graphics/attacks/Abyssfang%20Hydro%20Attack%20Sprite%20Sheet-3.png",
+  {
+    sliceX: 4,
+    sliceY: 3,
+    anims: {
+      vortex: { from: 0, to: 3, loop: true, speed: 12 },
+      torpedo: { from: 4, to: 7, loop: true, speed: 12 },
+      impact: { from: 8, to: 11, loop: false, speed: 14 },
+    },
+  },
+);
+k.loadSprite(
   "dunefang-boss",
   "/graphics/enemies/bosses/Dunefang,%20Sand%20Demon%20Boss.png",
 );
@@ -256,11 +287,13 @@ k.loadSound("sky-patrol", "/sounds/music/stages/sky-patrol.mp3");
 k.loadSound("glacier-velocity", "/sounds/music/stages/frozen-glacier.mp3");
 k.loadSound("demon-dunes", "/sounds/music/stages/demon-dunes.mp3");
 k.loadSound("obsidian-overdrive", "/sounds/music/stages/Obsidian_Overdrive.mp3");
+k.loadSound("currents-sleep", "/sounds/music/stages/Where_the_Currents_Sleep.mp3");
 k.loadSound("unknown-trajectory", "/sounds/music/stages/starfall-station.mp3");
 k.loadSound("shroomdoom", "/sounds/music/bosses/shroomdoom.mp3");
 k.loadSound("ice-boss", "/sounds/music/bosses/ice-king.mp3");
 k.loadSound("desert-boss", "/sounds/music/bosses/blackheart.mp3");
 k.loadSound("target-locked", "/sounds/music/bosses/Target_Locked.mp3");
+k.loadSound("guardian-flood", "/sounds/music/bosses/Guardian_of_the_Flood.mp3");
 k.loadSound("final-boss", "/sounds/music/bosses/final-boss.mp3");
 k.loadSound(
   "level-complete",
@@ -276,6 +309,7 @@ k.scene("levelThree", LevelThree);
 k.scene("levelFourFinal", LevelFourFinal);
 k.scene("levelFive", LevelFive);
 k.scene("levelVolcano", LevelVolcano);
+k.scene("levelUnderwater", LevelUnderwater);
 k.scene("levelSix", LevelSix);
 k.scene("main-menu", MainMenu);
 k.scene("levelOneBoss", BossLevelOne);
@@ -283,6 +317,7 @@ k.scene("chemicalBoss", ChemicalBoss);
 k.scene("iceBoss", IceBoss);
 k.scene("desertBoss", DesertBoss);
 k.scene("volcanoBoss", VolcanoBoss);
+k.scene("underwaterBoss", UnderwaterBoss);
 k.scene("spaceBoss", SpaceBoss);
 k.scene("game-over", GameOver);
 k.scene("victory", Victory);

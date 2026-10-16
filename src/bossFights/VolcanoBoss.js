@@ -182,9 +182,9 @@ export function VolcanoBoss(options = {}) {
     k.wait(2.2, () =>
       k.go("victory", {
         title: "VOLCANO CONQUERED!",
-        message: `Starfall Station unlocked • Ring bonus: ${rings * 25}`,
+        message: `Underwater Ruins unlocked • Ring bonus: ${rings * 25}`,
         score,
-        nextScene: "levelSix",
+        nextScene: "levelUnderwater",
       }),
     );
   };
