@@ -10,6 +10,8 @@ import { LevelThree } from "./gameLevels/level_03";
 import { LevelFourFinal } from "./gameLevels/level_04_final";
 import { LevelFive } from "./gameLevels/level_05_desert";
 import { DesertBoss } from "./bossFights/DesertBoss";
+import { LevelSix } from "./gameLevels/level_06_space";
+import { SpaceBoss } from "./bossFights/SpaceBoss";
 
 // game assets
 
@@ -19,9 +21,11 @@ k.loadSprite("forest-bg", "/graphics/backgrounds/forest.png");
 k.loadSprite("forest-day-bg", "/graphics/backgrounds/forest-day.jpg");
 k.loadSprite("desert-day-bg", "/graphics/backgrounds/desert-day.jpg");
 k.loadSprite("desert-sunset-bg", "/graphics/backgrounds/desert-sunset.jpg");
+k.loadSprite("space-nebula-bg", "/graphics/backgrounds/space-nebula.jpg");
 k.loadSprite("platform", "/graphics/platform/platforms.png");
 k.loadSprite("zigzag-grass", "/graphics/platform/zigzag_grass_platform.png");
 k.loadSprite("zigzag-snow", "/graphics/platform/zigzag_snow_platform.png");
+k.loadSprite("space-platform", "/graphics/platform/space-platform.png");
 
 // forest wave platforms
 k.loadSprite(
@@ -105,6 +109,9 @@ k.loadSprite("desert-hound", "/graphics/enemy/desert/desert-hound.png");
 k.loadSprite("desert-raider", "/graphics/enemy/desert/desert-raider.png");
 k.loadSprite("desert-brute", "/graphics/enemy/desert/desert-brute.png");
 k.loadSprite("blackheart-boss", "/graphics/enemy/desert/blackheart-boss.png");
+k.loadSprite("winged-invader", "/graphics/enemy/space/winged-invader.png");
+k.loadSprite("flying-parasite", "/graphics/enemy/space/flying-parasite.png");
+k.loadSprite("invader-overlord", "/graphics/enemy/space/invader-overlord.png");
 
 // rings sprite
 k.loadSprite("ring", "graphics/ring.png", {
@@ -126,10 +133,12 @@ k.loadSound("hyper-ring", "sounds/HyperRing.wav");
 k.loadSound("jump", "sounds/Jump.wav");
 k.loadSound("ring", "sounds/Ring.wav");
 k.loadSound("city", "sounds/city.mp3");
+k.loadSound("unknown-trajectory", "sounds/Trajectory_Unknown.mp3");
 k.loadSound("ingame-sound", "sounds/game-sound.mp3");
 k.loadSound("roll", "sounds/roll.wav");
 k.loadSound("shroomdoom", "sounds/shroomdoom.mp3");
 k.loadSound("desert-boss", "sounds/cave-monster.mp3");
+k.loadSound("final-boss", "sounds/Last_Stand_at_Zenith.mp3");
 
 // game scenes
 k.scene("level-select", LevelSelect);
@@ -138,9 +147,11 @@ k.scene("levelFour", LevelFour);
 k.scene("levelThree", LevelThree);
 k.scene("levelFourFinal", LevelFourFinal);
 k.scene("levelFive", LevelFive);
+k.scene("levelSix", LevelSix);
 k.scene("main-menu", MainMenu);
 k.scene("levelOneBoss", BossLevelOne);
 k.scene("desertBoss", DesertBoss);
+k.scene("spaceBoss", SpaceBoss);
 k.scene("game-over", GameOver);
 k.scene("victory", Victory);
 k.go("main-menu");

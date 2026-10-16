@@ -43,7 +43,7 @@ export function createPlayerHealth({
   const damage = (sourceX = sonic.pos.x) => {
     if (dead || invulnerable) return false;
 
-    health -= 1;4
+    health -= 1;
     updateText();
     k.play("hurt", { volume: 0.55 });
 

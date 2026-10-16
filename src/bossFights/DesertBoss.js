@@ -1,6 +1,6 @@
 import { makeBlackheart } from "../entities/boss/blackheart";
 import { makeSonic, SONIC_FOOT_OFFSET } from "../entities/sonic";
-import { saveBestScore } from "../gameState";
+import { saveBestScore, unlockStage } from "../gameState";
 import { addGround, addHudText, createPlayerHealth } from "../gameplay";
 import { k } from "../kaplayCtx";
 
@@ -126,6 +126,7 @@ export function DesertBoss(options = {}) {
     score += 3000 + rings * 25;
     scoreText.text = `SCORE  ${score}`;
     saveBestScore(score);
+    unlockStage(6);
 
     addHudText("BLACKHEART DEFEATED!", k.vec2(960, 325), {
       font: "nise-sega-font",
@@ -138,8 +139,9 @@ export function DesertBoss(options = {}) {
     k.wait(2.2, () =>
       k.go("victory", {
         title: "DESERT RESTORED!",
-        message: `All five stages complete • Ring bonus: ${rings * 25}`,
+        message: `Starfall Station unlocked • Ring bonus: ${rings * 25}`,
         score,
+        nextScene: "levelSix",
       }),
     );
   };

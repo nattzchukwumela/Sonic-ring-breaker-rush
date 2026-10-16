@@ -34,6 +34,12 @@ export const stages = [
     subtitle: "Break the desert guard at sunset",
     scene: "levelFive",
   },
+  {
+    id: 6,
+    name: "Starfall Station",
+    subtitle: "Stop the invaders beyond the stars",
+    scene: "levelSix",
+  },
 ];
 
 export function getUnlockedStage() {
