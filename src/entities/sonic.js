@@ -1,12 +1,14 @@
 import { k } from "../kaplayCtx";
+import { getSelectedCharacter } from "../gameState";
 import { showMobileControls } from "../mobileControls";
 
 export const SONIC_FOOT_OFFSET = 88;
 
 export function makeSonic(pos, jumpPower = 1700) {
+  const character = getSelectedCharacter();
   const sonic = k.add([
-    k.sprite("sonic", { anim: "run" }),
-    k.scale(4),
+    k.sprite(character.sprite, { anim: "run" }),
+    k.scale(3.75),
     k.area({ shape: new k.Rect(k.vec2(-11, -22), 22, 44) }),
     k.anchor("center"),
     k.pos(pos),
@@ -17,6 +19,8 @@ export function makeSonic(pos, jumpPower = 1700) {
       isRolling: false,
       isInvulnerable: false,
       isDead: false,
+      characterId: character.id,
+      characterName: character.name,
       jumpsUsed: 0,
       maxJumps: 2,
       jumpReady: false,

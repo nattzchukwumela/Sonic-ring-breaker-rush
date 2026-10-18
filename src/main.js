@@ -131,14 +131,23 @@ k.loadSprite(
   "/graphics/backgrounds/bosses/shroomdoom.jpg",
 );
 
-// sonic sprite
-k.loadSprite("sonic", "/graphics/characters/sonic.png", {
+// playable character sprites
+k.loadSprite("sonic-player", "/graphics/characters/sonic-player.png", {
   sliceX: 8,
   sliceY: 2,
   anims: {
-    run: { from: 0, to: 7, loop: true, speed: 30 },
-    jump: { from: 8, to: 15, loop: true, speed: 100 },
-    roll: { from: 8, to: 15, loop: true, speed: 100 },
+    run: { from: 0, to: 7, loop: true, speed: 22 },
+    jump: { from: 8, to: 15, loop: true, speed: 18 },
+    roll: { from: 8, to: 15, loop: true, speed: 24 },
+  },
+});
+k.loadSprite("tails-player", "/graphics/characters/tails-player.png", {
+  sliceX: 8,
+  sliceY: 2,
+  anims: {
+    run: { from: 0, to: 7, loop: true, speed: 22 },
+    jump: { from: 8, to: 13, loop: true, speed: 18 },
+    roll: { from: 8, to: 13, loop: true, speed: 24 },
   },
 });
 

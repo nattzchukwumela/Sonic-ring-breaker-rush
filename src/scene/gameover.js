@@ -1,4 +1,4 @@
-import { saveBestScore } from "../gameState";
+import { getSelectedCharacter, saveBestScore } from "../gameState";
 import { addActionButton, addHudText } from "../gameplay";
 import { k } from "../kaplayCtx";
 
@@ -7,6 +7,7 @@ export default function GameOver(options = {}) {
   const retryScene = options.retryScene ?? "levelOne";
   const retryData = options.retryData ?? {};
   const best = saveBestScore(score);
+  const character = getSelectedCharacter();
 
   k.setGravity(0);
   k.add([
@@ -23,7 +24,7 @@ export default function GameOver(options = {}) {
     k.z(-9),
   ]);
 
-  addHudText("SONIC IS DOWN", k.vec2(960, 245), {
+  addHudText(`${character.name.toUpperCase()} IS DOWN`, k.vec2(960, 245), {
     font: "nise-sega-font",
     size: 88,
     anchor: "center",

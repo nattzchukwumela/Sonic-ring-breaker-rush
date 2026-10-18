@@ -2,6 +2,20 @@ import { k } from "./kaplayCtx";
 
 const PROGRESS_KEY = "ringbreaker-progress";
 const BEST_SCORE_KEY = "best-score";
+const CHARACTER_KEY = "selected-character";
+
+export const playableCharacters = {
+  sonic: {
+    id: "sonic",
+    name: "Sonic",
+    sprite: "sonic-player",
+  },
+  tails: {
+    id: "tails",
+    name: "Tails",
+    sprite: "tails-player",
+  },
+};
 
 export const stages = [
   {
@@ -84,4 +98,15 @@ export function saveBestScore(score) {
   const best = Math.max(getBestScore(), Math.max(0, Math.floor(score)));
   k.setData(BEST_SCORE_KEY, best);
   return best;
+}
+
+export function getSelectedCharacter() {
+  const selected = k.getData(CHARACTER_KEY) ?? "sonic";
+  return playableCharacters[selected] ?? playableCharacters.sonic;
+}
+
+export function setSelectedCharacter(characterId) {
+  if (!playableCharacters[characterId]) return getSelectedCharacter();
+  k.setData(CHARACTER_KEY, characterId);
+  return playableCharacters[characterId];
 }

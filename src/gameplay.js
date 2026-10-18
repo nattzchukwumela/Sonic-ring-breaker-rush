@@ -40,7 +40,8 @@ export function createPlayerHealth({
   let dead = false;
 
   const updateText = () => {
-    healthText.text = `SONIC  ${"♥".repeat(health)}${"♡".repeat(maxHealth - health)}`;
+    const characterName = sonic.characterName?.toUpperCase() ?? "SONIC";
+    healthText.text = `${characterName}  ${"♥".repeat(health)}${"♡".repeat(maxHealth - health)}`;
   };
 
   const damage = (sourceX = sonic.pos.x) => {
